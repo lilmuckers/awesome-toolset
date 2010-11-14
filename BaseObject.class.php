@@ -123,6 +123,10 @@ class BaseObject
     protected function _slugify($text)
 	{
 		$text = str_replace('&', ' and ', $text);
+		$text = htmlentities($text);
+		$text = str_replace(array('&Acirc;','&reg;','&acirc;','&cent;','?'), "", $text);
+		$text = html_entity_decode($text);
+		$text = iconv("UTF-8", "UTF-8//IGNORE", $text);
 		
 		if(strlen($text) > 100) {
 			$text = substr($text, 0, 100);

@@ -5,41 +5,45 @@ class XboxLiveGamer extends BaseObject
 	/**
 	 * Constants for the account types
 	 */
-	const GAMER_ACCOUNT_GOLD = 'GOLD';
-	const GAMER_ACCOUNT_SILVER = 'SILVER';
+	const GAMER_ACCOUNT_GOLD 	= 'GOLD';
+	const GAMER_ACCOUNT_SILVER 	= 'SILVER';
 
 	/**
 	 * Group of constants relating to the Gamercard and scraping it
 	 */
-	const GAMERCARD_BASE_URL = 'http://gamercard.xbox.com';
-	const GAMERCARD_URL = 'http://gamercard.xbox.com/%s.card';
-	const GAMERCARD_XPATH_MISC = '//span[@class="XbcFRAR"]';
-	const GAMERCARD_XPATH_REPUTATION = '//span[@class="XbcFRAR"]/img';
-	const GAMERCARD_XPATH_NAME = '//span[@class="XbcFLAL"]';
-	const GAMERCARD_XPATH_ACCOUNT = '//h3';
-	const GAMERCARD_XPATH_LINK = '//h3/a';
-	const GAMERCARD_XPATH_IMAGE = '//img[@class="XbcgcGamertile"]';
+	const GAMERCARD_BASE_URL 			= 'http://gamercard.xbox.com';
+	const GAMERCARD_URL 				= 'http://gamercard.xbox.com/%s.card';
+	const GAMERCARD_XPATH_MISC 			= '//span[@class="XbcFRAR"]';
+	const GAMERCARD_XPATH_REPUTATION 	= '//span[@class="XbcFRAR"]/img';
+	const GAMERCARD_XPATH_NAME 			= '//span[@class="XbcFLAL"]';
+	const GAMERCARD_XPATH_ACCOUNT 		= '//h3';
+	const GAMERCARD_XPATH_LINK 			= '//h3/a';
+	const GAMERCARD_XPATH_IMAGE 		= '//img[@class="XbcgcGamertile"]';
 	
 	/**
 	 * Group of constants relating to the Game overview and scraping it
 	 * I am scraping the en-US site because the date format is much easier to parse in PHP.
 	 */
-	const GAME_SUMMERY_URL = 'http://live.xbox.com/en-US/profile/Achievements/ViewAchievementSummary.aspx';
-	const GAME_XPATH_NAME_URL = '//div[@class="XbcProfileImageDescCell"]/p/a';
-	const GAME_XPATH_IMAGE = '//div[@class="XbcProfileImageDescCell"]/img[@class="AchievementsGameIcon"]';
-	const GAME_XPATH_LAST_PLAYED = '//div[@class="XbcProfileImageDescCell"]/p/strong';
-	const GAME_XPATH_ACHIEVEMENTS = '//td[@class="XbcAchGamerData"]/strong';
-	const GAME_REGEX_ACHIEVEMENTS = '/(\d+) of (\d+)/';
+	const GAME_SUMMERY_URL 				= 'http://live.xbox.com/en-US/GameCenter';
+	const GAME_XPATH_NAME 				= '//div[@class="LineItem"]/div[@class="TitleInfo grid-17"]/h3/a';
+	const GAME_XPATH_IMAGE 				= '//div[@class="LineItem"]/div[@class="TitleInfo grid-17"]/a/img';
+	const GAME_XPATH_URL 				= '//div[@class="LineItem"]/div[@class="grid-7 lastgridchild"][last()]/div[@class="grid-7 lastgridchild"][last()]/a';
+	const GAME_XPATH_LAST_PLAYED 		= '//div[@class="LineItem"]//div[@class="RightColumnItem GameProgressBlock"]//div[@class="PlayedBlock"]';
+	const GAME_XPATH_ACHIEVEMENTS 		= '//div[@class="LineItem"]//div[@class="RightColumnItem GameProgressBlock"]//div[@class="StatBlock"]//div[@class="Achievement Stat"]';
+	const GAME_XPATH_SCORE 				= '//div[@class="LineItem"]//div[@class="RightColumnItem GameProgressBlock"]//div[@class="StatBlock"]//div[@class="GamerScore Stat"]';
+	const GAME_REGEX_SCORE_ACHIEVEMENTS = '/(\d+) \/ (\d+)/';
+	const GAME_REGEX_LAST_PLAYED 		= '/([0-9]*\/[0-9]*/[0-9]*/';
 
 	/**
 	 * Group of constants for the Xpaths to retrieve achievement data
 	 */
-	const ACHIEVEMENT_XPATH_IMAGE = '//tbody[not(@class="XbcProfileInactive")]/tr/td[@class="XbcAchDescription"]//img';
-	const ACHIEVEMENT_XPATH_NAME = '//tbody[not(@class="XbcProfileInactive")]/tr/td[@class="XbcAchDescription"]//strong[@class="XbcAchievementsTitle"]';
-	const ACHIEVEMENT_XPATH_DESCRIPTION = '//tbody[not(@class="XbcProfileInactive")]/tr/td[@class="XbcAchDescription"]//p';
-	const ACHIEVEMENT_XPATH_SCORE = '//tbody[not(@class="XbcProfileInactive")]/tr/td[@class="XbcAchGamerData"][last()]/strong[1]';
-	const ACHIEVEMENT_XPATH_ACQUIRED = '//tbody[not(@class="XbcProfileInactive")]/tr/td[@class="XbcAchGamerData"][last()]/strong[last()]/script';
-	const ACHIEVEMENT_REGEX_ACQUIRED = '/_xbcDisplayDate\((\d+), (\d+), (\d+), (\d+), (\d+)\);/';
+	const ACHIEVEMENT_BASE_URL			= 'http://live.xbox.com%s';
+	const ACHIEVEMENT_XPATH_IMAGE 		= '//div[@class="SpaceItem"]//div[@class="AchievementInfo"]/img';
+	const ACHIEVEMENT_XPATH_NAME 		= '//div[@class="SpaceItem"]//div[@class="AchievementInfo"]/h3';
+	const ACHIEVEMENT_XPATH_DESCRIPTION = '//div[@class="SpaceItem"]//div[@class="AchievementInfo"]/p';
+	const ACHIEVEMENT_XPATH_SCORE 		= '//div[@class="SpaceItem"]//div[@class="RightColumnItem AchievementProgressBlock"]/div[@class="Stat GamerScore"]';
+	const ACHIEVEMENT_XPATH_ACQUIRED 	= '//div[@class="SpaceItem"]//div[@class="RightColumnItem AchievementProgressBlock"]/div[@class="AchievedOn"]';
+	const ACHIEVEMENT_REGEX_ACQUIRED 	= '/_xbcDisplayDate\((\d+), (\d+), (\d+), (\d+), (\d+)\);/';
 
 	/**
 	 * Load up the base gamertag data
@@ -112,7 +116,6 @@ class XboxLiveGamer extends BaseObject
 			'reputation_stars' => self::GAMERCARD_BASE_URL.$gamerCard->query(self::GAMERCARD_XPATH_REPUTATION)->item(0)->getAttribute('src')
 		);
 		
-		
 		//put the scraped score into the object
 		$newData = new BaseObject($data);
 		$this->setExternal($newData);
@@ -167,10 +170,12 @@ class XboxLiveGamer extends BaseObject
 			$gamesScrape = $browser->getXboxPrivateUrlXPath(self::GAME_SUMMERY_URL);
 			
 			//base scrapes
-			$nameScrape = $gamesScrape->query(self::GAME_XPATH_NAME_URL);
+			$nameScrape = $gamesScrape->query(self::GAME_XPATH_NAME);
+			$urlScrape = $gamesScrape->query(self::GAME_XPATH_URL);
 			$imageScrape = $gamesScrape->query(self::GAME_XPATH_IMAGE);
 			$lastPlayedScrape = $gamesScrape->query(self::GAME_XPATH_LAST_PLAYED);
 			$achievementScrape = $gamesScrape->query(self::GAME_XPATH_ACHIEVEMENTS);
+			$scoreScrape = $gamesScrape->query(self::GAME_XPATH_SCORE);
 			
 			//iterate through the names and use the index to get the other data
 			$games = array();
@@ -179,14 +184,14 @@ class XboxLiveGamer extends BaseObject
 				//use sexy regexs to seperate the score and achievement data
 				$score = array();
 				$achievments = array();
-				preg_match_all(self::GAME_REGEX_ACHIEVEMENTS, $achievementScrape->item($i*2)->textContent, $score);
-				preg_match_all(self::GAME_REGEX_ACHIEVEMENTS, $achievementScrape->item(($i*2)+1)->textContent, $achievments);
+				preg_match_all(self::GAME_REGEX_SCORE_ACHIEVEMENTS, $scoreScrape->item($i)->textContent, $score);
+				preg_match_all(self::GAME_REGEX_SCORE_ACHIEVEMENTS, $achievementScrape->item($i)->textContent, $achievments);
 				
 				$slug = $this->_slugify($nameScrape->item($i)->textContent);
 				//arrange in the array
 				$games[$slug] = new BaseObject(array(
 					'name' => $nameScrape->item($i)->textContent,
-					'link' => $nameScrape->item($i)->getAttribute('href'),
+					'link' => sprintf(self::ACHIEVEMENT_BASE_URL, $urlScrape->item($i)->getAttribute('href')),
 					'slug' => $slug,
 					'image_64' => $imageScrape->item($i)->getAttribute('src'),
 					'last_played' => $lastPlayedScrape->item($i)->hasChildNodes() ? $this->_date($lastPlayedScrape->item($i)->lastChild->textContent) : null,
@@ -229,6 +234,7 @@ class XboxLiveGamer extends BaseObject
 		if(!$this->getData('new_achievements')){
 			$achievements = array();
 			$updatedGames = $this->getScoredGames();
+			
 			foreach($updatedGames as $gameSlug=>$game){
 				$external = $this->getExternalGameAchievements($game);
 				$internal = $this->getInternalGameAcievements($game);
@@ -270,17 +276,16 @@ class XboxLiveGamer extends BaseObject
 			$acquiredScrape = $achievementScrape->query(self::ACHIEVEMENT_XPATH_ACQUIRED);
 			
 			$achievements = array();
-			for($i=0; $i < $imageScrape->length; $i++){
+			for($i=0; $i < $scoreScrape->length; $i++){
 				//arrange the data
 				$data = array(
 					'image' => $imageScrape->item($i)->getAttribute('src'),
 					'name' => $nameScrape->item($i)->textContent,
 					'description' => $descriptionScrape->item($i)->lastChild->textContent,
 					'score' => trim($scoreScrape->item($i)->textContent),
-					'acquired' => $acquiredScrape->item($i)->hasChildNodes() ? $this->_xboxDate($acquiredScrape->item($i)->textContent) : null,
+					'acquired' => $acquiredScrape->item($i) ? $this->_date(str_replace('acquired on ', '', $acquiredScrape->item($i)->textContent)) : null,
 					'game' => $game
 				);
-				
 				//if this was achieved today, assume NOW as acquired date
 				$data['acquired'] = $this->isToday($data['acquired']) ? $this->_dateTime() : $data['acquired'];
 				
