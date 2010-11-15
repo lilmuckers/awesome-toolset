@@ -334,8 +334,6 @@ class XboxLiveGamer extends BaseObject
 	 * @return XboxLiveGamer
 	 */
 	public function save(){
-		//save gamer data - to keep the last-checked time synced
-		$this->_saveGamertag();
 		
 		//save game data - but only if the user has scored
 		if($this->hasScored()){
@@ -346,6 +344,9 @@ class XboxLiveGamer extends BaseObject
 				$this->_saveGame($game);
 			}
 		}
+		
+		//save gamer data - to keep the last-checked time synced
+		$this->_saveGamertag();
 		
 		return $this;
 	}
@@ -397,6 +398,7 @@ class XboxLiveGamer extends BaseObject
 			'slug' => $game->getSlug(),
 			'link' => $game->getLink()
 		);
+		
 		$game_id = DB::insertUpdate('game', $data);
 		
 		if(!$game_id){
