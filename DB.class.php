@@ -196,7 +196,7 @@ class DB {
 	 * @return mixed
 	 */
 	public static function insertUpdate($table, $data, $idField = 'id'){
-		if(isset($data[$idField]) && !empty($data[$idField])){
+		if(array_key_exists($idField, $data) && !empty($data[$idField])){
 			//update function
 			$update = self::update($table, $data, array($idField=>$data[$idField]));
 			return $update ? $data[$idField] : false;

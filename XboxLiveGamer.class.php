@@ -144,9 +144,9 @@ class XboxLiveGamer extends BaseObject
 			
 			$scoredGames = array();
 			foreach($online as $slug=>$game){
-				if(!isset($offline[$slug]) || $offline[$slug]->getScore() < $game->getScore()){
+				if(!array_key_exists($slug, $offline) || $offline[$slug]->getScore() < $game->getScore()){
 					$scoredGames[$slug] = $game;
-					if(isset($offline[$slug])){
+					if(array_key_exists($slug, $offline)){
 						$game->setId($offline[$slug]->getId());
 					}
 				}
@@ -237,11 +237,11 @@ class XboxLiveGamer extends BaseObject
 			
 			foreach($updatedGames as $gameSlug=>$game){
 				$external = $this->getExternalGameAchievements($game);
-				$internal = $this->getInternalGameAcievements($game);
+				$internal = $this->getInternalGameAchievements($game);
 				
 				$newAchivements = array();
 				foreach($external as $slug=>$data){
-					if(!isset($internal[$slug])){
+					if(!array_key_exists($slug, $internal)){
 						$achievements[$slug] = $data;
 						$newAchivements[$slug] = $data;
 					}
@@ -262,7 +262,7 @@ class XboxLiveGamer extends BaseObject
 	public function getExternalGameAchievements($game){
 		$games = $this->getData('external_game_achievements');
 		if(!is_array($games)) $games = array();
-		if(!isset($games[$game->getSlug()])){
+		if(!array_key_exists($game->getSlug(),$games)){
 			//pull the html as an xpath
 			$browser = $this->_getScraper();
 			//pull the game achievement data
@@ -312,7 +312,7 @@ class XboxLiveGamer extends BaseObject
 		$games = $this->getData('internal_game_achievements');
 		if(!is_array($games)) $games = array();
 		
-		if(!isset($games[$game->getSlug()])){
+		if(!array_key_exists($game->getSlug(), $games)){
 			$achievementsDb = DB::select('achievement', array('game_id'=>$game->getId()));
 			$achievements = array();
 			if($achievementsDb){
@@ -321,10 +321,12 @@ class XboxLiveGamer extends BaseObject
 				}
 			}
 			
-			$achievements[$game->getSlug()] = $achievements;
+			$games[$game->getSlug()] = $achievements;
+			
 			$game->setInternalAchievements($games[$game->getSlug()]);
 			$this->setData('internal_game_achievements', $games);
 		}
+		
 		return $games[$game->getSlug()];
 	}
 	
@@ -466,7 +468,7 @@ class XboxLiveGamer extends BaseObject
 				foreach($achievements as $achievement){
 					$a = new BaseObject($achievement);
 					$return[] = $a;
-					if(!isset($games[$a->getGameId()])){
+					if(!array_key_exists($a->getGameId(), $games)){
 						$game = DB::load('game', $a->getGameId());
 						if($game){
 							$games[$a->getGameId()] = new BaseObject($game);
