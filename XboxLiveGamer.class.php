@@ -99,7 +99,7 @@ class XboxLiveGamer extends BaseObject
 	 */
 	protected function _getExternalData(){
 		//generate the url
-		$url = sprintf(self::GAMERCARD_URL, $this->getTag());
+		$url = sprintf(self::GAMERCARD_URL, urlencode($this->getTag()));
 		
 		//pull the html as an xpath
 		$browser = $this->_getScraper();
