@@ -13,12 +13,10 @@ class XboxLiveGamer extends BaseObject
 	 */
 	const GAMERCARD_BASE_URL 			= 'http://gamercard.xbox.com';
 	const GAMERCARD_URL 				= 'http://gamercard.xbox.com/%s.card';
-	const GAMERCARD_XPATH_MISC 			= '//span[@class="XbcFRAR"]';
-	const GAMERCARD_XPATH_REPUTATION 	= '//span[@class="XbcFRAR"]/img';
-	const GAMERCARD_XPATH_NAME 			= '//span[@class="XbcFLAL"]';
-	const GAMERCARD_XPATH_ACCOUNT 		= '//h3';
-	const GAMERCARD_XPATH_LINK 			= '//h3/a';
-	const GAMERCARD_XPATH_IMAGE 		= '//img[@class="XbcgcGamertile"]';
+	const GAMERCARD_XPATH_SCORE 		= '//div[@class="Body"]/div[@class="Stats"]//div[@class="Stat"]/div[@class="Stat"]';
+	const GAMERCARD_XPATH_HEAD			= '//div[@class="Header"]/div[@class="Gamertag"]/a/span';
+	const GAMERCARD_XPATH_LINK 			= '//div[@class="Header"]/div[@class="Gamertag"]/a';
+	const GAMERCARD_XPATH_IMAGE 		= '//img[@class="GamerPic"]';
 	
 	/**
 	 * Group of constants relating to the Game overview and scraping it
@@ -107,13 +105,11 @@ class XboxLiveGamer extends BaseObject
 		
 		//scrape the score
 		$data = array(
-			'score' => $gamerCard->query(self::GAMERCARD_XPATH_MISC)->item(1)->textContent,
-			'gamertag' => $gamerCard->query(self::GAMERCARD_XPATH_NAME)->item(0)->textContent,
-			'account_type' => $gamerCard->query(self::GAMERCARD_XPATH_ACCOUNT)->item(0)->getAttribute('class') == 'XbcGamertagGold' ? self::GAMER_ACCOUNT_GOLD : self::GAMER_ACCOUNT_SILVER,
-			'link' => $gamerCard->query(self::GAMERCARD_XPATH_LINK)->item(0)->getAttribute('href'),
-			'avatar' => $gamerCard->query(self::GAMERCARD_XPATH_IMAGE)->item(0)->getAttribute('src'),
-			'zone' => $gamerCard->query(self::GAMERCARD_XPATH_MISC)->item(2)->textContent,
-			'reputation_stars' => self::GAMERCARD_BASE_URL.$gamerCard->query(self::GAMERCARD_XPATH_REPUTATION)->item(0)->getAttribute('src')
+			'score' => $gamerCard->query(self::GAMERCARD_XPATH_SCORE)->item(0)->textContent,
+			'gamertag' => $gamerCard->query(self::GAMERCARD_XPATH_HEAD)->item(0)->textContent,
+			'account_type' => $gamerCard->query(self::GAMERCARD_XPATH_HEAD)->item(0)->getAttribute('class') == 'Gold' ? self::GAMER_ACCOUNT_GOLD : self::GAMER_ACCOUNT_SILVER,
+			'link' => self::GAMERCARD_BASE_URL.$gamerCard->query(self::GAMERCARD_XPATH_LINK)->item(0)->getAttribute('href'),
+			'avatar' => $gamerCard->query(self::GAMERCARD_XPATH_IMAGE)->item(0)->getAttribute('src')
 		);
 		
 		//put the scraped score into the object
