@@ -128,7 +128,7 @@ class DB {
 		if(!is_array($orderBy)){
 			$orderBy = array($orderBy);
 		}
-		foreach($orderBy as $direction => $field){
+		foreach($orderBy as $field => $direction){
 			if(!in_array(strtoupper($direction), array('ASC', 'DESC'))){
 				$direction = 'DESC';
 			}

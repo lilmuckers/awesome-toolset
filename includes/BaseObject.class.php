@@ -204,4 +204,13 @@ class BaseObject
 		}
 		return false;
 	}
+	
+	/**
+	 * Convert the object into something for SQL to deal with
+	 * 
+	 * @return string|int
+	 */
+	protected function _toSql(){
+		return get_class($this);
+	}
 }
