@@ -24,6 +24,22 @@ abstract class BaseDBCollection extends BaseCollection
 	protected $_tableName;
 	
 	/**
+	 * Setup the collection object for the DB stuff
+	 * 
+	 * @param string $tableName
+	 * @param string $itemClass
+	 * @param string $idField
+	 * @return void
+	 */
+	protected function _construct($tableName, $itemClass = 'BaseDBObject', $idField = 'id')
+	{
+		$this->_tableName = $tableName;
+		$this->_itemClass = $itemClass;
+		$this->_idField = $idField;
+		return parent::_construct();
+	}
+	
+	/**
 	 * load the data and push it into the right places
 	 * 
 	 * @return BaseDBCollection
@@ -32,9 +48,11 @@ abstract class BaseDBCollection extends BaseCollection
 	{
 		$this->_beforeLoad();
 		$data = DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders);
-		foreach($data as $row){
-			$object = new {$this->_itemClass}($row);
-			$this->addItem($object);
+		if(count((array)$data) > 0){
+			foreach((array) $data as $row){
+				$object = new $this->_itemClass($row);
+				$this->addItem($object);
+			}
 		}
 		$this->_afterLoad();
 		return $this;

@@ -1,7 +1,29 @@
 <?php
 
 class DB {
+	/**
+	 * Instance of the DB connection
+	 * 
+	 * @var DB
+	 */
 	protected static $_db;
+	
+	protected static $_config = array();
+	
+	/**
+	 * Set the database settings
+	 * 
+	 * @param array $config
+	 * @return void
+	 */
+	public static function configure($host, $user, $password, $db_name){
+		self::$_config = array(
+			'host' => $host,
+			'user' => $user,
+			'password' => $password,
+			'db' => $db_name
+		);
+	}
 	
 	/**
 	 * Connect to the database using defined settings
@@ -9,7 +31,7 @@ class DB {
 	 * @return void
 	 */
 	protected static function _connect(){
-		self::$_db = new mysqli(XBL_DB_HOST, XBL_DB_USER, XBL_DB_PASSWORD, XBL_DB_DB);
+		self::$_db = new mysqli(self::$_config['host'], self::$_config['user'], self::$_config['password'], self::$_config['db']);
 		self::$_db->query("SET NAMES 'utf8'");
 	}
 	
@@ -66,7 +88,7 @@ class DB {
 		}
 		
 		//format order by
-		if(!is_null($orderby)){
+		if(!is_null($orderby) && !empty($orderby)){
 			$order = self::_orderBy($orderby);
 			$select .= $order;
 		}
@@ -82,7 +104,6 @@ class DB {
 		}
 		
 		//join
-		
 		return self::query($select);
 	}
 	

@@ -19,13 +19,18 @@ class BaseObject
 	 * @return void
 	 */
 	public function __construct($data = null){
-		if($data instanceof stdClass){
-			$data = $this->stdClassToArray($data);
-		}
-		if(is_array($data)){
+		if(!is_null($data)){
 			$this->setData($data);
 		}
+		$this->_construct();
 	}
+	
+	/**
+	 * Internal Constructor
+	 * 
+	 * @return void
+	 */
+	protected function _construct(){}
 	
 	/**
 	 * Convert stdClass data into an array
@@ -88,6 +93,9 @@ class BaseObject
 	 * @return BaseObject
 	 */
 	public function setData($key, $value = null){
+		if($key instanceof stdClass){
+			$key = $this->stdClassToArray($key);
+		}
 		if(is_array($key)){
 			foreach($key as $k=>$v){
 				$this->setData($k, $v);
@@ -105,22 +113,22 @@ class BaseObject
 	 * @return string
 	 */
 	protected function _underscore($name)
-    {
-        if (isset(self::$_underscoreCache[$name])) {
-            return self::$_underscoreCache[$name];
-        }
-        $result = strtolower(preg_replace('/(.)([A-Z])/', "$1_$2", $name));
-        self::$_underscoreCache[$name] = $result;
-        return $result;
-    }
-    
-    /**
-     * Slugifys text for unique identifiers for games, achievements, etc
-     * 
-     * @param string $text
-     * @return string
-     */
-    protected function _slugify($text)
+	{
+		if (isset(self::$_underscoreCache[$name])) {
+			return self::$_underscoreCache[$name];
+		}
+		$result = strtolower(preg_replace('/(.)([A-Z])/', "$1_$2", $name));
+		self::$_underscoreCache[$name] = $result;
+		return $result;
+	}
+	
+	/**
+	 * Slugifys text for unique identifiers for games, achievements, etc
+	 * 
+	 * @param string $text
+	 * @return string
+	 */
+	protected function _slugify($text)
 	{
 		$text = str_replace('&', ' and ', $text);
 		$text = htmlentities($text);
@@ -156,7 +164,7 @@ class BaseObject
 		$text = preg_replace('~[^\w\d]+~u', '-', $text);
 	
 		// trim
-	    $text = trim($text, '-');
+		 $text = trim($text, '-');
 	
 		// lowercase
 		$text = strtolower($text);

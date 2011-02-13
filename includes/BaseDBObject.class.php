@@ -32,11 +32,11 @@ abstract class BaseDBObject extends BaseObject
 	 * @param string $idField
 	 * @return BaseDBObject
 	 */
-	protected function _init($tableName, $idField = 'id')
+	protected function _construct($tableName, $idField = 'id')
 	{
 		$this->_tableName = $tableName;
 		$this->_idField= $idField;
-		return $this;
+		return parent::_construct();
 	}
 	
 	/**

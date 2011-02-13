@@ -59,7 +59,6 @@ class AutoLoader
 			//Generate paths in both the Zend and Cafe format
 			$classFileCafe = sprintf(self::PATH_PATTERN, $classFile);
 			$classFileZend = sprintf(self::PATH_PATTERN_ZEND, $classFile);
-			
 			//check the filename formats - cafe format taking precedence
 			if($this->_fileExists($classFileCafe)){
 				$classFile = $classFileCafe;
@@ -85,16 +84,13 @@ class AutoLoader
 	protected function _fileExists($filename){
 		$paths = explode(PATH_SEPARATOR, get_include_path());
 		foreach ($paths as $path) {
-			if (substr($path, -1) == DIRECTORY_SEPARATOR) {
-				$fullpath = $path.$filename;
-			} else {
-				$fullpath = $path.DIRECTORY_SEPARATOR.$filename;
-			}
+			$path = rtrim($path, DIRECTORY_SEPARATOR);
+			$fullpath = $path.DIRECTORY_SEPARATOR.$filename;
 			if (file_exists($fullpath)) {
 				return true;
 			}
 		}
-		return false
+		return false;
 	}
 	
 	/**
@@ -105,7 +101,7 @@ class AutoLoader
 	 */
 	protected function _isLoaded($class)
 	{
-		return array_key_exists($class, $this->_loadedClasses)
+		return array_key_exists($class, $this->_loadedClasses);
 	}
 	
 	/**

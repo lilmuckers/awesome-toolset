@@ -58,6 +58,13 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	protected $_isCollectionLoaded;
 	
 	/**
+	 * Flags for controlling functionality
+	 * 
+	 * @var array
+	 */
+	protected $_flags = array();
+	
+	/**
 	 * Set select order
 	 *
 	 * @param	string $field
@@ -189,5 +196,56 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Get a flag
+	 * 
+	 * @param string $flag
+	 * @return bool
+	 */
+	public function getFlag($flag)
+	{
+		if(array_key_exists($flag, $this->_flags)){
+			return $this->_flags[$flag];
+		}
+		return false;
+	}
+	
+	/**
+	 * Set a flag
+	 * 
+	 * @param string $flag
+	 * @return BaseCollection
+	 */
+	public function setFlag($flag, $value)
+	{
+		$this->_flags[$flag] = $value;
+		return $this;
+	}
+	
+	/**
+	 * Count the number of items
+	 * 
+	 * @return int
+	 */
+	public function count()
+	{
+		return count($this->_items);
+	}
+	
+	/**
+	 * Apply the following function to all child items
+	 * 
+	 * @param string $function
+	 * @param array $arguments
+	 * @return BaseCollection
+	 */
+	public function walk($function, $arguments = array())
+	{
+		foreach($this->_items as $item){
+			call_user_func_array(array($item, $function), $arguments);
+		}
+		return $this;
 	}
 }
