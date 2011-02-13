@@ -12,6 +12,18 @@ class Game extends BaseDBObject
 	}
 	
 	/**
+	 * Encrypt the live data before save
+	 * 
+	 * @return Gamer
+	 */
+	protected function _beforeSave()
+	{
+		//save achievements
+		
+		return parent::_beforeSave();
+	}
+	
+	/**
 	 * Load up the associated achievements
 	 * 
 	 * @return Game
