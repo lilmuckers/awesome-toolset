@@ -3,11 +3,15 @@
 class BaseObject
 {
 	/**
+	 * Stores the internal data
+	 * 
 	 * @var array
 	 */
 	protected $_data = array();
 	
 	/**
+	 * Caches the result of the understoring of camelcase strings
+	 * 
 	 * @var array
 	 */
 	protected static $_underscoreCache = array();
@@ -66,7 +70,46 @@ class BaseObject
 		if(substr($method, 0 , 3) == 'set'){
 			return $this->setData($underscore, $args);
 		}
+		if(substr($method, 0 , 3) == 'has'){
+			return $this->hasData($underscore);
+		}
+		if(substr($method, 0 , 3) == 'uns'){
+			return $this->unsData($underscore);
+		}
 		return null;
+	}
+	
+	/**
+	 * Check if the object has a particular bit of data set against it
+	 * 
+	 * @param string $key
+	 * @return bool
+	 */
+	public function hasData($key){
+		return array_key_exists($key, $this->_data);
+	}
+	
+	/**
+	 * Unset a bit of data from the object
+	 * 
+	 * @param mixed $key
+	 * @return BaseObject
+	 */
+	public function unsData($key = null){
+	
+		if(is_null($key)) {
+			//if is null - assume we want to remove EVERYTHING
+			$this->_data = array();
+		} elseif(is_array($key)) {
+			//if it's an array, there's a bunch of stuff we want to unset
+			foreach($key as $k){
+				$this->unsData($key);
+			}
+		} elseif($this->hasData($key)) {
+			//default action - inset one bit of data
+			unset($this->_data[$key]);
+		}
+		return $this;
 	}
 	
 	/**
@@ -107,7 +150,7 @@ class BaseObject
 	}
 	
 	/**
-	 * Convert from camel case to underscored
+	 * Convert from camelcase to underscored
 	 * 
 	 * @param string $name
 	 * @return string
@@ -123,7 +166,7 @@ class BaseObject
 	}
 	
 	/**
-	 * Slugifys text for unique identifiers for games, achievements, etc
+	 * Slugifys text string
 	 * 
 	 * @param string $text
 	 * @return string

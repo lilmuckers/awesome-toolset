@@ -93,6 +93,31 @@ class Gamer extends BaseDBObject
 	 */
 	public function update()
 	{
+		//scrape the new data from the gamercard
+		$external = new GamerScrape();
+		$external->load($this);
+		
+		//keep this floating in memory for other use
+		$this->setUpdate($external);
+		
+		//check if anything has been updated before setting the new data
+		if($this->_hasUpdated()){
+			$this->setData($external->getData());
+		}
+	}
 	
+	/**
+	 * Check if the gamer has been updated since last check
+	 * 
+	 * @return bool
+	 */
+	protected function _hasUpdated()
+	{
+		//make sure we actually have an update to check against
+		if($this->hasUpdate()){
+			//check if the scraped score is larger than the saved score
+			return $this->getUpdate()->getScore() > $this->getScore();
+		}
+		return false;
 	}
 }
