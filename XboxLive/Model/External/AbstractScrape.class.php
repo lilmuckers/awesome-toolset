@@ -35,4 +35,18 @@ class AbstractScrape extends BaseObject
 		$_browser->setLogin($this->getLoginDetails());
 		return $_browser;
 	}
+	
+	/**
+	 * Set the gamer data
+	 * 
+	 * @param Gamer $gamer
+	 * @return AbstractScrape
+	 */
+	public function setGamer(Gamer $gamer)
+	{
+		list($username, $password) = $gamer->getLoginData();
+		$this->setLoginDetails(array('username'=>$username, 'password'=>$password));
+		$this->setData('gamer', $gamer);
+		return $this;
+	}
 }

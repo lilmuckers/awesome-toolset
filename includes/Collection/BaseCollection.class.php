@@ -58,13 +58,6 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	protected $_isCollectionLoaded;
 	
 	/**
-	 * Flags for controlling functionality
-	 * 
-	 * @var array
-	 */
-	protected $_flags = array();
-	
-	/**
 	 * Set select order
 	 *
 	 * @param	string $field
@@ -167,7 +160,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 */
 	public function addItem($object)
 	{
-		$this->_items[$object->getId()] = $object;
+		$this->_items[] = $object;
 		return $this;
 	}
 	
@@ -199,32 +192,6 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	}
 	
 	/**
-	 * Get a flag
-	 * 
-	 * @param string $flag
-	 * @return bool
-	 */
-	public function getFlag($flag)
-	{
-		if(array_key_exists($flag, $this->_flags)){
-			return $this->_flags[$flag];
-		}
-		return false;
-	}
-	
-	/**
-	 * Set a flag
-	 * 
-	 * @param string $flag
-	 * @return BaseCollection
-	 */
-	public function setFlag($flag, $value)
-	{
-		$this->_flags[$flag] = $value;
-		return $this;
-	}
-	
-	/**
 	 * Count the number of items
 	 * 
 	 * @return int
@@ -247,5 +214,20 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 			call_user_func_array(array($item, $function), $arguments);
 		}
 		return $this;
+	}
+	
+	/**
+	 * Calculate the sum of all values in given column
+	 * 
+	 * @param string $column
+	 * return float
+	 */
+	public function sumColumn($column)
+	{
+		$return = 0;
+		foreach($this->_items as $item){
+			$return += $item->getData($column);
+		}
+		return $return;
 	}
 }

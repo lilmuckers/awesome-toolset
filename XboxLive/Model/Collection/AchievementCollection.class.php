@@ -15,16 +15,4 @@ class AchievementCollection extends BaseDBCollection
 		$this->setOrder('id', 'ASC');
 		parent::_construct('achievement', 'Achievement');
 	}
-	
-	/**
-	 * Afterload - load up the parent data for the achievement
-	 * 
-	 * @return AchievementCollection
-	 */
-	protected function _afterLoad()
-	{
-		//$this->walk('loadGamer');
-		//$this->walk('loadGame');
-		return parent::_afterLoad();
-	}
 }

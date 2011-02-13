@@ -32,6 +32,9 @@ class DB {
 	 */
 	protected static function _connect(){
 		self::$_db = new mysqli(self::$_config['host'], self::$_config['user'], self::$_config['password'], self::$_config['db']);
+		if (self::$_db->connect_error) {
+			throw new Exception('Could not connect to Database : '.self::$_db->connect_error, self::$_db->connect_errno);
+		}
 		self::$_db->query("SET NAMES 'utf8'");
 	}
 	
@@ -49,7 +52,7 @@ class DB {
 		if(false === $result){
 			throw new Exception('silly billy, query error: '.$sql);
 		}
-		if($result->num_rows > 0){
+		if($result !== true && $result->num_rows > 0){
 			$return = array();
 			while($row = $result->fetch_object()){
 				$return[] = $row;
@@ -194,9 +197,9 @@ class DB {
 	public static function insert($table, $data = array()){
 		$inserts = array();
 		foreach($data as $key=>$value){
-			if(strtoupper(substr($value, 0, 6)) == 'SELECT'){
+			/*if(strtoupper(substr($value, 0, 6)) == 'SELECT'){
 				$inserts[$key] = "({$value})";
-			} elseif(is_null($value)){
+			} else*/if(is_null($value)){
 				$inserts[$key] = "NULL";
 			} elseif(false !== $value) {
 				$inserts[$key] = "'".self::_escape($value)."'";

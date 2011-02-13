@@ -24,13 +24,8 @@ class GamerScrape extends AbstractScrape
 	 * @param mixed $gamer
 	 * @return GamerScrape
 	 */
-	public function load($gamer)
+	public function load()
 	{
-		if($gamer instanceof Gamer){
-			$gamer = $gamer->getGamertag();
-		}
-		$this->setGamertag($gamer);
-		
 		//scrape the gamercard
 		$this->_scrapeGamercard();
 		
@@ -45,7 +40,7 @@ class GamerScrape extends AbstractScrape
 	protected function _scrapeGamercard()
 	{
 		//generate the gamercard URL
-		$url = sprintf(self::GAMERCARD_URL, urlencode($this->getGamertag()));
+		$url = sprintf(self::GAMERCARD_URL, urlencode($this->getGamer()->getGamertag()));
 		
 		//get the xpath
 		$gamerCard = $this->_getXpath($url);

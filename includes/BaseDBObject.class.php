@@ -46,15 +46,17 @@ abstract class BaseDBObject extends BaseObject
 	 */
 	public function save()
 	{
-		$data = $this->_prepareData();
+		//we want to update, yes yes
+		$this->setFlag('save', true);
 		
+		//before save functions
 		$this->_beforeSave();
 		
 		//prepare the data for saving
 		$data = $this->_prepareData();
 		
 		//is this a valid save call
-		if(!empty($data)){
+		if(!empty($data) && $this->getFlag('save') === true){
 			//do the actual save
 			$id = DB::insertUpdate($this->_tableName, $data, $this->_idField);
 			

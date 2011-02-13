@@ -12,15 +12,20 @@ class Achievement extends BaseDBObject
 	}
 	
 	/**
-	 * Load up the associated parents
+	 * Format Foreign keys
 	 * 
 	 * @return Achievement
 	 */
-	protected function _afterLoad()
+	protected function _beforeSave()
 	{
-		$this->loadGamer();
-		$this->loadGame();
-		return parent::_afterLoad();
+		$this->setData('gamertag_id', $this->getGamer()->getId());
+		$this->setData('game_id', $this->getGame()->getId());
+		
+		//only want to save if it's new
+		if($this->getId()){
+			$this->setFlag('save', false);
+		}
+		return parent::_beforeSave();
 	}
 	
 	/**
@@ -28,14 +33,14 @@ class Achievement extends BaseDBObject
 	 * 
 	 * @return Gamer
 	 */
-	public function loadGamer()
+	public function getGamer()
 	{
-		if(!$this->getGamer()){
+		if(!$this->hasGamer()){
 			$gamer = new Gamer();
-			$gamer->load($this->getGamertagId(), 'id');
+			$gamer->load($this->getGamertagId());
 			$this->setGamer($gamer);
 		}
-		return $this->getGamer();
+		return $this->getData('gamer');
 	}
 	
 	/**
@@ -43,13 +48,13 @@ class Achievement extends BaseDBObject
 	 * 
 	 * @return Game
 	 */
-	public function loadGame()
+	public function getGame()
 	{
-		if(!$this->getGame()){
+		if(!$this->hasGame()){
 			$game = new Game();
 			$game->load($this->getGameId());
 			$this->setGame($game);
 		}
-		return $this->getGame();
+		return $this->getData('game');
 	}
 }

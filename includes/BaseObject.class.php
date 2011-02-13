@@ -10,6 +10,13 @@ class BaseObject
 	protected $_data = array();
 	
 	/**
+	 * Flags for controlling functionality
+	 * 
+	 * @var array
+	 */
+	protected $_flags = array();
+	
+	/**
 	 * Caches the result of the understoring of camelcase strings
 	 * 
 	 * @var array
@@ -207,7 +214,7 @@ class BaseObject
 		$text = preg_replace('~[^\w\d]+~u', '-', $text);
 	
 		// trim
-		 $text = trim($text, '-');
+		$text = trim($text, '-');
 	
 		// lowercase
 		$text = strtolower($text);
@@ -263,5 +270,31 @@ class BaseObject
 	 */
 	protected function _toSql(){
 		return get_class($this);
+	}
+	
+	/**
+	 * Get a flag
+	 * 
+	 * @param string $flag
+	 * @return bool
+	 */
+	public function getFlag($flag)
+	{
+		if(array_key_exists($flag, $this->_flags)){
+			return $this->_flags[$flag];
+		}
+		return false;
+	}
+	
+	/**
+	 * Set a flag
+	 * 
+	 * @param string $flag
+	 * @return BaseCollection
+	 */
+	public function setFlag($flag, $value)
+	{
+		$this->_flags[$flag] = $value;
+		return $this;
 	}
 }

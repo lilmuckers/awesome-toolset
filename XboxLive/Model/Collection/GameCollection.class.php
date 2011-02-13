@@ -13,18 +13,7 @@ class GameCollection extends BaseDBCollection
 	{
 		$this->setOrder('gamertag_id');
 		$this->setOrder('last_played');
-		$this->setOrder('id');
+		$this->setOrder('id', 'DESC');
 		parent::_construct('game', 'Game');
-	}
-	
-	/**
-	 * Afterload - load up the achievement data for the game
-	 * 
-	 * @return GameCollection
-	 */
-	protected function _afterLoad()
-	{
-		//$this->walk('loadAchievements');
-		return parent::_afterLoad();
 	}
 }
