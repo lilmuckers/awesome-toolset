@@ -49,7 +49,6 @@ class DB {
 		if(false === $result){
 			throw new Exception('silly billy, query error: '.$sql);
 		}
-		var_dump($sql);
 		if($result->num_rows > 0){
 			$return = array();
 			while($row = $result->fetch_object()){

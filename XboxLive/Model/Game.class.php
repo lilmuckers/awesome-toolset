@@ -12,7 +12,7 @@ class Game extends BaseDBObject
 	}
 	
 	/**
-	 * Encrypt the live data before save
+	 * Save all the child achievements before saving the game
 	 * 
 	 * @return Gamer
 	 */

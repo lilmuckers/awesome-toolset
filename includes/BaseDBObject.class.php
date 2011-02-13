@@ -46,19 +46,27 @@ abstract class BaseDBObject extends BaseObject
 	 */
 	public function save()
 	{
+		$data = $this->_prepareData();
+		
 		$this->_beforeSave();
 		
-		//do the actual save
-		$id = DB::insertUpdate($this->_tableName, $this->_prepareData(), $this->_idField);
+		//prepare the data for saving
+		$data = $this->_prepareData();
 		
-		//what if something goes awry?
-		if(false === $id){
-			throw new Exception('Could not write to database - unknown error');
-		} else {
-			$this->setData($this->_idField, $id);
+		//is this a valid save call
+		if(!empty($data)){
+			//do the actual save
+			$id = DB::insertUpdate($this->_tableName, $data, $this->_idField);
+			
+			//what if something goes awry?
+			if(false === $id){
+				throw new Exception('Could not write to database - unknown error');
+			} else {
+				$this->setData($this->_idField, $id);
+			}
+			
+			$this->_afterSave();
 		}
-		
-		$this->_afterSave();
 		return $this;
 	}
 	
