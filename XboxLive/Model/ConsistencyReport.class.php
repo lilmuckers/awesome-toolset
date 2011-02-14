@@ -3,6 +3,13 @@
 class ConsistencyReport extends BaseObject
 {
 	/**
+	 * Store any data that needs alerted at the end.
+	 * 
+	 * @var array
+	 */
+	protected $_alerts = array();
+	
+	/**
 	 * Run the calculations
 	 * 
 	 * @return ConsistencyReport
