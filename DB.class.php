@@ -173,9 +173,9 @@ class DB {
 	public static function insert($table, $data = array()){
 		$inserts = array();
 		foreach($data as $key=>$value){
-			if(strtoupper(substr($value, 0, 6)) == 'SELECT'){
+			/*if(strtoupper(substr($value, 0, 6)) == 'SELECT'){
 				$inserts[$key] = "({$value})";
-			} elseif(is_null($value)){
+			} else*/if(is_null($value)){
 				$inserts[$key] = "NULL";
 			} elseif(false !== $value) {
 				$inserts[$key] = "'".self::_escape($value)."'";
