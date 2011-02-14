@@ -48,7 +48,7 @@ abstract class BaseDBCollection extends BaseCollection
 	{
 		$this->_beforeLoad();
 		$data = DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders);
-		if(count((array)$data) > 0){
+		if(true !== $data && false !== $data && count((array)$data) > 0){
 			foreach((array) $data as $row){
 				$object = new $this->_itemClass($row);
 				$this->addItem($object);
