@@ -46,15 +46,18 @@ abstract class BaseDBCollection extends BaseCollection
 	 */
 	public function load()
 	{
-		$this->_beforeLoad();
-		$data = DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders, $this->_limit);
-		if(true !== $data && false !== $data && count((array)$data) > 0){
-			foreach((array) $data as $row){
-				$object = new $this->_itemClass($row);
-				$this->addItem($object);
+		if(!$this->isLoaded()){
+			$this->_beforeLoad();
+			$data = DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders, $this->_limit);
+			if(true !== $data && false !== $data && count((array)$data) > 0){
+				foreach((array) $data as $row){
+					$object = new $this->_itemClass($row);
+					$this->addItem($object);
+				}
 			}
+			$this->_afterLoad();
+			$this->_setIsLoaded(true);
 		}
-		$this->_afterLoad();
 		return $this;
 	}
 	
