@@ -53,6 +53,22 @@ class AutoLoader
 	 */
 	public function load($class)
 	{
+		if($filename = $this->fileExists($class)){
+			//cache it for future awesome
+			$this->_cacheLoad($class, $filename);
+			include $filename;
+		}
+		return;
+	}
+	
+	/**
+	 * Return filename if the class exists
+	 * 
+	 * @param string $class
+	 * @return mixed
+	 */
+	public function fileExists($class)
+	{
 		if(!$this->_isLoaded($class)){
 			$classFile = str_replace(' ', DIRECTORY_SEPARATOR, ucwords(str_replace('_', ' ', $class)));
 			
@@ -68,11 +84,9 @@ class AutoLoader
 				$classFile = $classFileCafe;
 			}
 			
-			//cache it for future awesome
-			$this->_cacheLoad($class, $classFile);
-			include $classFile;
+			return $classFile;
 		}
-		return;
+		return false;
 	}
 	
 	/**

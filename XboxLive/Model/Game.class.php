@@ -89,7 +89,7 @@ class Game extends BaseDBObject
 		}
 		
 		//update the object if applicable
-		if($this->_hasUpdated()){
+		if($this->_hasUpdated() || $this->getFlag('forced')){
 			$this->setData($this->getUpdate()->getData());
 			$this->setFlag('updated', true);
 			
@@ -116,5 +116,16 @@ class Game extends BaseDBObject
 			return $this->getUpdate()->getScore() > $this->getScore();
 		}
 		return false;
+	}
+	
+	/**
+	 * Flag for the forced update
+	 * 
+	 * @return Game
+	 */
+	public function force()
+	{
+		$this->setFlag('forced', true);
+		return $this;
 	}
 }

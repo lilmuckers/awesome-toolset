@@ -88,7 +88,11 @@ class XboxLive extends BaseController
 	 */
 	public function force($gamertag = null)
 	{
-		
+		$gamer = new Gamer();
+		$gamer->load($gamertag, 'gamertag');
+		$gamer->setFlag('forced', true);
+		$gamer->update();
+		$gamer->save();
 		return $this;
 	}
 }
