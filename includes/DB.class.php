@@ -97,7 +97,7 @@ class DB {
 		}
 		
 		//limit
-		if(!is_null($limit)){
+		if(!is_null($limit) && !empty($limit)){
 			$select .= " LIMIT ";
 			if(is_array($limit)){
 				$select .= implode(',', $limit);
