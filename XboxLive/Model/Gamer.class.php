@@ -149,13 +149,17 @@ class Gamer extends BaseDBObject
 		$this->setUpdate($external);
 		
 		//check if anything has been updated before setting the new data
-		if($this->_hasUpdated()){
+		if($this->_hasUpdated() || $this->getFlag('forced')){
 			$this->setData($external->getData());
 			$this->setFlag('updated', true);
 			
 			//figure out which games have updated
 			$games = new GameScrape();
 			$games->setGamer($this)->load();
+			
+			if($this->getFlag('forced')){
+				$this->getGames()->walk('force');
+			}
 			$this->getGames()->walk('update');
 		}
 		
