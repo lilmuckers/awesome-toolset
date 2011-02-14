@@ -65,14 +65,16 @@ class XboxLive extends BaseController
 			$gamer = new Gamer();
 			$gamer->load($gamertag, 'gamertag');
 			$report = new ConsistencyReport();
-			$report->setGamer($gamer);
+			$report->setGamer($gamer)
+				->calculate();
 			print $report;
 		} else {
 			$gamers = new GamerCollection();
 			$gamers->load();
 			foreach($gamers as $gamer){
 				$report = new ConsistencyReport();
-				$report->setGamer($gamer);
+				$report->setGamer($gamer)
+					->calculate();
 				print $report;
 			}
 		}
