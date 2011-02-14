@@ -12,7 +12,7 @@ class XboxLiveDefine extends BaseDBDescribe
 		$table = $this->_addTable('gamertag');
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
 		$table->addColumn('gamertag', 'varchar(255) NOT NULL');
-		$table->addColumn('score', 'int(11) NOT NULL default '0'');
+		$table->addColumn('score', 'int(11) NOT NULL default \'0\'');
 		$table->addColumn('last_checked', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('account_type', 'enum(\'GOLD\', \'SILVER\') NOT NULL default \'SILVER\'')
 		$table->addColumn('link', 'varchar(255) default NULL');
