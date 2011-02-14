@@ -26,7 +26,7 @@ class Mcrypt extends BaseObject
 	 * @return string
 	 */
 	public static function in($string){
-		return mcrypt_encrypt(MCRYPT_BLOWFISH, self::$_key, $string, MCRYPT_MODE_ECB);
+		return @mcrypt_encrypt(MCRYPT_BLOWFISH, self::$_key, $string, MCRYPT_MODE_ECB);
 	}
 	
 	/**
@@ -36,6 +36,6 @@ class Mcrypt extends BaseObject
 	 * @return string
 	 */
 	public static function out($string){
-		return mcrypt_decrypt(MCRYPT_BLOWFISH , self::$_key, $string, MCRYPT_MODE_ECB);
+		return @mcrypt_decrypt(MCRYPT_BLOWFISH , self::$_key, $string, MCRYPT_MODE_ECB);
 	}
 }
