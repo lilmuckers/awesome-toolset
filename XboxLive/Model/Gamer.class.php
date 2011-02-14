@@ -105,8 +105,9 @@ class Gamer extends BaseDBObject
 	{
 		if(!$this->hasAchievements()){
 			$achievements = new AchievementCollection();
-			$achievements->addFilter('gamertag_id', array('eq'=>$this->getId()))->load();
-			$achievements->walk('setGamer', array($this->getGamer()));
+			$achievements->addFilter('gamertag_id', array('eq'=>$this->getId()))
+				->setGamer($this)
+				->load();
 			$this->setAchievements($achievements);
 		}
 		return $this->getData('achievements');

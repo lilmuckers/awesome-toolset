@@ -58,6 +58,13 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	protected $_isCollectionLoaded;
 	
 	/**
+	 * apply the following limits
+	 * 
+	 * @var array
+	 */
+	protected $_limit = array();
+	
+	/**
 	 * Set select order
 	 *
 	 * @param	string $field
@@ -229,5 +236,36 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 			$return += $item->getData($column);
 		}
 		return $return;
+	}
+	
+	/**
+	 * Get all the column values
+	 * 
+	 * @param string $column
+	 * @return array
+	 */
+	public function getColumnValues($column)
+	{
+		$return = array();
+		
+		foreach($this->_items as $item){
+			if($item->hasData($column)){
+				$value = $item->getData($column);
+				$return[] = $value;
+			}
+		}
+		return $return;
+	}
+	
+	
+	/**
+	 * Apply the following limit
+	 * 
+	 * @return BaseCollection
+	 */
+	public function setLimit($length, $start = 0)
+	{
+		$this->_limit = array('start'=>$start, 'length'=>$length);
+		return $this;
 	}
 }
