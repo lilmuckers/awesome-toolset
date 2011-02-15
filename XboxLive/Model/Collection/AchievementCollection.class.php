@@ -25,7 +25,7 @@ class AchievementCollection extends BaseDBCollection
 	{
 		//give the children their game!
 		if($game = $this->getGame()){
-			$this->walk('setGame', $game);
+			$this->walk('setGame', array($game));
 		} else {
 			$gameIds = $this->getColumnValues('game_id');
 			$games = new GameCollection();
@@ -39,7 +39,7 @@ class AchievementCollection extends BaseDBCollection
 		
 		//give the children their gamer
 		if($gamer = $this->getGamer()){
-			$this->walk('setGamer', $gamer);
+			$this->walk('setGamer', array($gamer));
 		} else {
 			$gamerIds = $this->getColumnValues('gamertag_id');
 		
