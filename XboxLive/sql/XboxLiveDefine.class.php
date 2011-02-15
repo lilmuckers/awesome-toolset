@@ -7,7 +7,7 @@ class XboxLiveDefine extends BaseDBDescribe
 	 * 
 	 * @return XboxLiveDefine
 	 */
-	public function _construct()
+	protected function _construct()
 	{
 		$table = $this->_addTable('gamertag');
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
