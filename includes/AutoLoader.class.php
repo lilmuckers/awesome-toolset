@@ -53,7 +53,7 @@ class AutoLoader
 	 */
 	public function load($class)
 	{
-		if($filename = $this->fileExists($class)){
+		if($filename = $this->classExists($class)){
 			//cache it for future awesome
 			$this->_cacheLoad($class, $filename);
 			include $filename;
@@ -67,7 +67,7 @@ class AutoLoader
 	 * @param string $class
 	 * @return mixed
 	 */
-	public function fileExists($class)
+	public function classExists($class)
 	{
 		if(!$this->_isLoaded($class)){
 			$classFile = str_replace(' ', DIRECTORY_SEPARATOR, ucwords(str_replace('_', ' ', $class)));

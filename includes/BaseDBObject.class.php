@@ -35,7 +35,7 @@ abstract class BaseDBObject extends BaseObject
 	protected function _construct($tableName, $idField = 'id')
 	{
 		$this->_tableName = $tableName;
-		$this->_idField= $idField;
+		$this->_idField = $idField;
 		return parent::_construct();
 	}
 	
