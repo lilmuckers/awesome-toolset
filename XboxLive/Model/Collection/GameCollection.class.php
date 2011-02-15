@@ -25,7 +25,7 @@ class GameCollection extends BaseDBCollection
 	protected function _afterLoad()
 	{
 		if($gamer = $this->getGamer()){
-			$this->walk('setGamer', $gamer);
+			$this->walk('setGamer', array($gamer));
 		} else {
 			$gamerIds = $this->getColumnValues('gamertag_id');
 		

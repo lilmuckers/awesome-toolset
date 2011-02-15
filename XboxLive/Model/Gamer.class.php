@@ -88,8 +88,8 @@ class Gamer extends BaseDBObject
 			$games = new GameCollection();
 			if($this->hasData('id')){
 				$games->addFilter('gamertag_id', array('eq'=>$this->getId()));
+				$games->setGamer($this);
 				$games->load();
-				$games->walk('setGamer', array($this));
 			}
 			$this->setGames($games);
 		}
