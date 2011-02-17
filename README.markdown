@@ -5,6 +5,15 @@ Version  2.0
 by Patrick McKinley
 http://www.patrick-mckinley.com/
 
+Installation
+-----
+ * Put code on PHP5.2 enabled server with Mcrypt
+ * Open bootstrap.php in a text editor
+    * Put database details into the DB::configure() function
+    * Add a random encryption key to the Mcrypt declaration
+ * Run the following command
+        ./cafe XboxLive install
+
 Usage
 -----
  * Add User
@@ -26,7 +35,7 @@ Usage
             ./cafe XboxLive check Lilmuckers
     
  * Force update of all information on user
-        ./cafe XboxLive force Lilmuckers
+        ./cafe XboxLive force <gamertag>
     * eg:
             ./cafe XboxLive force Lilmuckers
 
