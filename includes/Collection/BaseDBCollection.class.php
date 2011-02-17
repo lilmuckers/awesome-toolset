@@ -69,7 +69,7 @@ abstract class BaseDBCollection extends BaseCollection
 	 */
 	public function addSelect($fieldName)
 	{
-		if(count($this->_select) == 0 && $this->_select[0] == '*'){
+		if(count($this->_select) == 1 && $this->_select[0] == '*'){
 			if($fieldName != $this->_idField){
 				$this->_select = array($this->_idField, $fieldName);
 			} else {
