@@ -21,14 +21,14 @@ class XboxLive extends BaseController
 	 * 
 	 * @param string $gamertag
 	 * @param string $liveId
-	 * @param string $livePassport
+	 * @param string $livePassword
 	 * @return XboxLive
 	 */
-	public function add($gamertag, $liveId, $livePassport)
+	public function add($gamertag, $liveId, $livePassword)
 	{
 		$gamer = new Gamer();
 		$gamer->setGamertag($gamertag);
-		$gamer->setLoginData($liveId, $livePassport);
+		$gamer->setLoginData($liveId, $livePassword);
 		$gamer->save();
 		$gamer->update()
 			->save();
@@ -40,14 +40,14 @@ class XboxLive extends BaseController
 	 * 
 	 * @param string $gamertag
 	 * @param string $liveId
-	 * @param string $livePassport
+	 * @param string $livePassword
 	 * @return XboxLive
 	 */
-	public function edit($gamertag, $liveId, $livePassport)
+	public function edit($gamertag, $liveId, $livePassword)
 	{
 		$gamer = new Gamer();
 		$gamer->load($gamertag, 'gamertag');
-		$gamer->setLoginData($liveId, $livePassport);
+		$gamer->setLoginData($liveId, $livePassword);
 		$gamer->setFlag('updated', true);
 		$gamer->save();
 		return $this;
