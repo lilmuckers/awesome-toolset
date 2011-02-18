@@ -79,6 +79,8 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	
 	/**
 	 * Implementation of IteratorAggregate::getIterator()
+	 * 
+	 * @return ArrayIterator
 	 */
 	public function getIterator()
 	{
@@ -118,8 +120,8 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Set collection loading status flag
 	 *
-	 * @param unknown_type $flag
-	 * @return unknown
+	 * @param bool $flag
+	 * @return BaseCollection
 	 */
 	protected function _setIsLoaded($flag = true)
 	{
@@ -163,9 +165,10 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Add an item onto the list
 	 * 
+	 * @param BaseObject $object
 	 * @return BaseCollection
 	 */
-	public function addItem($object)
+	public function addItem(BaseObject $object)
 	{
 		$this->_items[] = $object;
 		return $this;
@@ -174,6 +177,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Get an item by ID
 	 * 
+	 * @param int $id
 	 * @return BaseObject|bool
 	 */
 	public function getItem($id)
@@ -227,7 +231,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * Calculate the sum of all values in given column
 	 * 
 	 * @param string $column
-	 * return float
+	 * @return float
 	 */
 	public function sumColumn($column)
 	{
@@ -257,11 +261,13 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Apply the following limit
 	 * 
+	 * @param int $length
+	 * @param int $offset
 	 * @return BaseCollection
 	 */
-	public function setLimit($length, $start = 0)
+	public function setLimit($length, $offset = 0)
 	{
-		$this->_limit = array('start'=>$start, 'length'=>$length);
+		$this->_limit = array('start'=>$offset, 'length'=>$length);
 		return $this;
 	}
 }
