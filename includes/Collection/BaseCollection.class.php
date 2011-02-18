@@ -9,7 +9,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	const SORT_ORDER_DESC	= 'DESC';
 	
 	/**
-	 * Array of Caffeine_Object to iterate through
+	 * Array of BaseObject to iterate through
 	 * 
 	 * @var array
 	 */
@@ -231,11 +231,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 */
 	public function sumColumn($column)
 	{
-		$return = 0;
-		foreach($this->_items as $item){
-			$return += $item->getData($column);
-		}
-		return $return;
+		return array_sum($this->getColumnValues($column));
 	}
 	
 	/**
