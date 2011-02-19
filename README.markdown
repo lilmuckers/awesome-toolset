@@ -1,6 +1,5 @@
 XboxLive Scraper
 ================
-- - - 
 Version  2.0 
 by Patrick McKinley
 http://www.patrick-mckinley.com/
@@ -20,10 +19,14 @@ Usage
         ./cafe XboxLive add <gamertag> <passport> <password>
     * eg:
             ./cafe XboxLive add Lilmuckers username@live.com password
+    * This also supports interactive input by just calling it in the format
+            ./cafe XboxLive add <gamertag>
  * Change User Account
         ./cafe XboxLive edit <gamertag> <passport> <password>
     * eg:
             ./cafe XboxLive edit Lilmuckers username@live.co.uk password1
+    * This also supports interactive input by just calling it in the format
+            ./cafe XboxLive edit <gamertag>
  * Update all accounts score data
         ./cafe XboxLive update
  * Update score data for a specific account
