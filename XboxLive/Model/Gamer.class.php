@@ -70,8 +70,7 @@ class Gamer extends BaseDBObject
 	 */
 	protected function _encryptLogin()
 	{
-		$loginData = Mcrypt::in($this->getData('login_data'));
-		return $loginData;
+		return Mcrypt::in($this->getData('login_data'));
 	}
 	
 	/**
