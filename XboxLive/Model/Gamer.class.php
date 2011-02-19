@@ -14,6 +14,12 @@ class Gamer extends BaseDBObject
 	 */
 	protected function _construct()
 	{
+		//setup last checked to be auto-populated
+		$this->_autoUpdateFields['last_checked'] = '_dateTime';
+		
+		//setup last login field to be auto-encrypted
+		$this->_autoUpdateFields['login_data'] = '_encryptLogin';
+		
 		parent::_construct('gamertag');
 	}
 	
@@ -24,13 +30,6 @@ class Gamer extends BaseDBObject
 	 */
 	protected function _beforeSave()
 	{
-		//encrypt the Xbox Live login data - keep it secret, keep it safe.
-		$loginData = Mcrypt::in($this->getData('login_data'));
-		$this->setData('login_data', $loginData);
-		
-		//set last checked
-		$this->setLastChecked($this->_dateTime());
-		
 		//save games
 		$this->getGames()->walk('save');
 		
@@ -39,18 +38,6 @@ class Gamer extends BaseDBObject
 			$this->setFlag('save', false);
 		}
 		return parent::_beforeSave();
-	}
-	
-	/**
-	 * Decrypt the live data before save
-	 * 
-	 * @return Gamer
-	 */
-	protected function _afterSave()
-	{
-		//decrypt the Xbox Live login data - keep it secret, keep it safe.
-		$this->decryptLogin();
-		return parent::_afterSave();
 	}
 	
 	/**
@@ -74,6 +61,17 @@ class Gamer extends BaseDBObject
 		$loginData = Mcrypt::out($this->getData('login_data'));
 		$this->setData('login_data', $loginData);
 		return $this;
+	}
+	
+	/**
+	 * Auto-encrypt the login fields
+	 * 
+	 * @return string
+	 */
+	protected function _encryptLogin()
+	{
+		$loginData = Mcrypt::in($this->getData('login_data'));
+		return $loginData;
 	}
 	
 	/**
@@ -138,7 +136,7 @@ class Gamer extends BaseDBObject
 	/**
 	 * Check for updates and pull them if they exist
 	 * 
-	 * @return XboxLive
+	 * @return Gamer
 	 */
 	public function update()
 	{
@@ -180,5 +178,16 @@ class Gamer extends BaseDBObject
 			return $this->getUpdate()->getScore() > $this->getScore();
 		}
 		return false;
+	}
+	
+	/**
+	 * Before delete we delete all the games
+	 * 
+	 * @return Gamer
+	 */
+	protected function _beforeDelete()
+	{
+		$this->getGames()->walk('delete');
+		return parent::_beforeDelete();
 	}
 }

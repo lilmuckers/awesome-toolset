@@ -26,6 +26,10 @@ Usage
             ./cafe XboxLive edit Lilmuckers username@live.co.uk password1
  * Update all accounts score data
         ./cafe XboxLive update
+ * Update score data for a specific account
+        ./cafe XboxLive update <gamertag>
+    * eg:
+            ./cafe XboxLive update Lilmuckers
  * Check consistency of user data
         ./cafe XboxLive check <gamertag> 
     * eg:
