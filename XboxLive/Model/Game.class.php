@@ -129,4 +129,15 @@ class Game extends BaseDBObject
 		$this->setFlag('forced', true);
 		return $this;
 	}
+	
+	/**
+	 * Before delete we delete all the achievements
+	 * 
+	 * @return Game
+	 */
+	protected function _beforeDelete()
+	{
+		$this->getAchievementCollection()->walk('delete');
+		return parent::_beforeDelete();
+	}
 }

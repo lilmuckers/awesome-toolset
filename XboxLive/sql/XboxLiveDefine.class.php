@@ -20,6 +20,8 @@ class XboxLiveDefine extends BaseDBDescribe
 		$table->addColumn('zone', 'varchar(255) default NULL');
 		$table->addColumn('reputation_stars', 'varchar(255) default NULL');
 		$table->addColumn('login_data', 'blob');
+		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		
 		$gameTable = $this->_addTable('game');
 		$gameTable->addColumn('id', 'int(11) NOT NULL auto_increment');
@@ -33,6 +35,8 @@ class XboxLiveDefine extends BaseDBDescribe
 		$gameTable->addColumn('score', 'int(11) NOT NULL default \'0\'');
 		$gameTable->addColumn('slug', 'varchar(255) NOT NULL');
 		$gameTable->addColumn('link', 'varchar(255) NOT NULL');
+		$gameTable->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		$gameTable->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 
 		
 		$achievementTable = $this->_addTable('achievement');
@@ -45,6 +49,8 @@ class XboxLiveDefine extends BaseDBDescribe
 		$achievementTable->addColumn('score', 'int(11) NOT NULL');
 		$achievementTable->addColumn('acquired', 'datetime default NULL');
 		$achievementTable->addColumn('slug', 'varchar(255) NOT NULL');
+		$achievementTable->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		$achievementTable->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		
 		return $this;
 	}

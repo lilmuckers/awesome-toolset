@@ -135,11 +135,12 @@ class ConsistencyReport extends BaseObject
 	protected function _formatAlert($return)
 	{
 		$red = "\033[0;31m";
+		$end = "\033[0m";
 		if(count($this->_alerts) > 0){
-			$return .= "{$red}===============================================\n";
-			$return .= "{$red}===============================================\n";
+			$return .= "{$red}==============================================={$end}\n";
+			$return .= "{$red}==============================================={$end}\n";
 			$return .= "{$red}		ALERT\n";
-			$return .= "{$red}===============================================\n";
+			$return .= "{$red}==============================================={$end}\n";
 			foreach($this->_alerts as $alert){
 				$return .= "{$red} Game:	{$alert->getName()}\n";
 				
@@ -147,9 +148,9 @@ class ConsistencyReport extends BaseObject
 				$countInconsistency = $alert->getGameAchievement() - $alert->getAchievementCount();
 				$scoreInconsistency = $alert->getGameScore() - $alert->getAchievementSum();
 			
-				$return .= "{$red}	Count Inconsistency:	{$countInconsistency}\n";
-				$return .= "{$red}	Score Inconsistency:	{$scoreInconsistency}G\n";
-				$return .= "{$red}-----------------------------------------------\n";
+				$return .= "{$red}	Count Inconsistency:	{$countInconsistency}{$end}\n";
+				$return .= "{$red}	Score Inconsistency:	{$scoreInconsistency}G{$end}\n";
+				$return .= "{$red}-----------------------------------------------{$end}\n";
 			}
 		}
 		return $return;

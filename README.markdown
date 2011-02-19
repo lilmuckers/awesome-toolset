@@ -20,22 +20,21 @@ Usage
         ./cafe XboxLive add <gamertag> <passport> <password>
     * eg:
             ./cafe XboxLive add Lilmuckers username@live.com password
-    
  * Change User Account
         ./cafe XboxLive edit <gamertag> <passport> <password>
     * eg:
             ./cafe XboxLive edit Lilmuckers username@live.co.uk password1
-    
  * Update all accounts score data
         ./cafe XboxLive update
-    
  * Check consistency of user data
         ./cafe XboxLive check <gamertag> 
     * eg:
             ./cafe XboxLive check Lilmuckers
-    
  * Force update of all information on user
         ./cafe XboxLive force <gamertag>
     * eg:
             ./cafe XboxLive force Lilmuckers
-
+ * Delete a given gamertag from the DB with all data
+        ./cafe XboxLive delete <gamertag>
+    * eg:
+            ./cafe XboxLive delete Lilmuckers

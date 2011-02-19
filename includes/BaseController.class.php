@@ -24,4 +24,25 @@ class BaseController extends BaseObject
 		}
 		return $this;
 	}
+	
+	/**
+	 * Boolean return for a confirmation, using STDIN/OUT
+	 * 
+	 * @param string $string
+	 * @return bool
+	 */
+	protected function _confirm($string)
+	{
+		fwrite(STDOUT, $string.': [Yes/No] ');
+		$confirm = strtolower(trim(fgets(STDIN)));
+		if(in_array($confirm, array('yes', 'y'))){
+			return true;
+		} elseif(in_array($confirm, array('no', 'n'))) {
+			return false;
+		}
+		$red = "\033[0;31m";
+		$end = "\033[0m";
+		fwrite(STDOUT, "{$red}[ERROR] Input must be Yes or No{$end}\n\n");
+		return $this->_confirm($string);
+	}
 }
