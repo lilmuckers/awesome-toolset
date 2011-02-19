@@ -5,10 +5,18 @@ class XboxLive extends BaseController
 	/**
 	 * Update all existing gamertag information
 	 * 
+	 * @param string $gamertag
 	 * @return XboxLive
 	 */
-	public function update()
+	public function update($gamertag = null)
 	{
+		if(!is_null($gamertag)){
+			$gamer = new Gamer();
+			$gamer->load($gamertag, 'gamertag');
+			$gamer->update();
+			$gamer->save();
+			return $this;
+		}
 		$gamers = new GamerCollection();
 		$gamers->load();
 		$gamers->walk('update');
