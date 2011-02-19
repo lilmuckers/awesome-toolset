@@ -20,21 +20,13 @@ Usage
     * eg:
             ./cafe XboxLive add Lilmuckers username@live.com password
     * This also supports interactive input by just calling it in the format
-<<<<<<< HEAD
             ./cafe XboxLive add <gamertag>
-=======
-        ./cafe XboxLive add <gamertag>
->>>>>>> 0364fd80b7053e8bb0148fb0d4c3a051779b6cf5
  * Change User Account
         ./cafe XboxLive edit <gamertag> <passport> <password>
     * eg:
             ./cafe XboxLive edit Lilmuckers username@live.co.uk password1
     * This also supports interactive input by just calling it in the format
-<<<<<<< HEAD
             ./cafe XboxLive edit <gamertag>
-=======
-        ./cafe XboxLive edit <gamertag>
->>>>>>> 0364fd80b7053e8bb0148fb0d4c3a051779b6cf5
  * Update all accounts score data
         ./cafe XboxLive update
  * Update score data for a specific account
