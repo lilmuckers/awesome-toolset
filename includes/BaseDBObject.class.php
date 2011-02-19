@@ -26,6 +26,24 @@ abstract class BaseDBObject extends BaseObject
 	protected $_fields = array();
 	
 	/**
+	 * Auto populate fields with associated function on row update
+	 * 
+	 * @var array
+	 */
+	protected $_autoUpdateFields = array(
+		'updated_at'	=> '_dateTime'
+	);
+	
+	/**
+	 * Auto populate fields with associated function on row create
+	 * 
+	 * @var array
+	 */
+	protected $_autoInsertFields = array(
+		'created_at'	=> '_dateTime'
+	);
+	
+	/**
 	 * Initialise the DB data
 	 * 
 	 * @param string $tableName
@@ -110,6 +128,22 @@ abstract class BaseDBObject extends BaseObject
 			}
 		}
 		
+		//run the auto-population on row creation
+		if(!$this->getId()){
+			foreach($this->_autoInsertFields as $field=>$function){
+				if(in_array($field, $fields)){
+					$writeData[$field] = call_user_func(array($this, $function));
+				}
+			}
+		}
+		
+		//run the autopopulation on row update - so everytime the row is saved in other words
+		foreach($this->_autoUpdateFields as $field=>$function){
+			if(in_array($field, $fields)){
+				$writeData[$field] = call_user_func(array($this, $function));
+			}
+		}
+		
 		return $writeData;
 	}
 	
@@ -173,6 +207,46 @@ abstract class BaseDBObject extends BaseObject
 		$this->setData($data);
 		
 		$this->_afterLoad();
+		return $this;
+	}
+	
+	/**
+	 * Delete this object
+	 * 
+	 * @return BaseDBObject
+	 */
+	public function delete()
+	{
+		//check if it's loaded before deleting
+		if($this->getId()){
+			$this->_beforeDelete();
+			
+			DB::delete($this->_tableName, $this->getId(), $this->_idField);
+			
+			$this->_afterDelete();
+		}
+		return $this;
+	}
+	
+	/**
+	 * Before delete we do these actions
+	 * 
+	 * @return BaseDBObject
+	 */
+	protected function _beforeDelete()
+	{
+		return $this;
+	}
+	
+	/**
+	 * After delete we do a cleanup action
+	 * 
+	 * @return BaseDBObject
+	 */
+	protected function _afterDelete()
+	{
+		//unset all the data from the object
+		$this->unsData();
 		return $this;
 	}
 }

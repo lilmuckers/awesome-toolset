@@ -188,6 +188,19 @@ class DB {
 	}
 	
 	/**
+	 * delete one record
+	 * 
+	 * @param string $table
+	 * @param string $id
+	 * @param string $idfield
+	 * @return stdClass
+	 */
+	public static function delete($table, $id, $idField = 'id'){
+		$load = self::query(sprintf('DELETE FROM %s WHERE %s = %s', $table, $idField, self::_escape($id)));
+		return true;
+	}
+	
+	/**
 	 * Insert a new row into the given table
 	 * 
 	 * @param string $table

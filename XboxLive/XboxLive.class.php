@@ -67,7 +67,7 @@ class XboxLive extends BaseController
 			$report = new ConsistencyReport();
 			$report->setGamer($gamer)
 				->calculate();
-			print $report;
+			fwrite(STDOUT, $report);
 		} else {
 			$gamers = new GamerCollection();
 			$gamers->load();
@@ -75,7 +75,7 @@ class XboxLive extends BaseController
 				$report = new ConsistencyReport();
 				$report->setGamer($gamer)
 					->calculate();
-				print $report;
+				fwrite(STDOUT, $report);
 			}
 		}
 	}
@@ -93,6 +93,22 @@ class XboxLive extends BaseController
 		$gamer->setFlag('forced', true);
 		$gamer->update();
 		$gamer->save();
+		return $this;
+	}
+	
+	/**
+	 * Delete a given gamertag
+	 * 
+	 * @param string $gamertag
+	 * @return XboxLive
+	 */
+	public function delete($gamertag)
+	{
+		if($this->_confirm(sprintf("Are you sure you want to delete gamertag '%s'?\nThis will delete all game and achievement data as well.", $gamertag))){
+			$gamer = new Gamer();
+			$gamer->load($gamertag, 'gamertag');
+			$gamer->delete();
+		}
 		return $this;
 	}
 }
