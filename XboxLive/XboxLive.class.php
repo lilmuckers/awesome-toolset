@@ -32,10 +32,21 @@ class XboxLive extends BaseController
 	 * @param string $livePassword
 	 * @return XboxLive
 	 */
-	public function add($gamertag, $liveId, $livePassword)
+	public function add($gamertag, $liveId = null, $livePassword = null)
 	{
 		$gamer = new Gamer();
 		$gamer->setGamertag($gamertag);
+		
+		//confirm the liveID
+		if(is_null($liveId)){
+			$liveId = $this->_input("Please enter your xbox live id: [eg: username@live.co.uk] ");
+		}
+		
+		//get the password
+		if(is_null($livePassword)){
+			$livePassword = $this->_silentInput("Please enter your xbox live password: ");
+		}
+		
 		$gamer->setLoginData($liveId, $livePassword);
 		$gamer->save();
 		$gamer->update()
@@ -51,10 +62,20 @@ class XboxLive extends BaseController
 	 * @param string $livePassword
 	 * @return XboxLive
 	 */
-	public function edit($gamertag, $liveId, $livePassword)
+	public function edit($gamertag, $liveId = null, $livePassword = null)
 	{
 		$gamer = new Gamer();
 		$gamer->load($gamertag, 'gamertag');
+		
+		//confirm the liveID
+		if(is_null($liveId)){
+			$liveId = $this->_input("Please enter your xbox live id: [eg: username@live.co.uk] ");
+		}
+		
+		//get the password
+		if(is_null($livePassword)){
+			$livePassword = $this->_silentInput("Please enter your xbox live password: ");
+		}
 		$gamer->setLoginData($liveId, $livePassword);
 		$gamer->setFlag('updated', true);
 		$gamer->save();
