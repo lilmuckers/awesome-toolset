@@ -44,7 +44,7 @@ abstract class BaseOAuth extends BaseObject
 	 * 
 	 * @return void
 	 */
-	public function _construct()
+	protected function _construct()
 	{
 		$this->resetParams();
 		return parent::_construct();
