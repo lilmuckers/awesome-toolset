@@ -32,9 +32,12 @@ class AchievementCollection extends BaseDBCollection
 			$games->addFilter('id', array('in'=>$gameIds))
 				->setGamer($this->getGamer())
 				->load();
-			foreach($this->_items as $item){
+			foreach($this as $item){
 				$item->setGame($games->getItemByColumn('id', $item->getGameId()));
 			}
+			
+			//store the collection for later use
+			$this->setGames($games);
 		}
 		
 		//give the children their gamer
@@ -46,9 +49,12 @@ class AchievementCollection extends BaseDBCollection
 			$gamers = new GamerCollection();
 			$gamers->addFilter('id', array('in'=>$gamerIds))
 				->load();
-			foreach($this->_items as $item){
+			foreach($this as $item){
 				$item->setGamer($gamers->getItemByColumn('id', $item->getGamerId()));
 			}
+			
+			//store the gamers for later use
+			$this->setGamers($gamers);
 		}
 		return $this;
 	}

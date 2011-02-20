@@ -221,7 +221,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 */
 	public function walk($function, $arguments = array())
 	{
-		foreach($this->_items as $item){
+		foreach($this as $item){
 			call_user_func_array(array($item, $function), $arguments);
 		}
 		return $this;
@@ -235,16 +235,17 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 */
 	public function sumColumn($column)
 	{
-		return array_sum($this->getColumnValues($column));
+		return array_sum($this->getColumnValues($column, false));
 	}
 	
 	/**
 	 * Get all the column values
 	 * 
 	 * @param string $column
+	 * @param bool $unique
 	 * @return array
 	 */
-	public function getColumnValues($column)
+	public function getColumnValues($column, $unique = true)
 	{
 		$return = array();
 		
@@ -254,7 +255,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 				$return[] = $value;
 			}
 		}
-		return $return;
+		return $unique ? array_unique($return) : $return;
 	}
 	
 	
@@ -269,5 +270,18 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	{
 		$this->_limit = array('start'=>$offset, 'length'=>$length);
 		return $this;
+	}
+	
+	/**
+	 * Return just the first item
+	 * 
+	 * @return BaseObject
+	 */
+	public function getFirstItem()
+	{
+		foreach($this->_items as $item){
+			return $item;
+		}
+		return null;
 	}
 }

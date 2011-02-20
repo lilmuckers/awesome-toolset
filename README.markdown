@@ -56,3 +56,19 @@ Xbox Live Module Usage
         ./cafe XboxLive delete <gamertag>
     * eg:  
             ./cafe XboxLive delete Lilmuckers
+ * Add a notification hook
+        ./cafe XboxLive addlocation <gamertag> <type> <identifier> <custom prefix> <custom suffix>
+    * gamertag - The gamertag to add this to
+    * type - There is, at the moment, only one valid notification hook
+       * twitter
+    * identifier - Uniqur identifier for a registered account in the notification system. For twitter this would be the twitter username.
+    * Suffixes and Prefixes are put on the beginning and end of the updates, to include custom hashtags for the twitter calls, for example.
+    * eg:
+            ./cafe XboxLive addlocation Lilmuckers twitter lilmuckers "#xbox" "See the full list on http://bit.ly/myxbox"
+       * This will make Lilmuckers account tweet to the lilmuckers twitter feed, prefixing and suffixing the tweet accordingly.
+ * Fire off the notification hooks
+        ./cafe XboxLive notify <gamertag> <timeframe>
+    * gamertag - optional - if unspecified all registered gamertags will be used.
+    * timestamp - optional - format recognised by the [PHP strtotime function] [strtotime] - if unspecified defaults to the last hour ("-1 hour")
+
+[strtotime]: http://php.net/strtotime/  "PHP strtotime"
