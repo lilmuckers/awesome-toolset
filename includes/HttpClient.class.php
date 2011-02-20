@@ -120,13 +120,14 @@ class HttpClient extends BaseObject
 	}
 	
 	/**
-	 * Set the headers to be used
+	 * Add a header to be used
 	 * 
+	 * @param string
 	 * @return HttpClient
 	 */
-	public function setHeaders($headers = array())
+	public function addHeader($header)
 	{
-		$this->_headers = $headers;
+		$this->_headers[] = $header;
 		return $this;
 	}
 	
