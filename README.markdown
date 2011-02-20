@@ -1,8 +1,8 @@
 XboxLive Scraper
 ================
-Version  2.0 
-by Patrick McKinley
-http://www.patrick-mckinley.com/
+Version  2.0  
+by Patrick McKinley  
+http://www.patrick-mckinley.com/  
 
 Installation
 -----
@@ -13,46 +13,46 @@ Installation
 
 Twitter Module Usage
 -----
- * Install the twitter module
+ * Install the twitter module  
         ./cafe Twitter install
- * Add twitter account
+ * Add twitter account  
         ./cafe Twitter add
- * Post a tweet - the account needs to be added with the above command
+ * Post a tweet - the account needs to be added with the above command  
         ./cafe Twitter tweet <account> <tweet>
-    * eg:
+    * eg:  
             ./cafe Twitter tweet lilmuckers "Posting a tweet"
 
 Xbox Live Module Usage
 -----
- * Install the XboxLive module
+ * Install the XboxLive module  
         ./cafe XboxLive install
- * Add User
+ * Add User  
         ./cafe XboxLive add <gamertag> <passport> <password>
-    * eg:
+    * eg:  
             ./cafe XboxLive add Lilmuckers username@live.com password
-    * This also supports interactive input by just calling it in the format
+    * This also supports interactive input by just calling it in the format  
             ./cafe XboxLive add <gamertag>
- * Change User Account
+ * Change User Account  
         ./cafe XboxLive edit <gamertag> <passport> <password>
-    * eg:
+    * eg:  
             ./cafe XboxLive edit Lilmuckers username@live.co.uk password1
-    * This also supports interactive input by just calling it in the format
+    * This also supports interactive input by just calling it in the format  
             ./cafe XboxLive edit <gamertag>
- * Update all accounts score data
+ * Update all accounts score data  
         ./cafe XboxLive update
- * Update score data for a specific account
+ * Update score data for a specific account  
         ./cafe XboxLive update <gamertag>
-    * eg:
+    * eg:  
             ./cafe XboxLive update Lilmuckers
- * Check consistency of user data
+ * Check consistency of user data  
         ./cafe XboxLive check <gamertag> 
-    * eg:
+    * eg:  
             ./cafe XboxLive check Lilmuckers
- * Force update of all information on user
+ * Force update of all information on user  
         ./cafe XboxLive force <gamertag>
-    * eg:
+    * eg:  
             ./cafe XboxLive force Lilmuckers
- * Delete a given gamertag from the DB with all data
+ * Delete a given gamertag from the DB with all data  
         ./cafe XboxLive delete <gamertag>
-    * eg:
+    * eg:  
             ./cafe XboxLive delete Lilmuckers
