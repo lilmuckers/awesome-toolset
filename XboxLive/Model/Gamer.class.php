@@ -86,7 +86,6 @@ class Gamer extends BaseDBObject
 			if($this->hasData('id')){
 				$games->addFilter('gamertag_id', array('eq'=>$this->getId()));
 				$games->setGamer($this);
-				$games->load();
 			}
 			$this->setGames($games);
 		}
@@ -103,8 +102,7 @@ class Gamer extends BaseDBObject
 		if(!$this->hasAchievements()){
 			$achievements = new AchievementCollection();
 			$achievements->addFilter('gamertag_id', array('eq'=>$this->getId()))
-				->setGamer($this)
-				->load();
+				->setGamer($this);
 			$this->setAchievements($achievements);
 		}
 		return $this->getData('achievements');
@@ -188,5 +186,62 @@ class Gamer extends BaseDBObject
 	{
 		$this->getGames()->walk('delete');
 		return parent::_beforeDelete();
+	}
+	
+	/**
+	 * Get all the notification methods
+	 * 
+	 * @return NotifyCollection
+	 */
+	public function getNotifications()
+	{
+		if(!$this->hasNotifications()){
+			$notifications = new NotifyCollection();
+			if($this->hasData('id')){
+				$notifications->addFilter('gamertag_id', array('eq'=>$this->getId()));
+				$notifications->setGamer($this);
+			}
+			$this->setNotifications($notifications);
+		}
+		return $this->getData('notifications');
+	}
+	
+	/**
+	 * Notify the world through the defined locations of our achievements
+	 * 
+	 * @param string $timescale
+	 * @return Gamer
+	 */
+	public function notify($timescale = "-1 hour")
+	{
+		$since = date("Y-m-d H:i:s", strtotime($timescale));
+		$achievements = $this->getAchievements()
+			->addFilter('acquired', array('gt'=>$since))
+			->load();
+			
+		if($achievements->count() == 1) {
+			//if there's only one achievement - we post that.
+			$template = "I just earned '%s' (%uG) in '%s'. My gamerscore is now %uG";
+			$achievement = $achievements->getFirstItem();
+			
+			$message = sprintf($template, $achievement->getName(), $achievement->getScore(), $achievement->getGame()->getName(), $this->getScore());
+		} elseif($achievements->getGames()->count() == 1) {
+			//if there's more than one achievement, but only one game - we post that
+			$template = "I just earned %u achievements (%uG) in %s. My gamerscore is now %uG";
+			
+			$message = sprintf($template, $achievements->count(), $achievements->sumColumn('score'), $achievements->getFirstItem()->getGame()->getName(), $this->getScore());
+		} elseif($achievements->count() > 1) {
+			//if there's multiple achievements and multiple games, we go a brief overview
+			$template = "I just earned %u achievements (%uG). My gamerscore is now %uG";
+			
+			$message = sprintf($template, $achievements->count(), $achievements->sumColumn('score'), $this->getScore());
+		} else {
+			return $this;
+		}
+		
+		//send all the notifications
+		$this->getNotifications()->walk('send', array($message));
+		
+		return $this;
 	}
 }

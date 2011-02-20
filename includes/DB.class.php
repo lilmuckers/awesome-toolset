@@ -132,6 +132,10 @@ class DB {
 						}
 						array_walk($v, array('DB', '_escape'));
 						$where[] .= $field.' IN (\''.implode("','", $v).'\') ';
+					} elseif ($e == 'gt') {
+						$where[] .= $field.' > \''.self::_escape($v).'\' ';
+					} elseif ($e == 'lt') {
+						$where[] .= $field.' < \''.self::_escape($v).'\' ';
 					}
 				}
 			} else {

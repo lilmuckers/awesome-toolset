@@ -115,7 +115,7 @@ class XboxLive extends BaseController
 	 * @param string $gamertag
 	 * @return XboxLive
 	 */
-	public function force($gamertag = null)
+	public function force($gamertag)
 	{
 		$gamer = new Gamer();
 		$gamer->load($gamertag, 'gamertag');
@@ -138,6 +138,49 @@ class XboxLive extends BaseController
 			$gamer->load($gamertag, 'gamertag');
 			$gamer->delete();
 		}
+		return $this;
+	}
+	
+	/**
+	 * Post notifications to the notification locations
+	 * 
+	 * @param string $gamertag
+	 * @param string $timespan
+	 * @return XboxLive
+	 */
+	public function notify($gamertag = null, $timespan = "-1 hour")
+	{
+		if($gamertag){
+			//load the gamer first
+			$gamer = new Gamer();
+			$gamer->load($gamertag, 'gamertag');
+			$gamer->notify($timespan);
+			return $this;
+		}
+		$gamers = new GamerCollection();
+		$gamers->load();
+		$gamers->walk('notify', array($timespan));
+		return $this;
+	}
+	
+	/**
+	 * Add a notification location to a given gamertag account
+	 * 
+	 * @param string $action
+	 * @param string $gamertag
+	 * @param string $type the notifier type
+	 * @param string $identifier the identifier for the notification type
+	 * @return XboxLive
+	 */
+	public function addlocation($gamertag, $type, $identifier, $prefix = null, $suffix = null)
+	{
+		//load the gamer first
+		$gamer = new Gamer();
+		$gamer->load($gamertag, 'gamertag');
+		$notify = Notify::factory($gamer, $type, $identifier);
+		$notify->setPrefix($prefix);
+		$notify->setSuffix($suffix);
+		$notify->save();
 		return $this;
 	}
 }

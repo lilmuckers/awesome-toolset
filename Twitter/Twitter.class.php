@@ -26,6 +26,8 @@ class Twitter extends BaseController
 		$account->import($accessToken);
 		$account->save();
 		
+		$this->_write("\n\nAdded new twitter user account for {$account->getUsername()}\n", 'green');
+		
 		return $this;
 	}
 	

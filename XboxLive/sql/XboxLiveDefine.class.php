@@ -52,6 +52,14 @@ class XboxLiveDefine extends BaseDBDescribe
 		$achievementTable->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$achievementTable->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		
+		$achievementTable = $this->_addTable('gamer_notify');
+		$achievementTable->addColumn('id', 'int(11) NOT NULL auto_increment');
+		$achievementTable->addColumn('gamertag_id', 'int(11) NOT NULL');
+		$achievementTable->addColumn('type', 'varchar(255) NOT NULL');
+		$achievementTable->addColumn('notify_id', 'varchar(255) NOT NULL');
+		$achievementTable->addColumn('prefix', 'varchar(255)');
+		$achievementTable->addColumn('suffix', 'varchar(255)');
+		
 		return $this;
 	}
 }

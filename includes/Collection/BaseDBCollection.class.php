@@ -10,6 +10,13 @@ abstract class BaseDBCollection extends BaseCollection
 	protected $_itemClass = 'BaseDBObject';
 	
 	/**
+	 * Stores callbacks to get the item class
+	 * 
+	 * @var array
+	 */
+	protected $_itemClassCallback = array();
+	
+	/**
 	 * The fields to select
 	 * 
 	 * @var array
@@ -27,14 +34,18 @@ abstract class BaseDBCollection extends BaseCollection
 	 * Setup the collection object for the DB stuff
 	 * 
 	 * @param string $tableName
-	 * @param string $itemClass
+	 * @param mixed $itemClass
 	 * @param string $idField
 	 * @return void
 	 */
 	protected function _construct($tableName, $itemClass = 'BaseDBObject', $idField = 'id')
 	{
 		$this->_tableName = $tableName;
-		$this->_itemClass = $itemClass;
+		if(is_array($itemClass)){
+			$this->_itemClassCallback = $itemClass;
+		} else {
+			$this->_itemClass = $itemClass;
+		}
 		$this->_idField = $idField;
 		return parent::_construct();
 	}
@@ -51,12 +62,17 @@ abstract class BaseDBCollection extends BaseCollection
 			$data = DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders, $this->_limit);
 			if(true !== $data && false !== $data && count((array)$data) > 0){
 				foreach((array) $data as $row){
-					$object = new $this->_itemClass($row);
+					if(!empty($this->_itemClassCallback)){
+						$class = call_user_func_array($this->_itemClassCallback, array($row));
+					} else {
+						$class = $this->_itemClass;
+					}
+					$object = new $class($row);
 					$this->addItem($object);
 				}
 			}
-			$this->_afterLoad();
 			$this->_setIsLoaded(true);
+			$this->_afterLoad();
 		}
 		return $this;
 	}

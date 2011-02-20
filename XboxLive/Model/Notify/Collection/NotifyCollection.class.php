@@ -1,26 +1,21 @@
 <?php
 
-class GameCollection extends BaseDBCollection
+class NotifyCollection extends BaseDBCollection
 {
 	/**
 	 * Configure the base of this collection
-	 * 
-	 * Additionally; default ordering is applied here
 	 * 
 	 * @return void
 	 */
 	protected function _construct()
 	{
-		$this->setOrder('gamertag_id');
-		$this->setOrder('last_played');
-		$this->setOrder('id', 'DESC');
-		parent::_construct('game', 'Game');
+		parent::_construct('gamer_notify', array('Notify', 'getClass'));
 	}
 	
 	/**
-	 * After collection load, give the games their gamers
+	 * After collection load, give the notify objects their gamers
 	 * 
-	 * @return GameCollection
+	 * @return NotifyCollection
 	 */
 	protected function _afterLoad()
 	{
@@ -32,12 +27,9 @@ class GameCollection extends BaseDBCollection
 			$gamers = new GamerCollection();
 			$gamers->addFilter('id', array('in'=>$gamerIds))
 				->load();
-			foreach($this as $item){
+			foreach($this->_items as $item){
 				$item->setGamer($gamers->getItemByColumn('id', $item->getGamerId()));
 			}
-			
-			//store the gamers for later use
-			$this->setGamers($gamers);
 		}
 		return $this;
 	}
