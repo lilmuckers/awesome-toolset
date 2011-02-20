@@ -93,6 +93,7 @@ class BaseObject
 	 * @return bool
 	 */
 	public function hasData($key){
+		$key = $this->_formatDataKey($key);
 		return array_key_exists($key, $this->_data);
 	}
 	
@@ -102,19 +103,20 @@ class BaseObject
 	 * @param mixed $key
 	 * @return BaseObject
 	 */
-	public function unsData($key = null){
-	
+	public function unsData($key = null)
+	{
 		if(is_null($key)) {
 			//if is null - assume we want to remove EVERYTHING
 			$this->_data = array();
 		} elseif(is_array($key)) {
 			//if it's an array, there's a bunch of stuff we want to unset
 			foreach($key as $k){
-				$this->unsData($key);
+				$k = $this->_formatDataKey($k);
+				$this->unsData($k);
 			}
-		} elseif($this->hasData($key)) {
+		} elseif($this->hasData($this->_formatDataKey($key))) {
 			//default action - inset one bit of data
-			unset($this->_data[$key]);
+			unset($this->_data[$this->_formatDataKey($key)]);
 		}
 		return $this;
 	}
@@ -129,8 +131,8 @@ class BaseObject
 		if(is_null($key)){
 			return $this->_data;
 		}
-		if(isset($this->_data[$key])){
-			return $this->_data[$key];
+		if(isset($this->_data[$this->_formatDataKey($key)])){
+			return $this->_data[$this->_formatDataKey($key)];
 		}
 		return null;
 	}
@@ -148,12 +150,24 @@ class BaseObject
 		}
 		if(is_array($key)){
 			foreach($key as $k=>$v){
+				$k = $this->_formatDataKey($k);
 				$this->setData($k, $v);
 			}
 		} else {
-			$this->_data[$key] = $value;
+			$this->_data[$this->_formatDataKey($key)] = $value;
 		}
 		return $this;
+	}
+	
+	/**
+	 * Format the data array keys
+	 * 
+	 * @param string $key
+	 * @return string
+	 */
+	protected function _formatDataKey($key)
+	{
+		return $key;
 	}
 	
 	/**
