@@ -13,7 +13,16 @@ Installation
  * Run the following command
         ./cafe XboxLive install
 
-Usage
+Twitter Module Usage
+-----
+ * Add twitter account
+        ./cafe Twitter add
+ * Post a tweet - the account needs to be added with the above command
+        ./cafe Twitter tweet <account> <tweet>
+    * eg:
+            ./cafe Twitter tweet lilmuckers "Posting a tweet"
+
+Xbox Live Module Usage
 -----
  * Add User
         ./cafe XboxLive add <gamertag> <passport> <password>
