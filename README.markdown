@@ -10,8 +10,6 @@ Installation
  * Open bootstrap.php in a text editor
     * Put database details into the DB::configure() function
     * Add a random encryption key to the Mcrypt declaration
- * Run the following command
-        ./cafe XboxLive install
 
 Twitter Module Usage
 -----
@@ -26,6 +24,8 @@ Twitter Module Usage
 
 Xbox Live Module Usage
 -----
+ * Install the XboxLive module
+        ./cafe XboxLive install
  * Add User
         ./cafe XboxLive add <gamertag> <passport> <password>
     * eg:
