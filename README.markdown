@@ -15,6 +15,8 @@ Installation
 
 Twitter Module Usage
 -----
+ * Install the twitter module
+        ./cafe Twitter install
  * Add twitter account
         ./cafe Twitter add
  * Post a tweet - the account needs to be added with the above command
