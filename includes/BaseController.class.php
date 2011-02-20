@@ -39,9 +39,7 @@ class BaseController extends BaseObject
 		} elseif(in_array($confirm, array('no', 'n'))) {
 			return false;
 		}
-		$red = "\033[0;31m";
-		$end = "\033[0m";
-		fwrite(STDOUT, "{$red}[ERROR] Input must be Yes or No{$end}\n\n");
+		$this->_write("[ERROR] Input must be Yes or No\n\n", 'red');
 		return $this->_confirm($string);
 	}
 	
@@ -53,7 +51,7 @@ class BaseController extends BaseObject
 	 */
 	protected function _input($string)
 	{
-		fwrite(STDOUT, $string);
+		$this->_write($string);
 		return trim(fgets(STDIN));
 	}
 	
@@ -89,5 +87,17 @@ class BaseController extends BaseObject
 			echo "\n";
 			return $password;
 		}
+	}
+	
+	/**
+	 * Write to stdout
+	 * 
+	 * @param string $string
+	 * @return BaseController
+	 */
+	protected function _write($string, $fg = null, $bg = null)
+	{
+		Cli::write($string, $fg, $bg);
+		return $this;
 	}
 }
