@@ -1,8 +1,8 @@
-XboxLive Scraper
+Patrick's Awesome Toolset
 ================
 Version  2.0  
-by Patrick McKinley  
-http://www.patrick-mckinley.com/  
+by [Patrick McKinley] [homepage]  
+[http://www.patrick-mckinley.com/] [homepage]  
 
 Installation
 -----
@@ -72,3 +72,4 @@ Xbox Live Module Usage
     * timestamp - optional - format recognised by the [PHP strtotime function] [strtotime] - if unspecified defaults to the last hour ("-1 hour")
 
 [strtotime]: http://php.net/strtotime/  "PHP strtotime"
+[homepage]: http://www.patrick-mckinley.com/ "Patrick McKinley - Magento PHP Developer"
