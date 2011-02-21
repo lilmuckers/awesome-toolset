@@ -47,7 +47,12 @@ class Scraper
 	 * @return string
 	 */
 	public function getUrlHtml($url){
-		return $this->htmlToUtf8($this->_browser->get($url));
+		$html = $this->_browser->get($url);
+		$responseCode = $this->_browser->getResponseCode();
+		if($responseCode != 200){
+			throw new ScraperException("Encountered an error scraping live data. Error Code: {$responseCode}", $responseCode);
+		}
+		return $this->htmlToUtf8($html);
 	}
 
 	/**

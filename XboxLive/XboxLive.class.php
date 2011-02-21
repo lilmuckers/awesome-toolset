@@ -10,18 +10,23 @@ class XboxLive extends BaseController
 	 */
 	public function update($gamertag = null)
 	{
-		if(!is_null($gamertag)){
-			$gamer = new Gamer();
-			$gamer->load($gamertag, 'gamertag');
-			$gamer->update();
-			$gamer->save();
+		try{
+			if(!is_null($gamertag)){
+				$gamer = new Gamer();
+				$gamer->load($gamertag, 'gamertag');
+				$gamer->update();
+				$gamer->save();
+				return $this;
+			}
+			$gamers = new GamerCollection();
+			$gamers->load();
+			$gamers->walk('update');
+			$gamers->walk('save');
+			return $this;
+		} catch(ScraperException $e){
+			$this->_write("[ERROR] Encountered a {$e->getCode()} error on Xbox Live\n", 'red');
 			return $this;
 		}
-		$gamers = new GamerCollection();
-		$gamers->load();
-		$gamers->walk('update');
-		$gamers->walk('save');
-		return $this;
 	}
 	
 	/**
