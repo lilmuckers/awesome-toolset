@@ -61,7 +61,7 @@ Xbox Live Module Usage
     * gamertag - The gamertag to add this to
     * type - There is, at the moment, only one valid notification hook
        * twitter
-    * identifier - Uniqur identifier for a registered account in the notification system. For twitter this would be the twitter username.
+    * identifier - Unique identifier for a registered account in the notification system. For twitter this would be the twitter username.
     * Suffixes and Prefixes are put on the beginning and end of the updates, to include custom hashtags for the twitter calls, for example.
     * eg:
             ./cafe XboxLive addlocation Lilmuckers twitter lilmuckers "#xbox" "See the full list on http://bit.ly/myxbox"
