@@ -167,9 +167,11 @@ abstract class BaseOAuth extends BaseObject
 		
 		//build the query
 		$query = $this->_buildQuery($this->_params);
+		$header = $this->_buildHeader($this->_params);
 		
 		//send it to the server
 		$http = new HttpClient($url);
+		$http->addHeader("Authorization: {$header}");
 		$http->setTransport($this->getTransport());
 		
 		//set the verbose options
@@ -205,7 +207,7 @@ abstract class BaseOAuth extends BaseObject
 		uksort($this->_params, 'strcmp');
 		
 		//put it into a query
-		$params	= $this->_buildQuery($this->_params);
+		$params	= $this->_buildQuery($this->_params, true);
 		
 		//Form all the strings to work with
 		$base	= $this->getTransport()."&".$this->_urlencodeRfc3986($this->getRequestUrl())."&".$this->_urlencodeRfc3986($params);
@@ -287,12 +289,32 @@ abstract class BaseOAuth extends BaseObject
 	 * @param array $params
 	 * @return string
 	 */
-	protected function _buildQuery($params)
+	protected function _buildQuery($params, $includeoAuth = false)
 	{
 		$parts = array();
 		foreach($params as $k=>$v){
-			$parts[] = "{$k}={$v}";
+			if($includeoAuth || strpos($k, $this->_paramPrefix) === false){
+				$parts[] = "{$k}={$v}";
+			}
 		}
 		return implode('&', $parts);
+	}
+	
+	/**
+	 * Build the OAuth header
+	 * 
+	 * @param array params
+	 * @return string
+	 */
+	protected function _buildHeader($params)
+	{
+		$parts = array();
+		foreach($params as $k=>$v)
+		{
+			if(strpos($k, $this->_paramPrefix) !== false){
+				$parts[] = sprintf('%s="%s"', $k, $v);
+			}
+		}
+		return "OAuth ".implode(', ', $parts);
 	}
 }

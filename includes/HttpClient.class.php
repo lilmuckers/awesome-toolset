@@ -43,6 +43,13 @@ class HttpClient extends BaseObject
 	 * @var array
 	 */
 	protected $_headers = array();
+	
+	/**
+	 * The user agent to send in the headers
+	 * 
+	 * @var string
+	 */
+	protected $_userAgent = "Patrick's Awesome Toolset";
 
 	/**
 	 * Transport types
@@ -173,7 +180,12 @@ class HttpClient extends BaseObject
 		//add the queries in the appropriate manner
 		switch ($this->_transport) {
 			case self::DELETE:
-				curl_setopt($ch, CURLOPT_URL, $this->_url . '?' . $query);
+				$url = $this->_url;
+				var_dump($query);
+				if($query){
+					$url .= "?".$query;
+				}
+				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, self::DELETE);
 				break;
 			case self::POST:
@@ -186,6 +198,8 @@ class HttpClient extends BaseObject
 				curl_setopt($ch, CURLOPT_URL, $this->_url . '?' . $query);
 				break;
 		}
+		
+		curl_setopt($ch, CURLOPT_USERAGENT, $this->_userAgent);
 		
 		//execute the query and format the response
 		$contents = curl_exec ($ch);
