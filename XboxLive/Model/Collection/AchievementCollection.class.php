@@ -10,7 +10,6 @@ class AchievementCollection extends BaseDBCollection
 	protected function _construct()
 	{
 		$this->setOrder('gamertag_id');
-		$this->setOrder('game_id');
 		$this->setOrder('acquired');
 		$this->setOrder('id', 'ASC');
 		parent::_construct('achievement', 'Achievement');
