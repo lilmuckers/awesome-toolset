@@ -194,7 +194,8 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 */
 	public function getItemByColumn($column, $value)
 	{
-		foreach($this->_items as $item){
+		$this->load();
+		foreach($this as $item){
 			if($item->getData($column) == $value){
 				return $item;
 			}
@@ -209,6 +210,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 */
 	public function count()
 	{
+		$this->load();
 		return count($this->_items);
 	}
 	
@@ -248,7 +250,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	public function getColumnValues($column, $unique = true)
 	{
 		$return = array();
-		
+		$this->load();
 		foreach($this->_items as $item){
 			if($item->hasData($column)){
 				$value = $item->getData($column);
