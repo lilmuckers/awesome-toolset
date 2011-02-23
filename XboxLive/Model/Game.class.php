@@ -82,13 +82,6 @@ class Game extends BaseDBObject
 	 */
 	public function update()
 	{
-		//if this doesn't have an update already, scrape one
-		if(!$this->hasUpdate()){
-			$external = new GameScrape();
-			$external->load($this);
-			$this->setUpdate($external);
-		}
-		
 		//update the object if applicable
 		if($this->_hasUpdated() || $this->getFlag('forced')){
 			$this->setData($this->getUpdate()->getData());
