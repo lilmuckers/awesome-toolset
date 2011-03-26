@@ -56,7 +56,7 @@ class AutoLoader
 		if($filename = $this->classExists($class)){
 			//cache it for future awesome
 			$this->_cacheLoad($class, $filename);
-			include $filename;
+			@include $filename;
 		}
 		return;
 	}

@@ -6,19 +6,32 @@ require_once dirname(__FILE__) . '/simpletest/browser.php';
 class Scraper
 {
 	/**
+	 * Instance of this scraper
+	 * 
 	 * @var Scraper
 	 */
 	protected static $_instance;
 
 	/**
+	 * Simple browser instance
+	 * 
 	 * @var SimpleBrowser
 	 */
 	protected static $_browser;
 
 	/**
+	 * Live Login Details
+	 * 
 	 * @var array
 	 */
 	protected $_xboxLiveLogin = array();
+	
+	/**
+	 * URL to login to live with
+	 * 
+	 * @var string
+	 */
+	protected $_loginUrl = 'https://billing.microsoft.com';
 
 	/**
 	 * Singleton Protected constructor
@@ -110,7 +123,7 @@ class Scraper
 	 * @return string
 	 */
 	public function getXboxPrivateUrlHtml($url){
-		$this->_browser->get($url);
+		$html = $this->_browser->get($this->_loginUrl);
 		$this->_browser->setField('login', $this->_xboxLiveLogin['username']);
 		$this->_browser->setField('passwd', $this->_xboxLiveLogin['password']);
 		$this->_browser->clickSubmitByName('SI');
