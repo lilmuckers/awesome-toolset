@@ -15,11 +15,12 @@ class AchievementScrape extends AbstractScrape
 	/**
 	 * Load all the achievement data for the set game
 	 * 
+	 * @param string $file To load achievements from a file
 	 * @return AchievementScrape
 	 */
-	public function load()
+	public function load($file = null)
 	{
-		$this->_scrapeAchievements();
+		$this->_scrapeAchievements($file);
 		
 		//iterate through games and add the achievements accordingly
 		$currentAchievements = $this->getGame()->getAchievementCollection();
@@ -41,11 +42,19 @@ class AchievementScrape extends AbstractScrape
 	/**
 	 * Pull the actual data
 	 * 
+	 * @param string $file To load achievements from a file
 	 * @return AchievementScrape
 	 */
-	protected function _scrapeAchievements()
+	protected function _scrapeAchievements($file = null)
 	{
-		$achievementScrape = $this->_getProtectedXpath($this->getGame()->getLink());
+		if(is_null($file)){
+			$achievementScrape = $this->_getProtectedXpath($this->getGame()->getLink());
+		} else {
+			$html = file_get_contents($file);
+			$doc = new DOMDocument();
+			@$doc->loadHTML($html);
+			$achievementScrape = new DOMXPath($doc);
+		}
 
 		//scrape all the data
 		$imageScrape		= $achievementScrape->query(self::ACHIEVEMENT_XPATH_IMAGE);

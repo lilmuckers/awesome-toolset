@@ -188,4 +188,23 @@ class XboxLive extends BaseController
 		$notify->save();
 		return $this;
 	}
+	
+	/**
+	 * Parse a html file on the filesystem in lieu of logging into xbox live.
+	 * 
+	 * @param string $game slug of game to be updated
+	 * @param string $file path to file to read
+	 * @return XboxLive
+	 */
+	public function file($game, $file)
+	{
+		//load the game
+		$gameObj = new Game();
+		$gameObj->load($game, 'slug');
+		$gameObj->setFlag('forced', true);
+		$gameObj->update($file);
+		$gameObj->save();
+		
+		return $this;
+	}
 }
