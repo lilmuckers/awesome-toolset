@@ -78,20 +78,23 @@ class Game extends BaseDBObject
 	/**
 	 * Update the game from the scraper - this might not need doing
 	 * 
+	 * @param string $file To load achievements from a file
 	 * @return Game
 	 */
-	public function update()
+	public function update($file = null)
 	{
 		//update the object if applicable
 		if($this->_hasUpdated() || $this->getFlag('forced')){
-			$this->setData($this->getUpdate()->getData());
+			if(is_null($file)){
+				$this->setData($this->getUpdate()->getData());
+			}
 			$this->setFlag('updated', true);
 			
 			//now we worry about the achievements.
 			$achievements = new AchievementScrape();
 			$achievements->setGamer($this->getGamer())
 				->setGame($this)
-				->load();
+				->load($file);
 		}
 		
 		return $this;
