@@ -70,6 +70,10 @@ Xbox Live Module Usage
         ./cafe XboxLive notify <gamertag> <timeframe>
     * gamertag - optional - if unspecified all registered gamertags will be used.
     * timestamp - optional - format recognised by the [PHP strtotime function] [strtotime] - if unspecified defaults to the last hour ("-1 hour")
+ * Load achievements for a game from downloaded HTML file
+        ./cafe XboxLive file <game-slug> <file>
+    * This is very basic - and won't work on multi-gamertag environments.
+    * Built for my own reasons - since MicroSoft made it practically impossible to scrape XboxLive.
 
 [strtotime]: http://php.net/strtotime/  "PHP strtotime"
 [homepage]: http://www.patrick-mckinley.com/ "Patrick McKinley - Magento PHP Developer"
