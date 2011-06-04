@@ -1,10 +1,11 @@
 <?php
+namespace Base;
 
 class DB {
 	/**
 	 * Instance of the DB connection
 	 * 
-	 * @var DB
+	 * @var \Base\DB
 	 */
 	protected static $_db;
 	
@@ -31,9 +32,9 @@ class DB {
 	 * @return void
 	 */
 	protected static function _connect(){
-		self::$_db = new mysqli(self::$_config['host'], self::$_config['user'], self::$_config['password'], self::$_config['db']);
+		self::$_db = new \mysqli(self::$_config['host'], self::$_config['user'], self::$_config['password'], self::$_config['db']);
 		if (self::$_db->connect_error) {
-			throw new Exception('Could not connect to Database : '.self::$_db->connect_error, self::$_db->connect_errno);
+			throw new \Exception('Could not connect to Database : '.self::$_db->connect_error, self::$_db->connect_errno);
 		}
 		self::$_db->query("SET NAMES 'utf8'");
 	}
@@ -50,7 +51,7 @@ class DB {
 		}
 		$result = self::$_db->query($sql);
 		if(false === $result){
-			throw new Exception('silly billy, query error: '.$sql);
+			throw new \Exception('silly billy, query error: '.$sql);
 		}
 		if($result !== true && $result->num_rows > 0){
 			$return = array();

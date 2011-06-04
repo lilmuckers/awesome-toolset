@@ -1,6 +1,7 @@
 <?php
+namespace Base;
 
-class HttpClient extends BaseObject
+class HttpClient extends Object
 {
 	/**
 	 * Hostname
@@ -84,7 +85,7 @@ class HttpClient extends BaseObject
 	/**
 	 * Use Post
 	 * 
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	public function setPost()
 	{
@@ -95,7 +96,7 @@ class HttpClient extends BaseObject
 	/**
 	 * Use Delete
 	 * 
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	public function setDelete()
 	{
@@ -106,7 +107,7 @@ class HttpClient extends BaseObject
 	/**
 	 * Use GET
 	 * 
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	public function setGet()
 	{
@@ -118,7 +119,7 @@ class HttpClient extends BaseObject
 	 * Set something exotic for the transport
 	 * 
 	 * @param string $transport
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	public function setTransport($transport)
 	{
@@ -130,7 +131,7 @@ class HttpClient extends BaseObject
 	 * Add a header to be used
 	 * 
 	 * @param string
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	public function addHeader($header)
 	{
@@ -141,7 +142,7 @@ class HttpClient extends BaseObject
 	/**
 	 * Perform the actual request
 	 * 
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	public function get()
 	{
@@ -214,7 +215,7 @@ class HttpClient extends BaseObject
 				$this->setBody($contents);
 				break;
 			default:
-				throw new HttpClientException("Error connecting to host: {$status}", $status);
+				throw new \Base\Exception\HttpClient("Error connecting to host: {$status}", $status);
 		}
 		
 		return $this;

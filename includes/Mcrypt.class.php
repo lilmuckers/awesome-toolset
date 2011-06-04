@@ -1,6 +1,7 @@
 <?php
+namespace Base;
 
-class Mcrypt extends BaseObject
+class Mcrypt extends Object
 {
 	/**
 	 * Store the encryption key
@@ -13,7 +14,7 @@ class Mcrypt extends BaseObject
 	 * Set the encryption key
 	 * 
 	 * @param string $key
-	 * @return Mcrypt
+	 * @return void
 	 */
 	public static function setKey($key){
 		self::$_key = $key;

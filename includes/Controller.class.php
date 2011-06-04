@@ -1,13 +1,14 @@
 <?php
+namespace Base;
 
-class Controller extends BaseObject
+class Controller extends Object
 {
 	/**
 	 * Runs the command against the correct module
 	 * 
-	 * @return Run
+	 * @return \Base\Controller
 	 */
-	public function run($arguments)
+	public function cli($arguments)
 	{
 		//pull out the first important vars - the first one is the script, we don't care about that.
 		list( , $module, $action) = $arguments;
@@ -16,7 +17,8 @@ class Controller extends BaseObject
 			array_shift($arguments);
 		}
 		
-		$controller = new $module();
+		$class = "\\{$module}\Cli";
+		$controller = new $class();
 		if(!$action){
 			$action = 'run';
 		}

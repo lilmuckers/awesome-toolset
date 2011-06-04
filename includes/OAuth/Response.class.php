@@ -1,6 +1,7 @@
 <?php
+namespace Base\OAuth;
 
-class BaseOAuthResponse extends BaseObject
+class Response extends \Base\Object
 {
 	/**
 	 * Prefix for the data keys

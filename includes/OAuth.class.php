@@ -1,6 +1,7 @@
 <?php
+namespace Base;
 
-abstract class BaseOAuth extends BaseObject
+abstract class OAuth extends Object
 {
 	/**
 	 * Variables for the OAuth urls
@@ -53,7 +54,7 @@ abstract class BaseOAuth extends BaseObject
 	/**
 	 * Get the request Token
 	 * 
-	 * @return BaseOAuthResponse
+	 * @return \Base\OAuth\Response
 	 */
 	public function getRequestToken()
 	{
@@ -72,7 +73,7 @@ abstract class BaseOAuth extends BaseObject
 			//format the response
 			$responseVars = array();
 			parse_str($response, $responseVars);
-			$response = new BaseOAuthResponse($responseVars);
+			$response = new OAuth\Response($responseVars);
 			$this->setRequestToken($response);
 		}
 		
@@ -117,7 +118,7 @@ abstract class BaseOAuth extends BaseObject
 			//format the response
 			$responseVars = array();
 			parse_str($response, $responseVars);
-			$response = new BaseOAuthResponse($responseVars);
+			$response = new OAuth\Response($responseVars);
 			$this->setAccessToken($response);
 		}
 		return $this->getData('access_token');
@@ -128,7 +129,7 @@ abstract class BaseOAuth extends BaseObject
 	 * 
 	 * @param string $url
 	 * @param array $params
-	 * @param BaseObject $accessToken
+	 * @param \Base\Object $accessToken
 	 * @return string
 	 */
 	public function callResource($url, $params, $accessToken)
@@ -158,7 +159,7 @@ abstract class BaseOAuth extends BaseObject
 	/**
 	 * Send the query to the oauth server
 	 * 
-	 * @return HttpClient
+	 * @return \Base\HttpClient
 	 */
 	protected function _send($url)
 	{
@@ -185,9 +186,9 @@ abstract class BaseOAuth extends BaseObject
 		try{
 			$http->get();
 			return $http;
-		} catch(HttpClientException $e) {
+		} catch(\Base\Exception\HttpClient $e) {
 			if($e->getCode() == 401){
-				throw new BaseOAuthException("Access Denied to oAuth Server", 401);
+				throw new \Base\Exception\OAuth("Access Denied to oAuth Server", 401);
 			}
 			throw $e;
 		}
@@ -196,7 +197,7 @@ abstract class BaseOAuth extends BaseObject
 	/**
 	 * Build the signature
 	 * 
-	 * @return BaseOAuth
+	 * @return \Base\OAuth
 	 */
 	protected function _buildSignature()
 	{
@@ -224,7 +225,7 @@ abstract class BaseOAuth extends BaseObject
 	/**
 	 * Reset the parameters
 	 * 
-	 * @return BaseOAuth
+	 * @return \Base\OAuth
 	 */
 	public function resetParams()
 	{
@@ -244,7 +245,7 @@ abstract class BaseOAuth extends BaseObject
 	 * @param string $key
 	 * @param mixed $value
 	 * @param bool $prefix
-	 * @return BaseOAuth
+	 * @return \Base\OAuth
 	 */
 	public function setParam($key, $value, $prefix = true)
 	{

@@ -1,6 +1,7 @@
 <?php
+namespace Base;
 
-abstract class BaseCollection extends BaseObject implements IteratorAggregate, Countable
+abstract class Collection extends Object implements \IteratorAggregate, \Countable
 {
 	/**
 	 * Constants for direction ordering.
@@ -9,7 +10,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	const SORT_ORDER_DESC	= 'DESC';
 	
 	/**
-	 * Array of BaseObject to iterate through
+	 * Array of \Base\Object to iterate through
 	 * 
 	 * @var array
 	 */
@@ -27,7 +28,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * 
 	 * @var string
 	 */
-	protected $_itemClass = 'BaseObject';
+	protected $_itemClass = '\Base\Object';
 	
 	/**
 	 * Order configuration
@@ -69,7 +70,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 *
 	 * @param	string $field
 	 * @param	string $direction
-	 * @return	BaseCollection
+	 * @return	\Base\Collection
 	 */
 	public function setOrder($field, $direction = self::SORT_ORDER_DESC)
 	{
@@ -80,12 +81,12 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Implementation of IteratorAggregate::getIterator()
 	 * 
-	 * @return ArrayIterator
+	 * @return \ArrayIterator
 	 */
 	public function getIterator()
 	{
 		$this->load();
-		return new ArrayIterator($this->_items);
+		return new \ArrayIterator($this->_items);
 	}
 	
 	/**
@@ -93,7 +94,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 *
 	 * @param string $field
 	 * @param string $value
-	 * @return BaseCollection
+	 * @return \Base\Collection
 	 */
 	public function addFilter($field, $value, $type = 'and')
 	{
@@ -121,7 +122,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * Set collection loading status flag
 	 *
 	 * @param bool $flag
-	 * @return BaseCollection
+	 * @return \Base\Collection
 	 */
 	protected function _setIsLoaded($flag = true)
 	{
@@ -132,7 +133,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Load!
 	 * 
-	 * @return BaseCollection
+	 * @return \Base\Collection
 	 */
 	public function load()
 	{
@@ -145,7 +146,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Prepare the object for load
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\Collection
 	 */
 	protected function _beforeLoad()
 	{
@@ -155,7 +156,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Anything that needs doing post-load
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\Collection
 	 */
 	protected function _afterLoad()
 	{
@@ -165,8 +166,8 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Add an item onto the list
 	 * 
-	 * @param BaseObject $object
-	 * @return BaseCollection
+	 * @param \Base\Object $object
+	 * @return \Base\Collection
 	 */
 	public function addItem(BaseObject $object)
 	{
@@ -178,7 +179,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * Get an item by ID
 	 * 
 	 * @param int $id
-	 * @return BaseObject|bool
+	 * @return \Base\Object|bool
 	 */
 	public function getItem($id)
 	{
@@ -190,7 +191,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * 
 	 * @param string $column
 	 * @param mixed $value
-	 * @return BaseObject|bool
+	 * @return \Base\Object|bool
 	 */
 	public function getItemByColumn($column, $value)
 	{
@@ -219,7 +220,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * 
 	 * @param string $function
 	 * @param array $arguments
-	 * @return BaseCollection
+	 * @return \Base\Collection
 	 */
 	public function walk($function, $arguments = array())
 	{
@@ -266,7 +267,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	 * 
 	 * @param int $length
 	 * @param int $offset
-	 * @return BaseCollection
+	 * @return \Base\Collection
 	 */
 	public function setLimit($length, $offset = 0)
 	{
@@ -277,7 +278,7 @@ abstract class BaseCollection extends BaseObject implements IteratorAggregate, C
 	/**
 	 * Return just the first item
 	 * 
-	 * @return BaseObject
+	 * @return \Base\Object
 	 */
 	public function getFirstItem()
 	{

@@ -1,11 +1,12 @@
 <?php
+namespace Twitter\Model;
 
-class TwitterAccount extends BaseDBObject
+class Account extends \Base\DB\Object
 {
 	/**
 	 * Store the twitter connection
 	 * 
-	 * @var TwitterOAuth
+	 * @var \Twitter\Model\OAuth
 	 */
 	protected $_oauthConnection;
 
@@ -22,7 +23,7 @@ class TwitterAccount extends BaseDBObject
 	 * Import from Access Token object
 	 * 
 	 * @param BaseOAuthResponse $accessToken
-	 * @return TwitterAccount
+	 * @return \Twitter\Model\Account
 	 */
 	public function import($accessToken)
 	{
@@ -37,7 +38,7 @@ class TwitterAccount extends BaseDBObject
 	 * Tweet the given string
 	 * 
 	 * @param string $string
-	 * @return TwitterAccount
+	 * @return \Twitter\Model\Account
 	 */
 	public function tweet($string)
 	{
@@ -48,12 +49,12 @@ class TwitterAccount extends BaseDBObject
 	/**
 	 * Get the OAuth connection
 	 * 
-	 * @return TwitterOAuth
+	 * @return \Twitter\Model\OAuth
 	 */
 	protected function _getConnection()
 	{
 		if(!$this->_oauthConnection){
-			$this->_oauthConnection = new TwitterOAuth();
+			$this->_oauthConnection = new OAuth();
 			$this->_oauthConnection->setAccount($this);
 		}
 		return $this->_oauthConnection;

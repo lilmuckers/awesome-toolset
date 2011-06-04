@@ -1,16 +1,24 @@
 <?php
+namespace Twitter;
 
-class Twitter extends BaseController
+class Cli extends \Base\Cli\Controller
 {
+	/**
+	 * Namespace to work in
+	 * 
+	 * @var string
+	 */
+	protected $_moduleNamespace = 'Twitter';
+	
 	/**
 	 * Add a user to the DB
 	 * 
-	 * @return Twitter
+	 * @return \Twitter\Cli
 	 */
 	public function add()
 	{
 		//request a new token
-		$oAuth = new TwitterOAuth();
+		$oAuth = new Model\OAuth();
 		
 		//get the URL to go to
 		$url = $oAuth->getAuthUrl();
@@ -22,7 +30,7 @@ class Twitter extends BaseController
 		
 		//import to the account information
 		$accessToken = $oAuth->getAccessToken();
-		$account = new TwitterAccount();
+		$account = new Model\Account();
 		$account->import($accessToken);
 		$account->save();
 		
@@ -36,21 +44,21 @@ class Twitter extends BaseController
 	 * 
 	 * @param string $account
 	 * @param string $tweet
-	 * @return Twitter
+	 * @return \Twitter\Cli
 	 */
 	public function tweet($account, $tweet)
 	{
 		if(strlen($tweet) > 140){
-			$this->_write("[ERROR] Tweet is too long!\n", 'red');
+			$this->_write("[ERROR] Tweet is too long (".strlen($tweet)." characters)!\n", 'red');
 			return $this;
 		}
 		
-		$twitter = new TwitterAccount();
+		$twitter = new Model\Account();
 		$twitter->load($account, 'username');
 		
 		try{
 			$twitter->tweet($tweet);
-		} catch(BaseOAuthException $e) {
+		} catch(\Base\Exception\OAuth $e) {
 			$this->_write("[ERROR] Access denied for user account. Perhaps the app has been disallowed\n", 'red');
 		}
 		return $this;

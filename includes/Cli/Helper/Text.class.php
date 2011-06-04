@@ -1,6 +1,7 @@
 <?php
+namespace Base\Cli\Helper;
 
-class Cli extends BaseObject
+class Text extends \Base\Object
 {
 	/**
 	 * List of all foreground colours

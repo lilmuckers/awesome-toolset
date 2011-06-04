@@ -1,11 +1,12 @@
 <?php
+namespace Base;
 
 class AutoLoader
 {
 	/**
 	 * Cache of the instance of this class
 	 * 
-	 * @var AutoLoader
+	 * @var \Base\AutoLoader
 	 */
 	static protected $_instance;
 	
@@ -15,6 +16,15 @@ class AutoLoader
 	 * @var array
 	 */
 	protected $_loadedClasses = array();
+	
+	/**
+	 * Define path rewrites
+	 * 
+	 * @var array
+	 */
+	protected $_pathRewrites = array(
+		'Base' => 'includes'
+	);
 	
 	/**
 	 * Various constants to do with autoloading
@@ -35,7 +45,7 @@ class AutoLoader
 	/**
 	 * Singleton Instance Initiation
 	 * 
-	 * @return AutoLoader
+	 * @return \Base\AutoLoader
 	 */
 	static public function instance()
 	{
@@ -56,7 +66,7 @@ class AutoLoader
 		if($filename = $this->classExists($class)){
 			//cache it for future awesome
 			$this->_cacheLoad($class, $filename);
-			@include $filename;
+			include $filename;
 		}
 		return;
 	}
@@ -70,7 +80,13 @@ class AutoLoader
 	public function classExists($class)
 	{
 		if(!$this->_isLoaded($class)){
+			//Namespace to path
+		
 			$classFile = str_replace(' ', DIRECTORY_SEPARATOR, ucwords(str_replace('_', ' ', $class)));
+			$classFile = str_replace('\\', DIRECTORY_SEPARATOR, $classFile);
+			foreach($this->_pathRewrites as $search=>$replace){
+				$classFile = str_replace($search, $replace, $classFile);
+			}
 			
 			//Generate paths in both the Zend and Cafe format
 			$classFileCafe = sprintf(self::PATH_PATTERN, $classFile);
@@ -134,7 +150,7 @@ class AutoLoader
 	 * Add a tree to be included - I know it's inefficient, but it solves my issues
 	 * 
 	 * @param $baseDir
-	 * @return AutoLoader
+	 * @return \Base\AutoLoader
 	 */
 	public function addPaths($baseDir)
 	{

@@ -1,13 +1,14 @@
 <?php
+namespace Base\DB;
 
-abstract class BaseDBCollection extends BaseCollection
+abstract class Collection extends Collection
 {
 	/**
 	 * Default object class for adding new items
 	 * 
 	 * @var string
 	 */
-	protected $_itemClass = 'BaseDBObject';
+	protected $_itemClass = '\Base\DB\Object';
 	
 	/**
 	 * Stores callbacks to get the item class
@@ -38,7 +39,7 @@ abstract class BaseDBCollection extends BaseCollection
 	 * @param string $idField
 	 * @return void
 	 */
-	protected function _construct($tableName, $itemClass = 'BaseDBObject', $idField = 'id')
+	protected function _construct($tableName, $itemClass = '\Base\DB\Object', $idField = 'id')
 	{
 		$this->_tableName = $tableName;
 		if(is_array($itemClass)){
@@ -53,13 +54,13 @@ abstract class BaseDBCollection extends BaseCollection
 	/**
 	 * load the data and push it into the right places
 	 * 
-	 * @return BaseDBCollection
+	 * @return \Base\DB\Collection
 	 */
 	public function load()
 	{
 		if(!$this->isLoaded()){
 			$this->_beforeLoad();
-			$data = DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders, $this->_limit);
+			$data = \Base\DB::select($this->_tableName, $this->_renderWhere(), $this->_select, 'AND', $this->_orders, $this->_limit);
 			if(true !== $data && false !== $data && count((array)$data) > 0){
 				foreach((array) $data as $row){
 					if(!empty($this->_itemClassCallback)){
@@ -81,7 +82,7 @@ abstract class BaseDBCollection extends BaseCollection
 	 * Add a field to select
 	 * 
 	 * @param string $fieldName
-	 * @return BaseDBCollection
+	 * @return \Base\DB\Collection
 	 */
 	public function addSelect($fieldName)
 	{

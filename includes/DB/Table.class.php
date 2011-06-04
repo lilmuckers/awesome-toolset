@@ -1,6 +1,7 @@
 <?php
+namespace Base\DB;
 
-class BaseDBTable extends BaseObject
+class Table extends \Base\Object
 {
 	/**
 	 * The table name
@@ -55,7 +56,7 @@ class BaseDBTable extends BaseObject
 	public function install()
 	{
 		try{
-			$columns = DB::query(sprintf('DESCRIBE %s', $this->_tableName));
+			$columns = \Base\DB::query(sprintf('DESCRIBE %s', $this->_tableName));
 			
 			//now we update the table
 			foreach($this->_column as $column){
@@ -73,7 +74,7 @@ class BaseDBTable extends BaseObject
 			}
 			$query .= implode(',',$queries);
 			$query .= ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-			DB::query($query);
+			\Base\DB::query($query);
 		}
 		
 		$this->_postInstall();
@@ -104,7 +105,7 @@ class BaseDBTable extends BaseObject
 				return $this;
 			}
 		}
-		DB::query("ALTER TABLE {$this->_tableName} ADD COLUMN {$defined['name']} {$defined['definition']}");
+		\Base\DB::query("ALTER TABLE {$this->_tableName} ADD COLUMN {$defined['name']} {$defined['definition']}");
 		return $this;
 	}
 }

@@ -1,11 +1,12 @@
 <?php
+namespace Twitter\Model;
 
-class TwitterOAuth extends BaseOAuth
+class OAuth extends \Base\OAuth
 {
 	/**
 	 * Store the twitter account we'll be using for this session
 	 * 
-	 * @var TwitterAccount
+	 * @var \Twitter\Model\Account
 	 */
 	protected $_account;
 
@@ -34,10 +35,10 @@ class TwitterOAuth extends BaseOAuth
 	/**
 	 * Set the twitter account we're using
 	 * 
-	 * @param TwitterAccount $account
-	 * @return TwitterOAuth
+	 * @param \Twitter\Model\Account $account
+	 * @return \Twitter\Model\TwitterOAuth
 	 */
-	public function setAccount(TwitterAccount $account)
+	public function setAccount(\Twitter\Model\Account $account)
 	{
 		$this->_account = $account;
 		return $this;
@@ -46,7 +47,7 @@ class TwitterOAuth extends BaseOAuth
 	/**
 	 * Get the twitter account we're using
 	 * 
-	 * @return TwitterAccount
+	 * @return \Twitter\Model\Account
 	 */
 	public function getAccount()
 	{

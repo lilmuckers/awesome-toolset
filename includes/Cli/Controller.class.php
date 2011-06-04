@@ -1,24 +1,34 @@
 <?php
+namespace Base\Cli;
 
-class BaseController extends BaseObject
+
+abstract class Controller extends \Base\Object
 {
+	/**
+	 * Namespace to work in
+	 * 
+	 * @var string
+	 */
+	protected $_moduleNamespace;
+
 	/**
 	 * The pattern for the sql definition class
 	 */
-	const DEFINITION_CLASS_PATTERN = '%sDefine';
+	const DEFINITION_CLASS_PATTERN = '\%s\DB\Define';
 	
 	/**
 	 * Check for SQL description and install if extant
 	 * 
-	 * @return BaseController
+	 * @return \Base\Cli\Controller
 	 */
 	public function install()
 	{
+	
 		//create the classname from the parent classname
-		$class = sprintf(self::DEFINITION_CLASS_PATTERN ,get_class($this));
+		$class = sprintf(self::DEFINITION_CLASS_PATTERN ,$this->_moduleNamespace);
 		
 		//check it exists, and run it if it does.
-		if(AutoLoader::Instance()->classExists($class)){
+		if(\Base\AutoLoader::Instance()->classExists($class)){
 			$tableDefine = new $class();
 			$tableDefine->install();
 		}
@@ -93,11 +103,11 @@ class BaseController extends BaseObject
 	 * Write to stdout
 	 * 
 	 * @param string $string
-	 * @return BaseController
+	 * @return \Base\Cli\Controller
 	 */
 	protected function _write($string, $fg = null, $bg = null)
 	{
-		Cli::write($string, $fg, $bg);
+		Helper\Text::write($string, $fg, $bg);
 		return $this;
 	}
 }

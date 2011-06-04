@@ -1,6 +1,7 @@
 <?php
+namespace Twitter\DB;
 
-class TwitterDefine extends BaseDBDescribe
+class Define extends \Base\DB\Describe
 {
 	/**
 	 * Define the DB structure

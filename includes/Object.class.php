@@ -1,6 +1,7 @@
 <?php
+namespace Base;
 
-class BaseObject
+class Object
 {
 	/**
 	 * Stores the internal data
@@ -15,6 +16,13 @@ class BaseObject
 	 * @var array
 	 */
 	protected $_flags = array();
+	
+	/**
+	 * The default exception type to throw
+	 * 
+	 * @var string
+	 */
+	protected $_exceptionClass = '\Base\Exception';
 	
 	/**
 	 * Caches the result of the understoring of camelcase strings
@@ -44,15 +52,15 @@ class BaseObject
 	protected function _construct(){}
 	
 	/**
-	 * Convert stdClass data into an array
+	 * Convert \stdClass data into an array
 	 * 
-	 * @param stdClass $data
+	 * @param \stdClass $data
 	 * @return array
 	 */
-	public function stdClassToArray(stdClass $data){
+	public function stdClassToArray(\stdClass $data){
 		$return = array();
 		foreach($data as $key=>$value){
-			if($value instanceof stdClass){
+			if($value instanceof \stdClass){
 				$return[$key] = $this->stdClassToArray($value);
 			} else {
 				$return[$key] = $value;
@@ -71,17 +79,20 @@ class BaseObject
 	public function __call($method, $args){
 		$underscore = $this->_underscore(substr($method,3));
 		$args = current($args);
-		if(substr($method, 0 , 3) == 'get'){
-			return $this->getData($underscore);
-		}
-		if(substr($method, 0 , 3) == 'set'){
-			return $this->setData($underscore, $args);
-		}
-		if(substr($method, 0 , 3) == 'has'){
-			return $this->hasData($underscore);
-		}
-		if(substr($method, 0 , 3) == 'uns'){
-			return $this->unsData($underscore);
+		
+		switch(substr($method, 0 , 3)){
+			case 'get':
+				return $this->getData($underscore);
+				break;
+			case 'set':
+				return $this->setData($underscore, $args);
+				break;
+			case 'has':
+				return $this->hasData($underscore);
+				break;
+			case 'uns':
+				return $this->unsData($underscore);
+				break;
 		}
 		return null;
 	}
@@ -101,7 +112,7 @@ class BaseObject
 	 * Unset a bit of data from the object
 	 * 
 	 * @param mixed $key
-	 * @return BaseObject
+	 * @return \Base\Object
 	 */
 	public function unsData($key = null)
 	{
@@ -142,10 +153,10 @@ class BaseObject
 	 * 
 	 * @param string $key
 	 * @param mixed $value
-	 * @return BaseObject
+	 * @return \Base\Object
 	 */
 	public function setData($key, $value = null){
-		if($key instanceof stdClass){
+		if($key instanceof \stdClass){
 			$key = $this->stdClassToArray($key);
 		}
 		if(is_array($key)){
@@ -304,11 +315,32 @@ class BaseObject
 	 * Set a flag
 	 * 
 	 * @param string $flag
-	 * @return BaseCollection
+	 * @return \Base\Object
 	 */
 	public function setFlag($flag, $value)
 	{
 		$this->_flags[$flag] = $value;
 		return $this;
+	}
+	
+	/**
+	 * Throw an exception of the desired type
+	 * 
+	 * @param string $message
+	 * @param int $code
+	 * @param Exception $parent
+	 * @param string $class
+	 * @return void
+	 */
+	protected function _error($message, $code = 0, $parent = null, $class = null)
+	{
+		if(is_null($class)){
+			$class = $this->_exceptionClass;
+		}
+		
+		$exception = new $class($message, $code, $parent);
+		$exception->setObject($this);
+		
+		throw $exception;
 	}
 }

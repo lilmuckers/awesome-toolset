@@ -1,12 +1,12 @@
 Patrick's Awesome Toolset
 ================
-Version  2.0  
+Version  3.0  
 by [Patrick McKinley] [homepage]  
 [http://www.patrick-mckinley.com/] [homepage]  
 
 Installation
 -----
- * Put code on PHP5.2 enabled server with Mcrypt
+ * Put code on PHP5.3 enabled server with Mcrypt
  * Open bootstrap.php in a text editor
     * Put database details into the DB::configure() function
     * Add a random encryption key to the Mcrypt declaration

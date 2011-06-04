@@ -1,13 +1,14 @@
 <?php
+namespace Base\DB;
 
-class BaseDBDescribe extends BaseObject
+class Describe extends \Base\Object
 {
 	/**
 	 * Table Class
 	 * 
 	 * @var string
 	 */
-	protected $_tableClass = 'BaseDBTable';
+	protected $_tableClass = '\Base\DB\Table';
 	
 	/**
 	 * Array of tables
@@ -20,7 +21,7 @@ class BaseDBDescribe extends BaseObject
 	 * Create a new table object
 	 * 
 	 * @param string $tableName
-	 * @return BaseDBTable
+	 * @return \Base\DB\Table
 	 */
 	protected function _addTable($tableName)
 	{
@@ -35,7 +36,7 @@ class BaseDBDescribe extends BaseObject
 	/**
 	 * Install the tables
 	 * 
-	 * @return BaseDBDescribe
+	 * @return Base\DB\Describe
 	 */
 	public function install()
 	{

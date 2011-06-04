@@ -1,8 +1,10 @@
 <?php
+namespace Base\DB;
+
 /**
  * Base Model Class Abstract - all DB objects extend this one.
  */
-abstract class BaseDBObject extends BaseObject
+abstract class Object extends \Base\Object
 {
 	/**
 	 * Tablename for all these interactions
@@ -48,7 +50,7 @@ abstract class BaseDBObject extends BaseObject
 	 * 
 	 * @param string $tableName
 	 * @param string $idField
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _construct($tableName, $idField = 'id')
 	{
@@ -60,7 +62,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Runs the save functionality - woohoo!
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	public function save()
 	{
@@ -76,11 +78,11 @@ abstract class BaseDBObject extends BaseObject
 		//is this a valid save call
 		if(!empty($data) && $this->getFlag('save') === true){
 			//do the actual save
-			$id = DB::insertUpdate($this->_tableName, $data, $this->_idField);
+			$id = \Base\DB::insertUpdate($this->_tableName, $data, $this->_idField);
 			
 			//what if something goes awry?
 			if(false === $id){
-				throw new Exception('Could not write to database - unknown error');
+				throw new \Exception('Could not write to database - unknown error');
 			} else {
 				$this->setData($this->_idField, $id);
 			}
@@ -109,7 +111,7 @@ abstract class BaseDBObject extends BaseObject
 	{
 		//get the table field data
 		if(!$this->_fields){
-			$fieldData = DB::query('DESCRIBE '.$this->_tableName);
+			$fieldData = \Base\DB::query('DESCRIBE '.$this->_tableName);
 			foreach($fieldData as $field){
 				$this->_fields[$field->Field] = $field;
 			}
@@ -120,7 +122,7 @@ abstract class BaseDBObject extends BaseObject
 		$writeData = array();
 		foreach($this->getData() as $key=>$value){
 			if(in_array($key, $fields)){
-				if($value instanceof BaseObject){
+				if($value instanceof \Base\Object){
 					$writeData[$key] = $value->_toSql();
 				} else {
 					$writeData[$key] = $value;
@@ -150,7 +152,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Prepare the data for save
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _beforeSave()
 	{
@@ -160,7 +162,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Anything that needs doing post-save
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _afterSave()
 	{
@@ -170,7 +172,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Prepare the object for load
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _beforeLoad()
 	{
@@ -180,7 +182,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Anything that needs doing post-load
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _afterLoad()
 	{
@@ -190,7 +192,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Load data from the database. Woohoo!
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	public function load($id, $field = null)
 	{
@@ -200,9 +202,9 @@ abstract class BaseDBObject extends BaseObject
 		if(is_null($field)) $field = $this->_idField;
 		
 		//load the data
-		$data = DB::load($this->_tableName, $id, $field);
+		$data = \Base\DB::load($this->_tableName, $id, $field);
 		if(!$data){
-			throw new Exception(sprintf("Unable to load by '%s' = '%s'", $field, $id));
+			throw new \Exception(sprintf("Unable to load by '%s' = '%s'", $field, $id));
 		}
 		$this->setData($data);
 		
@@ -213,7 +215,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Delete this object
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	public function delete()
 	{
@@ -221,7 +223,7 @@ abstract class BaseDBObject extends BaseObject
 		if($this->getId()){
 			$this->_beforeDelete();
 			
-			DB::delete($this->_tableName, $this->getId(), $this->_idField);
+			\Base\DB::delete($this->_tableName, $this->getId(), $this->_idField);
 			
 			$this->_afterDelete();
 		}
@@ -231,7 +233,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * Before delete we do these actions
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _beforeDelete()
 	{
@@ -241,7 +243,7 @@ abstract class BaseDBObject extends BaseObject
 	/**
 	 * After delete we do a cleanup action
 	 * 
-	 * @return BaseDBObject
+	 * @return \Base\DB\Object
 	 */
 	protected function _afterDelete()
 	{
