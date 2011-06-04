@@ -1,0 +1,7 @@
+#!/usr/bin/php
+<?php
+
+namespace Base;
+require_once(dirname(__FILE__).'/bootstrap.php');
+$run = new Controller();
+$run->run($argv);
