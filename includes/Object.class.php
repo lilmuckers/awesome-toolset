@@ -94,7 +94,7 @@ class Object
 				return $this->unsData($underscore);
 				break;
 		}
-		return null;
+		return false;
 	}
 	
 	/**
