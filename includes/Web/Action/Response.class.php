@@ -17,7 +17,7 @@ class Response extends \Base\Object
 	 */
 	protected function _construct()
 	{
-		$this->_view = new Action\Response\View();
+		$this->_view = new Response\View();
 		parent::_construct();
 	}
 	
