@@ -9,14 +9,6 @@ class OAuth extends \Base\OAuth
 	 * @var \Twitter\Model\Account
 	 */
 	protected $_account;
-
-	/**
-	 * Variables for the consumer
-	 * 
-	 * @var string
-	 */
-	protected $_consumerKey		= 'OCRYsb16QEjgYICoGGAQBw';
-	protected $_consumerSecret	= 'KolYlc4zuRvFLjMEMocmwMsrFIPAUH9W5rZD2WIlY';
 	
 	/**
 	 * Variables for the OAuth urls
@@ -31,6 +23,18 @@ class OAuth extends \Base\OAuth
 	 * Twitter specific URLs
 	 */
 	const TWITTER_STATUS_URL = 'https://api.twitter.com/1/statuses/update.xml';
+	
+	/**
+	 * Set the consumer variables from the config
+	 * 
+	 * @return void
+	 */
+	protected function _construct()
+	{
+		$this->_consumerKey 	= \Base\Config::path('Twitter/OAuth/key');
+		$this->_consumerSecret 	= \Base\Config::path('Twitter/OAuth/secret');
+		parent::_construct();
+	}
 	
 	/**
 	 * Set the twitter account we're using

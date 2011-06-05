@@ -1,5 +1,5 @@
 <?php
-namespace Twitter;
+namespace Twitter\Controller;
 
 class Cli extends \Base\Cli\Controller
 {

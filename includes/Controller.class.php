@@ -17,7 +17,7 @@ class Controller extends Object
 			array_shift($arguments);
 		}
 		
-		$class = "\\{$module}\Cli";
+		$class = "\\{$module}\Controller\Cli";
 		$controller = new $class();
 		if(!$action){
 			$action = 'run';
@@ -26,5 +26,40 @@ class Controller extends Object
 		call_user_func_array(array($controller, $action), $arguments);
 		
 		return $this;
+	}
+	
+	/**
+	 * Launches the web modules using the supplied path as the command string
+	 * 
+	 * @return \Base\Controller
+	 */
+	public function web()
+	{
+		//we want to start the session first =)
+		session_start();
+		
+		//we want to instantiate the action
+		$action = Web\Action::instance();
+		
+		//get the routing
+		if($route = Web\Action\Router::route($action)){
+			//split up the routing params for use
+			list($controller, $action) = $route;
+			
+			//instantiate the controller
+			$controller = new $controller();
+			
+			//dispatch the action
+			$controller->preDispatch();
+			$controller->$action();
+			
+			//sort out the response
+			$action->getResponse()->output();
+			
+			//clean up the response
+			$controller->postDispatch();
+		}
+		
+		
 	}
 }

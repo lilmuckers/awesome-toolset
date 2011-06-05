@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
-
 namespace Base;
-require_once(dirname(__FILE__).'/bootstrap.php');
+
+require_once(__DIR__.'/includes/bootstrap.php');
 $run = new Controller();
 $run->cli($argv);

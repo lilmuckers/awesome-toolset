@@ -21,6 +21,13 @@ abstract class OAuth extends Object
 	protected $_consumerSecret;
 	
 	/**
+	 * We want to use a non-standard exception
+	 * 
+	 * @var string
+	 */
+	protected $_exceptionClass = '\Base\Exception\OAuth';
+	
+	/**
 	 * OAuth information
 	 * 
 	 * @var string
@@ -188,7 +195,7 @@ abstract class OAuth extends Object
 			return $http;
 		} catch(\Base\Exception\HttpClient $e) {
 			if($e->getCode() == 401){
-				throw new \Base\Exception\OAuth("Access Denied to oAuth Server", 401);
+				$this->_error("Access Denied to oAuth Server", 401, $e);
 			}
 			throw $e;
 		}

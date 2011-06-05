@@ -28,6 +28,13 @@ abstract class Object extends \Base\Object
 	protected $_fields = array();
 	
 	/**
+	 * We want to use a non-standard exception
+	 * 
+	 * @var string
+	 */
+	protected $_exceptionClass = '\Base\Exception\DB';
+	
+	/**
 	 * Auto populate fields with associated function on row update
 	 * 
 	 * @var array
@@ -82,7 +89,7 @@ abstract class Object extends \Base\Object
 			
 			//what if something goes awry?
 			if(false === $id){
-				throw new \Exception('Could not write to database - unknown error');
+				$this->_error('Could not write to database - unknown error');
 			} else {
 				$this->setData($this->_idField, $id);
 			}
@@ -204,7 +211,7 @@ abstract class Object extends \Base\Object
 		//load the data
 		$data = \Base\DB::load($this->_tableName, $id, $field);
 		if(!$data){
-			throw new \Exception(sprintf("Unable to load by '%s' = '%s'", $field, $id));
+			$this->_error(sprintf("Unable to load by '%s' = '%s'", $field, $id));
 		}
 		$this->setData($data);
 		

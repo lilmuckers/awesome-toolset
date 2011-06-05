@@ -34,7 +34,7 @@ class DB {
 	protected static function _connect(){
 		self::$_db = new \mysqli(self::$_config['host'], self::$_config['user'], self::$_config['password'], self::$_config['db']);
 		if (self::$_db->connect_error) {
-			throw new \Exception('Could not connect to Database : '.self::$_db->connect_error, self::$_db->connect_errno);
+			throw new \Base\Exception\DB('Could not connect to Database : '.self::$_db->connect_error, self::$_db->connect_errno);
 		}
 		self::$_db->query("SET NAMES 'utf8'");
 	}
@@ -51,7 +51,7 @@ class DB {
 		}
 		$result = self::$_db->query($sql);
 		if(false === $result){
-			throw new \Exception('silly billy, query error: '.$sql);
+			throw new \Base\Exception\DB('silly billy, query error: '.$sql);
 		}
 		if($result !== true && $result->num_rows > 0){
 			$return = array();

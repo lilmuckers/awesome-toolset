@@ -46,6 +46,13 @@ class HttpClient extends Object
 	protected $_headers = array();
 	
 	/**
+	 * We want to use a non-standard exception
+	 * 
+	 * @var string
+	 */
+	protected $_exceptionClass = '\Base\Exception\HttpClient';
+	
+	/**
 	 * The user agent to send in the headers
 	 * 
 	 * @var string
@@ -215,7 +222,7 @@ class HttpClient extends Object
 				$this->setBody($contents);
 				break;
 			default:
-				throw new \Base\Exception\HttpClient("Error connecting to host: {$status}", $status);
+				$this->_error("Error connecting to host: {$status}", $status);
 		}
 		
 		return $this;
