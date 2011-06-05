@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<layouts>
+
+	<default>
+		<template name="head" class="\Base\Web\View\Page\Head" template="default/page/head.phtml" />
+		
+		<template name="page" class="\Base\Web\View\Page" template="default/page.phtml">
+			
+			<template name="header" class="\Base\Web\View\Template" template="default/page/header.phtml" />
+			<template name="left/sidebar" class="\Base\Web\View\Sidebar" template="default/page/sidebar.phtml" />
+			
+			<template name="content" class="\Base\Web\View\Recursive" />
+			
+			<template name="right/sidebar" class="\Base\Web\View\Sidebar" template="default/page/sidebar.phtml" />
+			<template name="footer" class="\Base\Web\View\Template" template="default/page/footer.phtml" />
+			
+		</template>
+		
+		<template name="foot" class="\Base\Web\View\Page\Foot" template="default/page/foot.phtml" />
+	</default>
+	
+	<ajax>
+		<template name="content" class="\Base\Web\View\Recursive" />
+	</ajax>
+</layouts>

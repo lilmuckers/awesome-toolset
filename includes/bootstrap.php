@@ -7,6 +7,7 @@ require_once('includes/AutoLoader.class.php');
 
 //Register the auto-loader
 $autoLoader = AutoLoader::instance();
+$autoLoader->addPath(getcwd().DIRECTORY_SEPARATOR.'modules');
 $autoLoader->register();
 
 //register the configuration
@@ -24,3 +25,4 @@ Mcrypt::setKey($config->getConfigByPath('Base/MCrypt/key'));
 
 //do the routing setup
 Web\Action\Router::basenameNamespacing();
+Web\Action\Response\View\Layout::instance()->loadFiles();

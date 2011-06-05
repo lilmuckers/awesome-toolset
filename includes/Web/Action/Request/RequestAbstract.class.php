@@ -1,7 +1,7 @@
 <?php
 namespace Base\Web\Action\Request;
 
-abstract class ARequest extends \Base\Object
+abstract class RequestAbstract extends \Base\Web\Action\ActionAbstract
 {
 	/**
 	 * A flag as to if the data needs protected

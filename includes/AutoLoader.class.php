@@ -116,6 +116,7 @@ class AutoLoader
 		foreach ($paths as $path) {
 			$path = rtrim($path, DIRECTORY_SEPARATOR);
 			$fullpath = $path.DIRECTORY_SEPARATOR.$filename;
+			
 			if (file_exists($fullpath)) {
 				return true;
 			}
@@ -147,12 +148,12 @@ class AutoLoader
 	}
 	
 	/**
-	 * Add a tree to be included - I know it's inefficient, but it solves my issues
+	 * Add a path to be included
 	 * 
-	 * @param $baseDir
+	 * @param string $baseDir
 	 * @return \Base\AutoLoader
 	 */
-	public function addPaths($baseDir)
+	public function addPath($baseDir)
 	{
 		$baseDir = rtrim($baseDir, DIRECTORY_SEPARATOR);
 		$paths = explode(PATH_SEPARATOR, get_include_path());
@@ -161,13 +162,6 @@ class AutoLoader
 		if(!in_array($baseDir, $paths)){
 			$paths[] = $baseDir;
 			set_include_path(implode(PATH_SEPARATOR, $paths));
-		}
-		
-		foreach(scandir($baseDir) as $file){
-			$filePath = $baseDir.DIRECTORY_SEPARATOR.$file;
-			if($file != '.' && $file != '..' && is_dir($filePath)){
-				$this->addPaths($filePath);
-			}
 		}
 		
 		return $this;

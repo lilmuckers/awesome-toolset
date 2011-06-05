@@ -189,7 +189,6 @@ class HttpClient extends Object
 		switch ($this->_transport) {
 			case self::DELETE:
 				$url = $this->_url;
-				var_dump($query);
 				if($query){
 					$url .= "?".$query;
 				}

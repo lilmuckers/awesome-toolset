@@ -1,7 +1,7 @@
 <?php
 namespace Base\Web\Action;
 
-class Request extends Request\ARequest
+class Request extends Request\RequestAbstract
 {
 	/**
 	 * We're storing the get var manager object
@@ -73,6 +73,7 @@ class Request extends Request\ARequest
 	protected function _parseRequest($requestPath)
 	{
 		$defaultPath = explode('/', \Base\Config::path('Base/Routing/default'));
+		
 		if(!empty($requestPath)){
 			$requestPath = (array) explode('/', $requestPath);
 			

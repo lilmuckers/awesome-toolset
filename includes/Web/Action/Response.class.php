@@ -1,7 +1,7 @@
 <?php
 namespace Base\Web\Action;
 
-class Response extends \Base\Object
+class Response extends ActionAbstract
 {
 	/**
 	 * The template object for this request
@@ -28,6 +28,13 @@ class Response extends \Base\Object
 	 */
 	public function output()
 	{
-		
+		if($this->getAction()->getRequest()->isAjax())
+		{
+			if($json = $this->getJson()){
+				return json_encode($json);
+			}
+			return $this->_view->render(Response\View::WRAPPER_AJAX);
+		}
+		return $this->_view->render();
 	}
 }

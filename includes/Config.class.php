@@ -40,7 +40,17 @@ class Config extends Object
 	 * @var array
 	 */
 	protected $_ignoreDirs = array(
-		'.','..','.git','.svn', 'web','includes'
+		'.','..','.git','.svn', 'web','includes', 'module','theme'
+	);
+	
+	/**
+	 * Default config files that will be overwritten by later files
+	 * 
+	 * @var array
+	 */
+	protected $_defaultConfigPaths = array(
+		'includes/config/theme.ini',
+		'includes/config/routing.ini'
 	);
 	
 	/**
@@ -52,15 +62,23 @@ class Config extends Object
 	{
 		parent::_construct();
 		
+		//load the default config
+		foreach($this->_defaultConfigPaths as $path){
+			$this->parseFile($path, 'Base');
+		}
+		
 		//go hunting for config files
-		foreach(scandir(getcwd()) as $file){
-			//build the theoretical config file path for a module
-			$configFile = sprintf(self::CONFIG_FILE_PATH, getcwd(), $file);
-			
-			//check if it's a valid directory and if the file is readable
-			if(is_dir($file) && !in_array($file, $this->_ignoreDirs) && is_readable($configFile))
-			{
-				$this->parseFile($configFile, $file);
+		foreach(explode(PATH_SEPARATOR, get_include_path()) as $includePath){
+		
+			foreach(scandir($includePath) as $file){
+				//build the theoretical config file path for a module
+				$configFile = sprintf(self::CONFIG_FILE_PATH, $includePath, $file);
+				
+				//check if it's a valid directory and if the file is readable
+				if(is_dir($includePath.DIRECTORY_SEPARATOR.$file) && !in_array($file, $this->_ignoreDirs) && is_readable($configFile))
+				{
+					$this->parseFile($configFile, $file);
+				}
 			}
 		}
 	}
@@ -105,7 +123,7 @@ class Config extends Object
 	 * @param array $array
 	 * @return mixed
 	 */
-	public function getConfigByPath($path, &$array = null, $parentKey = null)
+	public function getConfigByPath($path = null, &$array = null, $parentKey = null)
 	{
 		//first attempt to load the runtime cache (regex is spendy)
 		if(array_key_exists($path, $this->_xpathCache)){
@@ -135,6 +153,25 @@ class Config extends Object
 		
 		//if all else fails - panic and set fire to the building
 		$this->_error('Invalid config path supplied');
+	}
+	
+	/**
+	 * Return an array of values fitting the pattern * / $section / $var
+	 * 
+	 * @param string $path
+	 * @return array
+	 */
+	public function getAllData($section, $var)
+	{
+		$return = array();
+		
+		foreach($this->getData() as $namespace=>$data)
+		{
+			if(array_key_exists($section, $data) && array_key_exists($var, $data[$section])){
+				$return[$namespace] = $data[$section][$var];
+			}
+		}
+		return $return;
 	}
 	
 	/**

@@ -32,7 +32,9 @@ class Action extends \Base\Object
 	protected function _construct()
 	{
 		$this->_request = new Action\Request();
+		$this->_request->setAction($this);
 		$this->_response = new Action\Response();
+		$this->_response->setAction($this);
 		parent::_construct();
 	}
 	

@@ -44,17 +44,17 @@ class Controller extends Object
 		//get the routing
 		if($route = Web\Action\Router::route($action)){
 			//split up the routing params for use
-			list($controller, $action) = $route;
+			list($controller, $method) = $route;
 			
 			//instantiate the controller
 			$controller = new $controller();
 			
 			//dispatch the action
 			$controller->preDispatch();
-			$controller->$action();
+			$controller->$method();
 			
 			//sort out the response
-			$action->getResponse()->output();
+			print $action->getResponse()->output();
 			
 			//clean up the response
 			$controller->postDispatch();

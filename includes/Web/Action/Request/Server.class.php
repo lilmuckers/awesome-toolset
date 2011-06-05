@@ -1,7 +1,7 @@
 <?php
 namespace Base\Web\Action\Request;
 
-class Server extends ARequest
+class Server extends RequestAbstract
 {
 	/**
 	 * Base variable set to use for this object

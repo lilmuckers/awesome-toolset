@@ -29,6 +29,7 @@ class Router extends \Base\Object
 		$path = $action->getRequest()->getRequestPath();
 		
 		if(!array_key_exists($path[0], self::$_routes)){
+			die('no module found');
 			//it is not found! 404
 			return false;
 		}
@@ -63,13 +64,11 @@ class Router extends \Base\Object
 	public static function basenameNamespacing()
 	{
 		//get all the config
-		$config = \Base\Config::instance()->getData();
+		$config = \Base\Config::instance()->getAllData('Routing','basename');
 		
 		foreach($config as $namespace=>$data)
 		{
-			if(array_key_exists('Routing', $data) && array_key_exists('basename', $data['Routing'])){
-				self::$_routes[$data['Routing']['basename']] = $namespace;
-			}
+			self::$_routes[$data] = $namespace;
 		}
 	}
 }

@@ -11,5 +11,7 @@ class Oauth extends \Base\Web\Controller
 	public function recieveAction()
 	{
 		echo "derp :)";
+		
+		return $this;
 	}
 }

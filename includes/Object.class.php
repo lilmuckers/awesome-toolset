@@ -162,6 +162,13 @@ class Object
 		if(is_array($key)){
 			foreach($key as $k=>$v){
 				$k = $this->_formatDataKey($k);
+				
+				//we want to merge possible arrays
+				if(is_array($v) && is_array($this->getData($k))){
+					$v = array_merge_recursive($this->getData($k), $v);
+				}
+				
+				//now set the data
 				$this->setData($k, $v);
 			}
 		} else {
