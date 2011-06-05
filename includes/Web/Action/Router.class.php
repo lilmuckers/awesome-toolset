@@ -29,7 +29,6 @@ class Router extends \Base\Object
 		$path = $action->getRequest()->getRequestPath();
 		
 		if(!array_key_exists($path[0], self::$_routes)){
-			die('no module found');
 			//it is not found! 404
 			return false;
 		}

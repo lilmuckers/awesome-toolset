@@ -14,14 +14,14 @@ class View extends \Base\Object
 	 * Render the view layer
 	 * 
 	 * @param string $wrapper
-	 * @return string
+	 * @return \Base\Web\Action\Response\View\Layout
 	 */
 	public function render($wrapper = self::WRAPPER_NORMAL)
 	{
 		//we want to merge the layout for this function with the wrapper layout
 		$this->_buildLayout($wrapper, $this->getLayout());
 		
-		return '';
+		return View\Layout::instance();
 	}
 	
 	/**

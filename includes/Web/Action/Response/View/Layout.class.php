@@ -25,6 +25,24 @@ class Layout extends \Base\Object
 	protected $_fallback = 'default';
 	
 	/**
+	 * The merged layout object
+	 * 
+	 * @var Base\Web\Action\Response\View\Layout\Merged
+	 */
+	protected $_merged;
+	
+	/**
+	 * Instantiate the needed child objects
+	 * 
+	 * @return void
+	 */
+	protected function _construct()
+	{
+		parent::_construct();
+		$this->_merged = new Layout\Merged();
+	}
+	
+	/**
 	 * Singleton Instance Initiation
 	 * 
 	 * @return \Base\Web\Action\Response\View\Layout
@@ -53,9 +71,19 @@ class Layout extends \Base\Object
 			$files = array_merge($files, $data);
 		}
 		
-		
-		
-		var_dump($files);
-		
+		//Now we merge all the files together :)
+		foreach($files as $file){
+			$this->_merged->addFile($file);
+		}
+	}
+	
+	/**
+	 * Echo out the final HTML, hooray!
+	 * 
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return $this->_merged->render();
 	}
 }
