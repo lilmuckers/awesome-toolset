@@ -29,14 +29,14 @@ abstract class RequestAbstract extends \Base\Web\Action\ActionAbstract
 	 * @param array $data
 	 * @return \Base\Web\Action\Request\ARequest
 	 */
-	protected function _forceSetData($data)
+	protected function _forceSetData($data, $key = null)
 	{
 		//temporarily unprotect data to allow initial setting
 		$holder = $this->_protectData;
 		$this->_protectData = false;
 		
 		//set the data
-		$this->setData($data);
+		$this->setData($data, $key);
 		
 		//and then we restore protection
 		$this->_protectData = $holder;
@@ -56,7 +56,7 @@ abstract class RequestAbstract extends \Base\Web\Action\ActionAbstract
 		if(!$this->_protectData){
 			return parent::setData($key, $value);
 		}
-		$this->_error("The ${$this->_variable} data is protected", 102);
+		$this->_error("The \$${key} data is protected", 102);
 	}
 	
 	/**

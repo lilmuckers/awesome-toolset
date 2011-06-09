@@ -16,10 +16,10 @@ class View extends \Base\Object
 	 * @param string $wrapper
 	 * @return \Base\Web\Action\Response\View\Layout
 	 */
-	public function render($wrapper = self::WRAPPER_NORMAL)
+	public function render($wrapper = self::WRAPPER_NORMAL, $layouts)
 	{
 		//we want to merge the layout for this function with the wrapper layout
-		$this->_buildLayout($wrapper, $this->getLayout());
+		$this->_buildLayout($wrapper, $layouts);
 		
 		return View\Layout::instance();
 	}
@@ -28,13 +28,19 @@ class View extends \Base\Object
 	 * Build the full layout xml for this page
 	 * 
 	 * @param string $wrapper
-	 * @param string $layoutTag
+	 * @param array $layoutTag
 	 * @return \Base\Web\Action\Response\View
 	 */
-	protected function _buildLayout($wrapper, $layoutTag)
+	protected function _buildLayout($wrapper, $layouts)
 	{
 		$layout = View\Layout::instance();
 		$layout->load($wrapper);
-		$layout->loadInto($layoutTag);
+		foreach((array) $layouts as $layoutTag){
+			$layout->loadInto($layoutTag);
+		}
+		
+		//load up the blocks etc
+		$layout->parseLayout();
+		
 	}
 }

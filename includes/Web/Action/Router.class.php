@@ -45,14 +45,17 @@ class Router extends \Base\Object
 		}
 		
 		//build the action name
-		$action = lcfirst(str_replace(' ','', ucwords(str_replace('_', ' ', strtolower($path[2])))).'Action');
-		if(!in_array($action, get_class_methods($class))){
+		$actionName = lcfirst(str_replace(' ','', ucwords(str_replace('_', ' ', strtolower($path[2])))).'Action');
+		if(!in_array($actionName, get_class_methods($class))){
 			//this isn't a callable action
 			return false;
 		}
 		
+		//Set the route in the request object
+		$action->getRequest()->setRoute($class, $actionName);
+		
 		//build the callback and send it away for processing :)
-		return array($class, $action);
+		return array($class, $actionName);
 	}
 	
 	/**
@@ -60,7 +63,7 @@ class Router extends \Base\Object
 	 * 
 	 * @return void
 	 */
-	public static function basenameNamespacing()
+	public static function loadRoutes()
 	{
 		//get all the config
 		$config = \Base\Config::instance()->getAllData('Routing','basename');

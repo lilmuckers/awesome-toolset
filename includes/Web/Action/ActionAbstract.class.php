@@ -14,7 +14,7 @@ abstract class ActionAbstract extends \Base\Object
 	 * Set the action that is to be used
 	 * 
 	 * @param \Base\Web\Action $action
-	 * @return \Base\Web\Action\AAction
+	 * @return \Base\Web\Action\ActionAbstract
 	 */
 	public function setAction(\Base\Web\Action $action)
 	{

@@ -68,7 +68,7 @@ class Request extends Request\RequestAbstract
 	 * Parse the request query to the appropriate arrays
 	 * 
 	 * @param string $requestString
-	 * @return array
+	 * @return \Base\Web\Action\Request
 	 */
 	protected function _parseRequest($requestPath)
 	{
@@ -180,5 +180,18 @@ class Request extends Request\RequestAbstract
 	public function isAjax()
 	{
 		return !is_null($this->getAjax());
+	}
+	
+	/**
+	 * Set the route into the request object
+	 * 
+	 * @param string $class
+	 * @param string $action
+	 * @return \Base\Web\Action\Request
+	 */
+	public function setRoute($class, $action)
+	{
+		$this->_forceSetData('route', $class.'::'.$action);
+		return $this;
 	}
 }

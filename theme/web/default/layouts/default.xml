@@ -2,21 +2,21 @@
 <layouts>
 
 	<default>
-		<template name="head" class="\Base\Web\View\Page\Head" template="default/page/head.phtml" />
+		<template name="head" class="\Base\Web\View\Page\Head" template="base/page/head.phtml" />
 		
-		<template name="page" class="\Base\Web\View\Page" template="default/page.phtml">
+		<template name="page" class="\Base\Web\View\Page" template="base/page.phtml">
 			
-			<template name="header" class="\Base\Web\View\Template" template="default/page/header.phtml" />
-			<template name="left/sidebar" class="\Base\Web\View\Sidebar" template="default/page/sidebar.phtml" />
+			<template name="header" class="\Base\Web\View\Template" template="base/page/header.phtml" />
+			<template name="left/sidebar" class="\Base\Web\View\Sidebar" template="base/page/sidebar.phtml" />
 			
 			<template name="content" class="\Base\Web\View\Recursive" />
 			
-			<template name="right/sidebar" class="\Base\Web\View\Sidebar" template="default/page/sidebar.phtml" />
-			<template name="footer" class="\Base\Web\View\Template" template="default/page/footer.phtml" />
+			<template name="right/sidebar" class="\Base\Web\View\Sidebar" template="base/page/sidebar.phtml" />
+			<template name="footer" class="\Base\Web\View\Template" template="base/page/footer.phtml" />
 			
 		</template>
 		
-		<template name="foot" class="\Base\Web\View\Page\Foot" template="default/page/foot.phtml" />
+		<template name="foot" class="\Base\Web\View\Page\Foot" template="base/page/foot.phtml" />
 	</default>
 	
 	<ajax>

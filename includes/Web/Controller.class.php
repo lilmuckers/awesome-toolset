@@ -60,6 +60,8 @@ abstract class Controller extends \Base\Object
 	 */
 	protected function _preDispatch()
 	{
+		$this->_action->getResponse()->setDefaultLayout();
+		//we can only do this once we have the action, so we have access to the request object
 		return $this;
 	}
 	

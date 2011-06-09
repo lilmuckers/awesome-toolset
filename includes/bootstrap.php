@@ -24,4 +24,4 @@ DB::configure(
 Mcrypt::setKey($config->getConfigByPath('Base/MCrypt/key'));
 
 //do the routing setup
-Web\Action\Router::basenameNamespacing();
+Web\Action\Router::loadRoutes();
