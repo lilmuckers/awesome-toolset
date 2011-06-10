@@ -138,6 +138,19 @@ class Layout extends \Base\Object
 	}
 	
 	/**
+	 * Load an xml string into the output layout
+	 * 
+	 * @param string $_xml
+	 * @return Base\Web\Action\Response\View\Layout
+	 */
+	public function loadStringInto($_xml)
+	{
+		$xml = simplexml_load_string("<user_defined_layout>$_xml</user_defined_layout>", '\Base\SimpleXML\Element');
+		$this->_output->mergeXml($xml);
+		return $this;
+	}
+	
+	/**
 	 * Get a node from the layout of a particular type
 	 * 
 	 * @param string $nodeName
@@ -160,6 +173,23 @@ class Layout extends \Base\Object
 	public function __toString()
 	{
 		return $this->_view->toHtml();
+	}
+	
+	/**
+	 * Retrieve a block by its reference
+	 * 
+	 * @param string $name
+	 * @return \Base\Web\View\ViewAbstract
+	 */
+	public function getTemplate($name)
+	{
+		//check we actually have that template available
+		if(!array_key_exists($name, $this->_templateReference)){
+			$this->_error("The template referenced by '$name' has not been instantiated");
+		}
+		
+		//now we can return the template that was requested
+		return $this->_templateReference[$name];
 	}
 	
 	/**
@@ -226,9 +256,10 @@ class Layout extends \Base\Object
 			$this->_error("A template block requires both a name and a class at minimum");
 		}
 		
-		//instantiate the template and give it a parent
+		//instantiate the template and give it a parent and a layout
 		$template = new $class($attributes);
 		$template->setParent($parent);
+		$template->setLayout($this);
 		
 		//Congratulations! it's a bouncing baby block!
 		$parent->addChild($name, $template);
@@ -261,13 +292,8 @@ class Layout extends \Base\Object
 			$this->_error('We need a name to reference from');
 		}
 		
-		//check we actually have that template available
-		if(!array_key_exists($name, $this->_templateReference)){
-			$this->_error("The template referenced by '$name' has not been instantiated");
-		}
-		
-		//now we can continue to process the directives
-		$parent = $this->_templateReference[$name];
+		//retrieve the parent and perform the action upon it
+		$parent = $this->getTemplate($name);
 		if($_xml->hasChildren()){
 			foreach($_xml->children() as $key=>$child){
 				$this->_parseNode($child, $parent);

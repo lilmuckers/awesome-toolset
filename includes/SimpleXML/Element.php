@@ -4,6 +4,12 @@ namespace Base\SimpleXML;
 class Element extends \SimpleXMLElement
 {
 	/**
+	 * Formatting constants for the nice output function
+	 */
+	const INDENT_WIDTH	= 4;
+	const LINE_BREAK	= "\n";
+
+	/**
 	 * Simple boolean return text for children
 	 *
 	 * @return boolean
@@ -24,7 +30,7 @@ class Element extends \SimpleXMLElement
 	/**
 	 * Create the xml entities for merging
 	 *
-	 * @param  string
+	 * @param	string
 	 * @return string
 	 */
 	public function xmlEntities($value = null)
@@ -33,8 +39,10 @@ class Element extends \SimpleXMLElement
 			$value = $this;
 		}
 		$value = (string)$value;
-
-		$value = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $value);
+		
+		$search = array('&', '"', "'", '<', '>');
+		$replace = array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;');
+		$value = str_replace($search, $replace, $value);
 
 		return $value;
 	}
@@ -180,50 +188,55 @@ class Element extends \SimpleXMLElement
 		return $targetNode;
 	}
 
-    /**
-     * Makes nicely formatted XML from the node
-     *
-     * @param string $filename
-     * @param int|boolean $level if false
-     * @return string
-     */
-    public function asNiceXml($filename='', $level=0)
-    {
-        if (is_numeric($level)) {
-            $pad = str_pad('', $level*3, ' ', STR_PAD_LEFT);
-            $nl = "\n";
-        } else {
-            $pad = '';
-            $nl = '';
-        }
+	/**
+	 * Makes nicely formatted XML from the node
+	 * 
+	 * @param string $filename
+	 * @param int|boolean $level if false
+	 * @return string
+	 */
+	public function asNiceXml($filename = null, $level = 0)
+	{
+		//first we build the padding for the level in question
+		$indent = str_pad('', $level * self::INDENT_WIDTH, ' ', STR_PAD_LEFT);
+		
+		//start the tag
+		$_xml = sprintf("%s<%s", $indent, $this->getName());
+		
+		//give the tag its attributes
+		if ($attributes = $this->attributes()) {
+			foreach ($attributes as $key=>$value) {
+				//ensure we escape any quotation marks
+				$value = str_replace('"', '\"', (string) $value);
+				$_xml .= sprintf(' %s="%s"', $key, $value);
+			}
+		}
+		
+		//now we iterate through onto the child nodes
+		if ($this->hasChildren()) {
+			//this item has child nodes, we need to render them
+			$_xml .= '>' . self::LINE_BREAK;
+			foreach ($this->children() as $child) {
+				$_xml .= $child->asNiceXml(null, $level + 1);
+			}
+			$_xml .= sprintf("%s</%s>%s", $indent, $this->getName(), self::LINE_BREAK);
+		} else {
+			$value = (string) $this;
+			if (strlen($value) > 0) {
+				//this item has only a text node - render it
+				$value = $this->xmlEntities($value);
+				$_xml .= sprintf("><![CDATA[%s]]></%s>%s", $value, $this->getName(), self::LINE_BREAK);
+			} else {
+				//otherwise, just close the tag
+				$_xml .= sprintf('/>%s', self::LINE_BREAK);
+			}
+		}
+		
+		//if it was asked for, and it is appropriate - output to the given file
+		if ((0 === $level || false === $level) && !is_null($filename)) {
+			file_put_contents($filename, $_xml);
+		}
 
-        $out = $pad.'<'.$this->getName();
-
-        if ($attributes = $this->attributes()) {
-            foreach ($attributes as $key=>$value) {
-                $out .= ' '.$key.'="'.str_replace('"', '\"', (string)$value).'"';
-            }
-        }
-
-        if ($this->hasChildren()) {
-            $out .= '>'.$nl;
-            foreach ($this->children() as $child) {
-                $out .= $child->asNiceXml('', is_numeric($level) ? $level+1 : true);
-            }
-            $out .= $pad.'</'.$this->getName().'>'.$nl;
-        } else {
-            $value = (string)$this;
-            if (strlen($value)) {
-                $out .= '>'.$this->xmlEntities($value).'</'.$this->getName().'>'.$nl;
-            } else {
-                $out .= '/>'.$nl;
-            }
-        }
-
-        if ((0===$level || false===$level) && !empty($filename)) {
-            file_put_contents($filename, $out);
-        }
-
-        return $out;
-    }
+		return $_xml;
+	}
 }
