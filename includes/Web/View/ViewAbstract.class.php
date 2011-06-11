@@ -26,6 +26,13 @@ abstract class ViewAbstract extends \Base\Object
 	protected $_layout;
 	
 	/**
+	 * Sometimes a block needs to handle additional tags
+	 * 
+	 * @var array
+	 */
+	protected $_handleTags = array();
+	
+	/**
 	 * Set the layout object on the template
 	 * 
 	 * @param \Base\Web\Action\Response\View\Layout
@@ -195,5 +202,16 @@ abstract class ViewAbstract extends \Base\Object
 	protected function _afterToHtml()
 	{
 		return $this;
+	}
+	
+	/**
+	 * Check if this block can handle the truth
+	 * 
+	 * @param string $name
+	 * @return bool
+	 */
+	public function canHandle($name)
+	{
+		return in_array($name, $this->_handleTags);
 	}
 }

@@ -15,6 +15,15 @@ class View extends View\Recursive
 	 */
 	const SKIN_TYPE_IMAGE		= 'images';
 	const SKIN_TYPE_JS			= 'js';
+	const SKIN_TYPE_CSS			= 'css';
+	
+	/**
+	 * Config paths to generate the paths
+	 */
+	const CONFIG_SKIN_PATH			= 'Base/Environment/url/skin';
+	const CONFIG_SKIN_SECURE_PATH	= 'Base/Secure/url/skin';
+	const CONFIG_IMAGES_PATH		= 'Base/Environment/url/images';
+	const CONFIG_IMAGES_SECURE_PATH	= 'Base/Secure/url/images';
 	
 	/**
 	 * Array of patterns to find generate the paths we're after

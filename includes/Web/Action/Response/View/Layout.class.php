@@ -228,6 +228,9 @@ class Layout extends \Base\Object
 			case 'action':
 				$this->_parseAction($_xml, $parent);
 				break;
+			default:
+				$this->_handleGeneric($_xml, $parent);
+				break;
 		}
 		
 		return $this;
@@ -348,6 +351,32 @@ class Layout extends \Base\Object
 		
 		//punch a whale - right in the face
 		call_user_func_array($callback, $options);
+		return $this;
+	}
+	
+	/**
+	 * Fallback for unknown blocks
+	 * 
+	 * Checks the parent block if it knows what to do with this tag.
+	 * If it does not it throws an exception
+	 * 
+	 * @param \Base\SimpleXML\Element $_xml
+	 * @param \Base\Web\View\ViewAbstract $parent
+	 * @return \Base\Web\Action\Response\View\Layout
+	 * @throws \Base\Exception\View
+	 */
+	protected function _handleGeneric(\Base\SimpleXML\Element $_xml, $parent)
+	{
+		$name = $_xml->getName();
+		$attributes = current($_xml->attributes());
+		
+		//check if the parent block can handle this tag
+		if(!$parent->canHandle($name)){
+			$this->_error("Unknown layout tag \"$name\"");
+		}
+		
+		//tell the block to handle the truth, hopefully it's proven it can handle it.
+		$parent->handle($name, $attributes);
 		return $this;
 	}
 }

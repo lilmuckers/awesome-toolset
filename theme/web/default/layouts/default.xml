@@ -2,7 +2,18 @@
 <layouts>
 
 	<default>
-		<template name="head" class="\Base\Web\View\Page\Head" template="base/page/head.phtml" />
+		<template name="head" class="\Base\Web\View\Page\Head" template="base/page/head.phtml">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+			<meta name="description" content="" /> 
+			<meta name="author" content="" /> 
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+			
+			<icon type="shortcut icon" location="favicon.ico" />
+			<!-- icon type="apple-touch-icon" location="apple-touch-icon.png" / -->
+			
+			<action method="setTitle" title="Patricks Awesome Toolset" />
+			<action method="addCss" title="screen.css" />
+		</template>
 		
 		<template name="page" class="\Base\Web\View\Page" template="base/page.phtml">
 			
