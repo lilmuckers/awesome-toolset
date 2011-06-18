@@ -13,16 +13,18 @@
 			
 			<action method="setTitle" title="Patricks Awesome Toolset" />
 			<action method="addCss" title="screen.css" />
+			
+			<action method="addJsLib" filename="modernizr-1.7.min.js" />
 		</template>
 		
 		<template name="page" class="\Base\Web\View\Page" template="base/page.phtml">
 			
 			<template name="header" class="\Base\Web\View\Template" template="base/page/header.phtml" />
-			<template name="left/sidebar" class="\Base\Web\View\Sidebar" template="base/page/sidebar.phtml" />
+			<template name="left_sidebar" class="\Base\Web\View\Sidebar" template="base/page/sidebar.phtml" />
 			
 			<template name="content" class="\Base\Web\View\Recursive" />
 			
-			<template name="right/sidebar" class="\Base\Web\View\Sidebar" template="base/page/sidebar.phtml" />
+			<template name="right_sidebar" class="\Base\Web\View\Sidebar" template="base/page/sidebar.phtml" />
 			<template name="footer" class="\Base\Web\View\Template" template="base/page/footer.phtml" />
 			
 		</template>

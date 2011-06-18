@@ -1,14 +1,8 @@
+<?php echo $this->getJsHtml() ?>
+  <!--[if lt IE 7 ]>
+    <script src="js/dd_belatedpng.js"></script>
+    <script>DD_belatedPNG.fix("img, .png_bg");</script>
+  <![endif]--> 
 <?php echo $this->getChildrenHtml() ?>
-<?php
-/**
- * This is a usually a good place to load JS script tags.
- * 
- * This isn't done by default because i think it's cleaner and nicer to do it in the head
- * However if you are desirous of doing so uncomment the line below this text, and remove
- * the equivilent tag in the head.phtml file
- */
-//echo $this->getLayout()->getTemplate('head')->getJsHtml();
-?>
-
 </body>
 </html>

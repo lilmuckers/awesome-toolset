@@ -29,14 +29,14 @@ class Response extends ActionAbstract
 	 * 
 	 * @var string
 	 */
-	protected $_routeRegex = '/^\\\\([a-zA-Z0-9_]+)\\\\Controller\\\\([a-z-A-Z]+)\\\\([a-zA-Z_0-9]+)::([a-zA-Z_0-9]+)Action$/';
+	protected $_routeRegex = '/^\\\\([a-zA-Z0-9_]+)\\\\([a-zA-Z0-9_]+)\\\\Controller\\\\([a-z-A-Z]+)\\\\([a-zA-Z_0-9]+)::([a-zA-Z_0-9]+)Action$/';
 	
 	/**
 	 * The replacement string in question
 	 * 
 	 * @var string
 	 */
-	protected $_routeRegexReplace = '$1_$2_$3-$4';
+	protected $_routeRegexReplace = '$1_$2_$4-$5';
 	
 	/**
 	 * Set up the view layer and so forth
@@ -78,6 +78,7 @@ class Response extends ActionAbstract
 			}
 			return $this->_view->render(Response\View::WRAPPER_AJAX, $this->_layouts);
 		}
+		
 		return $this->_view->render($this->_layoutWrapper, $this->_layouts);
 	}
 	

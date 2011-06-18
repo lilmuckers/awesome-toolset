@@ -18,12 +18,19 @@ class View extends View\Recursive
 	const SKIN_TYPE_CSS			= 'css';
 	
 	/**
+	 * The resource types for the lib
+	 */
+	const LIB_TYPE_JS			= 'lib_js';
+	
+	/**
 	 * Config paths to generate the paths
 	 */
 	const CONFIG_SKIN_PATH			= 'Base/Environment/url/skin';
 	const CONFIG_SKIN_SECURE_PATH	= 'Base/Secure/url/skin';
 	const CONFIG_IMAGES_PATH		= 'Base/Environment/url/images';
 	const CONFIG_IMAGES_SECURE_PATH	= 'Base/Secure/url/images';
+	const CONFIG_LIB_PATH			= 'Base/Environment/url/js_lib';
+	const CONFIG_LIB_SECURE_PATH	= 'Base/Secure/url/js_lib';
 	
 	/**
 	 * Array of patterns to find generate the paths we're after
@@ -34,6 +41,16 @@ class View extends View\Recursive
 		'layout'	=> 'theme/%s/%s/layouts/%s',
 		'template'	=> 'theme/%s/%s/templates/%s',
 		'skin'		=> '%s/skin/%s/%s/%s'
+	);
+	
+	/**
+	 * Array of patterns to find generate the urls we're after
+	 * 
+	 * @var array
+	 */
+	protected static $_fileUrlPatterns = array(
+		'skin'		=> '%s/skin/%s/%s/%s',
+		'lib_js'	=> '%s/js/%s'
 	);
 
 	/**
@@ -96,6 +113,45 @@ class View extends View\Recursive
 	{
 		$theme = \Base\Config::path("Base/Theme/".\Base\Scope::getScope()."/theme");
 		return $theme ? $theme : self::$_fallbackTheme;
+	}
+	
+	/**
+	 * Get the URL of the specified item in the skin dir
+	 * 
+	 * @param string $path
+	 * @param string $type
+	 * @return string
+	 */
+	public static function getSkinUrl($filename, $resourceType = self::SKIN_TYPE_IMAGE)
+	{
+		return self::getFileUrl($filename, self::FILE_TYPE_SKIN, $resourceType);
+	}
+	
+	/**
+	 * Get the URL of the specified item in the skin dir
+	 * 
+	 * @param string $path
+	 * @param string $type
+	 * @return string
+	 */
+	public static function getLibUrl($filename, $type)
+	{
+		$url = \Base\Config::path(self::CONFIG_LIB_PATH);
+		return sprintf(self::$_fileUrlPatterns[$type], $url, $filename);
+	}
+	
+	/**
+	 * Return the path for the given file type and check if it exists
+	 * 
+	 * @param $filename
+	 * @param $pathType
+	 * @return string
+	 * @throws \Base\Exception\View
+	 */
+	public static function getFileUrl($filename, $pathType, $additional)
+	{
+		$url = \Base\Config::path(self::CONFIG_SKIN_PATH);
+		return sprintf(self::$_fileUrlPatterns[$pathType], $url, self::_getTheme(), $additional, $filename);
 	}
 	
 	/**

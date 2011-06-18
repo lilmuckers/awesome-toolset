@@ -1,2 +1,16 @@
-<span><?php echo $this->getName() ?></span>
-<?php echo $this->getChildrenHtml() ?>
+
+<div id="container">
+	<header>
+		<?php echo $this->getChildHtml('header') ?>
+	</header>
+	<?php echo $this->getChildHtml('left_sidebar') ?>
+	
+	<section id="content">
+		<?php echo $this->getChildHtml('content'); ?>
+	</section>
+	
+	<?php echo $this->getChildHtml('right_sidebar') ?>
+	<footer>
+		<?php echo $this->getChildHtml('footer') ?>
+	</footer>
+</div>

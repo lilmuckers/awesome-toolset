@@ -40,7 +40,7 @@ class Config extends Object
 	 * @var array
 	 */
 	protected $_ignoreDirs = array(
-		'.','..','.git','.svn', 'web','includes', 'module','theme'
+		'.','..','.git','.svn', 'web','includes', 'modules','theme'
 	);
 	
 	/**
@@ -69,15 +69,30 @@ class Config extends Object
 		
 		//go hunting for config files
 		foreach(explode(PATH_SEPARATOR, get_include_path()) as $includePath){
-		
-			foreach(scandir($includePath) as $file){
-				//build the theoretical config file path for a module
-				$configFile = sprintf(self::CONFIG_FILE_PATH, $includePath, $file);
-				
-				//check if it's a valid directory and if the file is readable
-				if(is_dir($includePath.DIRECTORY_SEPARATOR.$file) && !in_array($file, $this->_ignoreDirs) && is_readable($configFile))
-				{
-					$this->parseFile($configFile, $file);
+			$this->_findConfigFiles($includePath);
+		}
+	}
+	
+	/**
+	 * Recursively search for a module configuration file
+	 * 
+	 * @param string $directory
+	 * @param string $ns
+	 * @return \Base\Config
+	 */
+	protected function _findConfigFiles($directory, $ns = null)
+	{
+		foreach(scandir($directory) as $file){
+			//build the theoretical config file path for a module
+			$configFile = sprintf(self::CONFIG_FILE_PATH, $directory, $file);
+			
+			//check if it's a valid directory and if the file is readable
+			if(is_dir($directory.DIRECTORY_SEPARATOR.$file) && !in_array($file, $this->_ignoreDirs))
+			{
+				if(is_readable($configFile)) {
+					$this->parseFile($configFile, $ns.$file);
+				} else {
+					$this->_findConfigFiles($directory.DIRECTORY_SEPARATOR.$file, $ns.$file.'\\');
 				}
 			}
 		}

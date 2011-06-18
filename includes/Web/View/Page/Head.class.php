@@ -1,7 +1,7 @@
 <?php
 namespace Base\Web\View\Page;
 
-class Head extends \Base\Web\View\Template
+class Head extends PageAbstract
 {
 	/**
 	 * Link HTML
@@ -19,57 +19,12 @@ class Head extends \Base\Web\View\Template
 	);
 	
 	/**
-	 * The arrays of JS to process
-	 * 
-	 * @var array
-	 */
-	protected $_mainJs		= array();
-	protected $_behaviourJs	= array();
-	protected $_libJs		= array();
-	
-	/**
 	 * The arrays of CSS to process
 	 * 
 	 * @var array
 	 */
 	protected $_mainCss		= array();
-
-	/**
-	 * Add a javascript file to the page
-	 * 
-	 * @param string $file
-	 * @return \Base\Web\View\Page\Head
-	 */
-	public function addJs($filename)
-	{
-		$this->_mainJs[] = \Base\Web\View::getSkinFilePath($filename, \Base\Web\View::SKIN_TYPE_JS);
-		return $this;
-	}
-	
-	/**
-	 * Add a javascript behaviours file to the page
-	 * 
-	 * @param string $file
-	 * @return \Base\Web\View\Page\Head
-	 */
-	public function addJsBehaviour($filename)
-	{
-		$this->_behaviourJs[] = \Base\Web\View::getSkinFilePath($filename, \Base\Web\View::SKIN_TYPE_JS);
-		return $this;
-	}
-	
-	/**
-	 * Add a javascript static library
-	 * 
-	 * @param string $file
-	 * @return \Base\Web\View\Page\Head
-	 */
-	public function addJsLib($filename)
-	{
-		$this->_libJs[] = \Base\Web\View::getSkinFilePath($filename, \Base\Web\View::LIB_TYPE_JS);
-		return $this;
-	}
-	
+		
 	/**
 	 * Setup a meta tag from constituent parts
 	 * 
@@ -98,7 +53,7 @@ class Head extends \Base\Web\View\Template
 			$attributes = array('type'=>'shortcut icon', 'location'=>$attributes);
 		}
 		
-		$this->_icon[$attributes['type']][] = '/'.\Base\Web\View::getSkinFilePath($attributes['location'], \Base\Web\View::SKIN_TYPE_IMAGE);
+		$this->_icon[$attributes['type']][] = \Base\Web\View::getSkinUrl($attributes['location'], \Base\Web\View::SKIN_TYPE_IMAGE);
 		return $this;
 	}
 	
@@ -135,7 +90,7 @@ class Head extends \Base\Web\View\Template
 	 */
 	public function addCss($filename, $interface = 'screen')
 	{
-		$this->_mainCss[$interface][] = '/'.\Base\Web\View::getSkinFilePath($filename, \Base\Web\View::SKIN_TYPE_CSS);
+		$this->_mainCss[$interface][] = \Base\Web\View::getSkinUrl($filename, \Base\Web\View::SKIN_TYPE_CSS);
 		return $this;
 	}
 	

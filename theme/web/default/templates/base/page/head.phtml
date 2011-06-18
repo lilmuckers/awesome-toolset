@@ -5,12 +5,14 @@
 <!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]--> 
 <head>
   <?php echo $this->getChildrenHtml() ?>
+  
   <title><?php echo $this->getTitle() ?></title>
+  
   <?php echo $this->getIconsHtml() ?>
+  
   <?php echo $this->getCssHtml() ?>
   
-  <link rel="stylesheet" href="css/style.css?v=2"> 
-  <script src="js/libs/modernizr-1.7.min.js"></script> 
- 
+  <?php echo $this->getJsHtml() ?>
+  
 </head>
 <body>

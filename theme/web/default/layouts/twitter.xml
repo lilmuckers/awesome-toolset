@@ -2,16 +2,16 @@
 <layouts>
 
 	<default>
-		<reference name="head">
+		<reference name="foot">
 			<action method="addJs" value="twitter/button.js"/>
 			<action method="addJsBehaviour" value="twitter/behaviour.js"/>
 		</reference>
 	</default>
 	
-	<twitter_web_oauth-recieve>
+	<awesome_twitter_oauth-recieve>
 		<reference name="content">
-			<template name="twitter_button" class="\Twitter\View\Button" template="twitter/button.phtml" />
+			<template name="twitter_button" class="\Awesome\Twitter\View\Button" template="twitter/button.phtml" />
 		</reference>
-	</twitter_web_oauth-recieve>
+	</awesome_twitter_oauth-recieve>
 	
 </layouts>
