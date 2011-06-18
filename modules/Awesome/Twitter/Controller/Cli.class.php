@@ -1,5 +1,5 @@
 <?php
-namespace Awesine\Twitter\Controller;
+namespace Awesome\Twitter\Controller;
 
 class Cli extends \Base\Cli\Controller
 {

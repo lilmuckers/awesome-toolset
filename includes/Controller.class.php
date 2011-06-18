@@ -11,13 +11,13 @@ class Controller extends Object
 	public function cli($arguments)
 	{
 		//pull out the first important vars - the first one is the script, we don't care about that.
-		list( , $module, $action) = $arguments;
+		list( , $command, $action) = $arguments;
 		//drop off the pointless stuff from the arguments array
 		for($i=0;$i<3;$i++){
 			array_shift($arguments);
 		}
 		
-		$class = "\\{$module}\Controller\Cli";
+		$class = \Base\Cli\Router::route($command);
 		$controller = new $class();
 		if(!$action){
 			$action = 'run';
