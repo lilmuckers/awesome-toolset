@@ -61,7 +61,7 @@ class Request extends Request\RequestAbstract
 		$this->_server = new Request\Server();
 		
 		//parse the request
-		$this->_parseRequest($this->getGet('q'));
+		$this->_parseRequest($this->getServer('REDIRECT_URL'));
 	}
 	
 	/**
@@ -72,7 +72,8 @@ class Request extends Request\RequestAbstract
 	 */
 	protected function _parseRequest($requestPath)
 	{
-		$defaultPath = explode('/', \Base\Config::path('Base/Routing/default'));
+		$defaultPath = explode('/', trim(\Base\Config::path('Base/Routing/default'),'/'));
+		$requestPath = trim($requestPath,'/');
 		
 		if(!empty($requestPath)){
 			$requestPath = (array) explode('/', $requestPath);

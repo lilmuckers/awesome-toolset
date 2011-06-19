@@ -50,7 +50,8 @@ class Config extends Object
 	 */
 	protected $_defaultConfigPaths = array(
 		'includes/config/theme.ini',
-		'includes/config/routing.ini'
+		'includes/config/routing.ini',
+		'includes/config/helpers.ini'
 	);
 	
 	/**
@@ -179,15 +180,18 @@ class Config extends Object
 	 * Return an array of values fitting the pattern * / $section / $var
 	 * 
 	 * @param string $path
+	 * @param string $var
 	 * @return array
 	 */
-	public function getAllData($section, $var)
+	public function getAllData($section, $var = null)
 	{
 		$return = array();
 		
 		foreach($this->getData() as $namespace=>$data)
 		{
-			if(array_key_exists($section, $data) && array_key_exists($var, $data[$section])){
+			if(is_null($var) && array_key_exists($section, $data)){
+				$return[$namespace] = $data[$section];
+			} elseif(array_key_exists($section, $data) && array_key_exists($var, $data[$section])){
 				$return[$namespace] = $data[$section][$var];
 			}
 		}

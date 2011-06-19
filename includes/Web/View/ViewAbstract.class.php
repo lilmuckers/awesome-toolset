@@ -214,4 +214,16 @@ abstract class ViewAbstract extends \Base\Object
 	{
 		return in_array($name, $this->_handleTags);
 	}
+	
+	/**
+	 * Get the full URL for the given routing path
+	 * 
+	 * @param string $path
+	 * @param array $options
+	 * @return string
+	 */
+	public function getUrl($path, $options = array())
+	{
+		return \Base\Helper::get('web/url')->getUrl($path, $options);
+	}
 }

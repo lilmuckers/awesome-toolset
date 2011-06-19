@@ -30,6 +30,10 @@ class Response extends \Base\Object
 	 */
 	public function __toString()
 	{
-		return http_build_query(array('oauth_token'=>$this->getToken()));
+		$data = array('oauth_token'=>$this->getToken());
+		if($callback = $this->getOauthCallback()){
+			$data['oauth_callback'] = $callback;
+		}
+		return http_build_query($data);
 	}
 }

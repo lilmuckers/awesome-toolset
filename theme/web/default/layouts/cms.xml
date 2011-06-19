@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<layouts>
+
+	<awesome_cms_index-index>
+		<reference name="content">
+			<template name="main_menu" class="\Base\Web\View\Template" template="cms/index.phtml" />
+		</reference>
+	</awesome_cms_index-index>
+
+</layouts>

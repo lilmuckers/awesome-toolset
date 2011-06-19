@@ -60,6 +60,6 @@ class Controller extends Object
 			$controller->postDispatch();
 		}
 		
-		
+		return $this;
 	}
 }

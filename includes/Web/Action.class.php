@@ -80,4 +80,19 @@ class Action extends \Base\Object
 	{
 		return $this->_response->getView();
 	}
+	
+	/**
+	 * Redirect toa given URL
+	 * 
+	 * @param string $url
+	 * @return \Base\Web\Action
+	 */
+	public function redirect($url)
+	{
+		if(strtolower(substr($url, 0, 4)) != 'http'){
+			$url = \Base\Helper::get('web/url')->get($url);
+		}
+		$this->_response->redirect($url);
+		return $this;
+	}
 }

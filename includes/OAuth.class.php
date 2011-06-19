@@ -63,9 +63,9 @@ abstract class OAuth extends Object
 	 * 
 	 * @return \Base\OAuth\Response
 	 */
-	public function getRequestToken()
+	public function getRequestToken($generate = true)
 	{
-		if(!$this->hasRequestToken()){
+		if(!$this->hasRequestToken() && $generate){
 			//reset all the parameters
 			$this->resetParams();
 			
@@ -82,6 +82,8 @@ abstract class OAuth extends Object
 			parse_str($response, $responseVars);
 			$response = new OAuth\Response($responseVars);
 			$this->setRequestToken($response);
+		} else if(!$this->hasRequestToken() && !$generate) {
+			return false;
 		}
 		
 		//send the query
@@ -93,10 +95,27 @@ abstract class OAuth extends Object
 	 * 
 	 * @return string
 	 */
-	public function getAuthUrl()
+	public function getAuthUrl($callback = false)
 	{
 		$tokenData = $this->getRequestToken();
-		return rtrim($this->_authoriseUrl,'/').'?'.$tokenData;
+		$url = rtrim($this->_authoriseUrl,'/').'?'.$tokenData;
+		if($callback){
+			$url .= "&oauth_callback=".$this->_urlencodeRfc3986($callback);
+		}
+		return $url;
+	}
+	
+	/**
+	 * Import the response from a web callback
+	 * 
+	 * @param array $data
+	 * @return \Base\Oauth
+	 */
+	public function importWebResponse($data)
+	{
+		$response = new OAuth\Response($data);
+		$this->setRequestToken($response);
+		return $this;
 	}
 	
 	/**
@@ -112,7 +131,14 @@ abstract class OAuth extends Object
 			$this->resetParams();
 			
 			//set the returned token
-			$this->setParam('token', $this->getRequestToken()->getToken());
+			$token = $this->getRequestToken()->getToken();
+			$this->setParam('token', $token);
+			
+			//set the verifier if we have it
+			$verifier = $this->getRequestToken()->getVerifier();
+			if($verifier){
+				$this->setParam('verifier', $verifier);
+			}
 			
 			//build the signiture
 			$this->setSecret($this->getRequestToken()->getTokenSecret());
@@ -186,7 +212,6 @@ abstract class OAuth extends Object
 		if($this->getFlag('verbose')){
 			$http->setFlag('verbose',true);
 		}
-		
 		$http->setQuery($query);
 		
 		//a bit of error checking

@@ -23,6 +23,9 @@ DB::configure(
 );
 Mcrypt::setKey($config->getConfigByPath('Base/MCrypt/key'));
 
+//setup the helpers
+Helper::loadHelpers();
+
 //do the routing setup
 Web\Action\Router::loadRoutes();
 

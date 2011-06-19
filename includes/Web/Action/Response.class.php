@@ -123,4 +123,10 @@ class Response extends ActionAbstract
 		}
 		return $this;
 	}
+	
+	public function redirect($url, $code = 302)
+	{
+		header("Location: $url");
+		return $this;
+	}
 }
