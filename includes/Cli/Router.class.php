@@ -32,9 +32,15 @@ class Router extends \Base\Object
 			return false;
 		}
 		
+		$namespace = '';
+		if($prefix = \Base\Config::path(self::$_routes[$command].'/_routerNamespace')){
+			$namespace .= $prefix.'\\';
+		}
+		$namespace .= self::$_routes[$command];
+		
 		//build the controller classname
 		$class = sprintf(self::CONTROLLER_CLASSNAME,
-			self::$_routes[$command]
+			$namespace
 		);
 		
 		if(!class_exists($class)){

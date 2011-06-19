@@ -126,7 +126,12 @@ class Config extends Object
 		}
 		
 		//parse the data
-		$data = array($namespace => parse_ini_file($path, true));
+		$namespace = explode('\\', $namespace);
+		$moduleNamespace = count($namespace) == 2 ? $namespace[1] : $namespace[0];
+		
+		$data = array($moduleNamespace => parse_ini_file($path, true));
+		
+		$data[$moduleNamespace]['_routerNamespace'] = count($namespace) == 2 ? $namespace[0] : null;
 		$this->setData($data);
 		return $this;
 	}

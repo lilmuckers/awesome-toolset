@@ -18,7 +18,7 @@ class Cli extends \Base\Cli\Controller
 	public function add()
 	{
 		//request a new token
-		$oAuth = new Model\OAuth();
+		$oAuth = new \Awesome\Twitter\Model\OAuth();
 		
 		//get the URL to go to
 		$url = $oAuth->getAuthUrl();
@@ -30,7 +30,7 @@ class Cli extends \Base\Cli\Controller
 		
 		//import to the account information
 		$accessToken = $oAuth->getAccessToken();
-		$account = new Model\Account();
+		$account = new \Awesome\Twitter\Model\Account();
 		$account->import($accessToken);
 		$account->save();
 		
@@ -53,7 +53,7 @@ class Cli extends \Base\Cli\Controller
 			return $this;
 		}
 		
-		$twitter = new Model\Account();
+		$twitter = new \Awesome\Twitter\Model\Account();
 		$twitter->load($account, 'username');
 		
 		try{
