@@ -83,20 +83,23 @@ class Config extends Object
 	 */
 	protected function _findConfigFiles($directory, $ns = null)
 	{
-		foreach(scandir($directory) as $file){
-			//build the theoretical config file path for a module
-			$configFile = sprintf(self::CONFIG_FILE_PATH, $directory, $file);
-			
-			//check if it's a valid directory and if the file is readable
-			if(is_dir($directory.DIRECTORY_SEPARATOR.$file) && !in_array($file, $this->_ignoreDirs))
-			{
-				if(is_readable($configFile)) {
-					$this->parseFile($configFile, $ns.$file);
-				} else {
-					$this->_findConfigFiles($directory.DIRECTORY_SEPARATOR.$file, $ns.$file.'\\');
+		if(is_dir($directory)){
+			foreach(scandir($directory) as $file){
+				//build the theoretical config file path for a module
+				$configFile = sprintf(self::CONFIG_FILE_PATH, $directory, $file);
+				
+				//check if it's a valid directory and if the file is readable
+				if(is_dir($directory.DIRECTORY_SEPARATOR.$file) && !in_array($file, $this->_ignoreDirs))
+				{
+					if(is_readable($configFile)) {
+						$this->parseFile($configFile, $ns.$file);
+					} else {
+						$this->_findConfigFiles($directory.DIRECTORY_SEPARATOR.$file, $ns.$file.'\\');
+					}
 				}
 			}
 		}
+		return $this;
 	}
 	
 	/**

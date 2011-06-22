@@ -202,7 +202,12 @@ class HttpClient extends Object
 				break;
 			case self::GET:
 			default:
-				curl_setopt($ch, CURLOPT_URL, $this->_url . '?' . $query);
+				if(strpos($this->_url, '?') < 0){
+					$query = '?'.$query;
+				} else {
+					$query = '&'.$query;
+				}
+				curl_setopt($ch, CURLOPT_URL, $this->_url . $query);
 				break;
 		}
 		

@@ -124,6 +124,13 @@ class Response extends ActionAbstract
 		return $this;
 	}
 	
+	/**
+	 * Perform a redirect to the desired URL
+	 * 
+	 * @param string $url
+	 * @param int $code
+	 * @return \Base\Web\Action\Response
+	 */
 	public function redirect($url, $code = 302)
 	{
 		header("Location: $url");

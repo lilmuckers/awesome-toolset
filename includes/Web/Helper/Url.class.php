@@ -22,6 +22,10 @@ class Url extends \Base\Helper\HelperAbstract
 	 * @return string
 	 */
 	public function getUrl($path, $options = array()){
+		if(strtolower(substr($path, 0, 4)) == 'http'){
+			return $path;
+		}
+		
 		$url = \Base\Config::path(self::CONFIG_BASE_PATH);
 		
 		$output = $path;

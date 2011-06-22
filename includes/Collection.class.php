@@ -169,7 +169,7 @@ abstract class Collection extends Object implements \IteratorAggregate, \Countab
 	 * @param \Base\Object $object
 	 * @return \Base\Collection
 	 */
-	public function addItem(BaseObject $object)
+	public function addItem(\Base\Object $object)
 	{
 		$this->_items[] = $object;
 		return $this;

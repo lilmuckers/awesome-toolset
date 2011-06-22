@@ -8,7 +8,7 @@ class OAuth extends \Base\Object
 	 * 
 	 * @var string
 	 */
-	protected $_authUrl = "https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=%s";
+	protected $_authUrl = "https://www.facebook.com/dialog/oauth?%s";
 	protected $_accessUrl = "https://graph.facebook.com/oauth/access_token";
 	
 	/**
@@ -27,10 +27,22 @@ class OAuth extends \Base\Object
 	 */
 	protected function _construct()
 	{
-		$this->_appId 			= \Base\Config::path('Facebook/OAuth/application');
-		$this->_appSecret 		= \Base\Config::path('Facebook/OAuth/secret');
+		$namespace = $this->hasConfigNamespace() ? $this->getConfigNamespace() : 'Facebook';
+		$this->_appId 			= \Base\Config::path($namespace.'/OAuth/application');
+		$this->_appSecret 		= \Base\Config::path($namespace.'/OAuth/secret');
 		$this->_redirectUri 	= \Base\Helper::get('web/url')->getUrl('facebook/oauth/recieve');
 		parent::_construct();
+	}
+	
+	/**
+	 * Override the default redirect uri
+	 * 
+	 * @param string $url
+	 * @return \Awesome\Facebook\Model\OAuth
+	 */
+	public function setRedirectUri($url){
+		$this->_redirectUri 	= \Base\Helper::get('web/url')->getUrl($url);
+		return $this;
 	}
 	
 	/**
@@ -41,10 +53,12 @@ class OAuth extends \Base\Object
 	 */
 	public function getAuthUrl($permissions = array()){
 		$permissions = implode(',',$permissions);
-		$url = sprintf($this->_authUrl, $this->_appId, $this->_redirectUri);
-		if($permissions){
-			$url .= 'scope='.$permissions;
-		}
+		$data = array(
+			'client_id'		=> $this->_appId,
+			'scope'			=> $permissions,
+			'redirect_uri'	=> $this->_redirectUri
+		);
+		$url = sprintf($this->_authUrl, http_build_query($data));
 		return $url;
 	}
 	
@@ -118,5 +132,38 @@ class OAuth extends \Base\Object
 			}
 			throw $e;
 		}
+	}
+	
+	/**
+	 * Is this an authorised request?
+	 * 
+	 * @return bool
+	 */
+	public function isAuthed()
+	{
+		return $this->hasUserId();
+	}
+	
+	/**
+	 * Get the profile object
+	 * 
+	 * @param string $profileId
+	 * @return \Awesome\Facebook\Model\Graph\Profile
+	 */
+	public function getProfile($profileId = null)
+	{
+		if(is_null($profileId) && $this->hasUserId()){
+			$profileId = $this->getUserId();
+		}
+		if(!$this->hasProfiles() || !array_key_exists($profileId, $this->getProfiles())){
+			$profile = new Graph\Profile();
+			$profile->setId($profileId);
+			$profile->setOAuth($this);
+			$profiles = (array) $this->getProfiles();
+			$profiles[$profileId] = $profile;
+			$this->setProfiles($profiles);
+		}
+		$profiles = $this->getProfiles();
+		return $profiles[$profileId];
 	}
 }

@@ -29,7 +29,17 @@ abstract class Controller extends \Base\Object
 	 */
 	public function getRequest()
 	{
-		return $this->_action->getRequest();
+		return $this->getAction()->getRequest();
+	}
+	
+	/**
+	 * Get the action object
+	 * 
+	 * @return \Base\Web\Action
+	 */
+	public function getAction()
+	{
+		return $this->_action;
 	}
 	
 	/**
@@ -39,7 +49,7 @@ abstract class Controller extends \Base\Object
 	 */
 	public function getResponse()
 	{
-		return $this->_action->getResponse();
+		return $this->getAction()->getResponse();
 	}
 	
 	/**

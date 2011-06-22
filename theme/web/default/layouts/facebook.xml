@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <layouts>
-	
+	<facebook_canvas-redirect>
+		<reference name="content">
+			<template name="facebook_redirect" class="\Awesome\Facebook\View\Canvas\Redirect" template="facebook/canvas/redirect.phtml" />
+		</reference>
+	</facebook_canvas-redirect>
 </layouts>
