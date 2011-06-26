@@ -34,11 +34,7 @@ class Router extends \Base\Object
 		}
 		
 		//build the appropriate namespace
-		$namespace = '';
-		if($prefix = \Base\Config::path(self::$_routes[$path[0]].'/_routerNamespace')){
-			$namespace .= $prefix.'\\';
-		}
-		$namespace .= self::$_routes[$path[0]];
+		$namespace = \Base\Helper::get('base/namespacing')->get(self::$_routes[$path[0]]);
 
 		
 		//build the controller classname

@@ -32,10 +32,10 @@ class Helper extends \Base\Object
 				if(class_exists($class)){
 					self::$_helpers[$path] = new $class();
 				} else {
-					$this->_error('Valid helper path, but invalid helper name');
+					throw new \Base\Exception('Valid helper path, but invalid helper name');
 				}
 			} else {
-				$this->_error("Invalid helper path supplied");
+				throw new \Base\Exception("Invalid helper path supplied");
 			}
 		}
 		return self::$_helpers[$path];

@@ -51,7 +51,8 @@ class Config extends Object
 	protected $_defaultConfigPaths = array(
 		'includes/config/theme.ini',
 		'includes/config/routing.ini',
-		'includes/config/helpers.ini'
+		'includes/config/helpers.ini',
+		'includes/config/events.ini'
 	);
 	
 	/**

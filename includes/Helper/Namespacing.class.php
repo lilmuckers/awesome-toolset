@@ -12,9 +12,11 @@ class Namespacing extends HelperAbstract
 	{
 		$namespace = '';
 		if($prefix = \Base\Config::path($module.'/_routerNamespace')){
-			$namespace .= $prefix.'\\';
+			if(!is_array($prefix)){
+				$namespace .= $prefix.'\\';
+			}
 		}
-		$namespace .= self::$module;
+		$namespace .= $module;
 		return $namespace;
 	}
 }
