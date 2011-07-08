@@ -26,8 +26,5 @@ Mcrypt::setKey($config->getConfigByPath('Base/MCrypt/key'));
 //setup the helpers
 Helper::loadHelpers();
 
-//do the routing setup
-Web\Action\Router::loadRoutes();
-
-//do the routing setup
-Cli\Router::loadRoutes();
+//register all the events
+Event::registerEvents();
