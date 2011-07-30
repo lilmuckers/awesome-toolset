@@ -20,7 +20,7 @@ class Wall extends \Awesome\Facebook\Model\Graph\GraphAbstract
 			$this->_error("Must have at least a 'message' parameter to post on the wall");
 		}
 		$url = sprintf(self::USER_WALL_ENDPOINT, $this->getProfileId());
-		$data = $this->_request($url, $arguments)
+		$data = $this->_request($url, $arguments);
 		return $data->id;
 	}
 }
