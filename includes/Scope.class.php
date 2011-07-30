@@ -28,7 +28,7 @@ class Scope
 	{
 		self::_validateScope($scope);
 		self::$_scope = $scope;
-		Event::fire('register_scope_routes');
+		Event::fire('register_scope_after');
 	}
 	
 	/**
