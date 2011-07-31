@@ -1,7 +1,7 @@
 <?php
 namespace Awesome\Xbox\Model\Api
 
-class Game extends ApiAbstract
+class Achievements extends ApiAbstract
 {
 	
 	/**
@@ -9,6 +9,6 @@ class Game extends ApiAbstract
 	 * 
 	 * @var array
 	 */
-	protected $_apiPath = 'gameinfo/%s';
+	protected $_apiPath = 'achievements/%s';
 	
 }

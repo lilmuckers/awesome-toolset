@@ -179,6 +179,9 @@ class HttpClient extends Object
 			curl_setopt($ch, CURLOPT_VERBOSE, true);
 		}
 		
+		//set the port
+		curl_setopt($ch, CURLOPT_PORT, $this->_port);
+		
 		//set the headers
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->_headers);
 		
@@ -226,6 +229,7 @@ class HttpClient extends Object
 				$this->setBody($contents);
 				break;
 			default:
+				$this->setBody($contents);
 				$this->_error("Error connecting to host: {$status}", $status);
 		}
 		

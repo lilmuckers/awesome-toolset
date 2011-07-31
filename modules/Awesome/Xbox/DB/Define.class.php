@@ -10,12 +10,21 @@ class Define extends \Base\DB\Describe
 	 */
 	protected function _construct()
 	{
+		$this->_gamertagTable()
+			->_gamersGameTable()
+			->_gameTable()
+			->_gameRatingsTables()
+			->_gameImageTable()
+			->_gameBuyTable()
+			->_gamersAchievementTable()
+			->_achievementTable()
+			->_notificationTable();
 	}
 	
 	/**
 	 * Define the DB structure for gamertag table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _gamertagTable()
 	{
@@ -31,29 +40,32 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('last_checked_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the gamertags game table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _gamersGameTable()
 	{
 		$table = $this->_addTable('gamertag_game');
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
 		$table->addColumn('game_id', 'int(11) NOT NULL');
+		$table->addColumn('gamertag_id', 'int(11) NOT NULL');
 		$table->addColumn('last_played', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('score', 'int(11) NOT NULL');
 		$table->addColumn('achievements', 'int(11) NOT NULL');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the game table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _gameTable()
 	{
@@ -73,12 +85,13 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('total_achievements', 'int(11) NOT NULL');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the game table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _gameRatingsTables()
 	{
@@ -95,12 +108,13 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('main', 'int(1) NOT NULL DEFAULT 0');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the game table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _gameImageTable()
 	{
@@ -110,12 +124,13 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('image', 'varchar(255) NOT NULL');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the game table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _gameBuyTable()
 	{
@@ -127,25 +142,62 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('price', 'varchar(255) NOT NULL');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the achievement table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
+	 */
+	protected function _gamersAchievementTable()
+	{
+		$table = $this->_addTable('gamertag_game_achievements');
+		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
+		$table->addColumn('game_id', 'int(11) NOT NULL');
+		$table->addColumn('gamertag_id', 'int(11) NOT NULL');
+		$table->addColumn('achievement_id', 'int(11) NOT NULL');
+		$table->addColumn('acquired', 'datetime default \'0000-00-00 00:00:00\'');
+		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
+	}
+	
+	/**
+	 * Define the DB structure for the achievement table
+	 * 
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _achievementTable()
 	{
-		
+		$table = $this->_addTable('game_achievements');
+		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
+		$table->addColumn('slug', 'varchar(255) NOT NULL');
+		$table->addColumn('title', 'varchar(255) NOT NULL');
+		$table->addColumn('description', 'text');
+		$table->addColumn('score', 'int(11) NOT NULL');
+		$table->addColumn('image', 'varchar(255) NOT NULL');
+		$table->addColumn('inactive_image', 'varchar(255)');
+		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 	
 	/**
 	 * Define the DB structure for the profile notification table
 	 * 
-	 * @return void
+	 * @return \Awesome\Xbox\DB\Define
 	 */
 	protected function _notificationTable()
 	{
-		
+		$table = $this->_addTable('gamertag_notifications');
+		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
+		$table->addColumn('gamertag_id', 'int(11) NOT NULL');
+		$table->addColumn('notification_type', 'varchar(255) NOT NULL');
+		$table->addColumn('account_identifier', 'varchar(255) NOT NULL');
+		$table->addColumn('template', 'varchar(255)');
+		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
+		return $this;
 	}
 }
