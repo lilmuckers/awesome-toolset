@@ -36,7 +36,7 @@ class Table extends \Base\Object
 	 * @param string $columnName
 	 * @param string $definition
 	 * @param array $position
-	 * @return BaseDBTable
+	 * @return \Base\DB\Table
 	 */
 	public function addColumn($columnName, $definition, $position = array())
 	{
@@ -62,7 +62,7 @@ class Table extends \Base\Object
 			foreach($this->_column as $column){
 				$this->_updateRow($column, $columns);
 			}
-		} catch(Exception $e){
+		} catch(\Exception $e){
 			//install a new table =3
 			$query = "CREATE TABLE `{$this->_tableName}` (";
 			$queries = array();

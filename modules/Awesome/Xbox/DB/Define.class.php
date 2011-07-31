@@ -38,7 +38,6 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('motto', 'varchar(255) NOT NULL');
 		$table->addColumn('bio', 'varchar(255) NOT NULL');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
-		$table->addColumn('last_checked_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		return $this;
 	}
@@ -103,7 +102,7 @@ class Define extends \Base\DB\Describe
 		$table->addColumn('created_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
 		
 		$table = $this->_addTable('game_rating_link');
-		$table->addColumn('game_id', 'int(11) NOT NULL');
+		$table->addColumn('id', 'int(11) NOT NULL');
 		$table->addColumn('rating_id', 'int(11) NOT NULL');
 		$table->addColumn('main', 'int(1) NOT NULL DEFAULT 0');
 		$table->addColumn('updated_at', 'datetime NOT NULL default \'0000-00-00 00:00:00\'');
@@ -152,7 +151,7 @@ class Define extends \Base\DB\Describe
 	 */
 	protected function _gamersAchievementTable()
 	{
-		$table = $this->_addTable('gamertag_game_achievements');
+		$table = $this->_addTable('gamertag_game_achievement');
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
 		$table->addColumn('game_id', 'int(11) NOT NULL');
 		$table->addColumn('gamertag_id', 'int(11) NOT NULL');
@@ -170,7 +169,7 @@ class Define extends \Base\DB\Describe
 	 */
 	protected function _achievementTable()
 	{
-		$table = $this->_addTable('game_achievements');
+		$table = $this->_addTable('game_achievement');
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
 		$table->addColumn('slug', 'varchar(255) NOT NULL');
 		$table->addColumn('title', 'varchar(255) NOT NULL');
@@ -190,7 +189,7 @@ class Define extends \Base\DB\Describe
 	 */
 	protected function _notificationTable()
 	{
-		$table = $this->_addTable('gamertag_notifications');
+		$table = $this->_addTable('gamertag_notification');
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
 		$table->addColumn('gamertag_id', 'int(11) NOT NULL');
 		$table->addColumn('notification_type', 'varchar(255) NOT NULL');

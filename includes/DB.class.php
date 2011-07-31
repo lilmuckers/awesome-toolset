@@ -51,7 +51,7 @@ class DB {
 		}
 		$result = self::$_db->query($sql);
 		if(false === $result){
-			throw new \Base\Exception\DB('silly billy, query error: '.$sql);
+			throw new \Base\Exception\DB('silly billy, query error: '.$sql.' - '.self::$_db->error);
 		}
 		if($result !== true && $result->num_rows > 0){
 			$return = array();

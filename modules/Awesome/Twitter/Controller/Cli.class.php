@@ -8,7 +8,7 @@ class Cli extends \Base\Cli\Controller
 	 * 
 	 * @var string
 	 */
-	protected $_moduleNamespace = 'Twitter';
+	protected $_moduleNamespace = 'Awesome\Twitter';
 	
 	/**
 	 * Add a user to the DB

@@ -204,7 +204,7 @@ abstract class OAuth extends Object
 		$header = $this->_buildHeader($this->_params);
 		
 		//send it to the server
-		$http = new HttpClient($url);
+		$http = new HttpClient($url, 443);
 		$http->addHeader("Authorization: {$header}");
 		$http->setTransport($this->getTransport());
 		

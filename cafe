@@ -3,5 +3,9 @@
 namespace Base;
 
 require_once(__DIR__.'/includes/bootstrap.php');
+
+//set the CLI scope
+Scope::setScope(Scope::SCOPE_CLI);
+
 $run = new Controller();
 $run->cli($argv);
