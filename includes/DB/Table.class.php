@@ -4,6 +4,12 @@ namespace Base\DB;
 class Table extends \Base\Object
 {
 	/**
+	 * Engine Types
+	 */
+	const ENGINE_MYIASM = 'MyISAM';
+	const ENGINE_INNODB = 'InnoDB';
+	
+	/**
 	 * The table name
 	 * 
 	 * @var string
@@ -16,6 +22,27 @@ class Table extends \Base\Object
 	 * @var string
 	 */
 	protected $_primaryKey = 'id';
+	
+	/**
+	 * The engine type
+	 * 
+	 * @var string
+	 */
+	protected $_engineType = 'MyISAM';
+	
+	/**
+	 * The columns
+	 * 
+	 * @var array
+	 */
+	protected $_column = array();
+	
+	/**
+	 * Foreign Keys
+	 * 
+	 * @var array
+	 */
+	protected $_foreignKeys = array();
 	
 	/**
 	 * Constructor - set the table name
@@ -51,7 +78,7 @@ class Table extends \Base\Object
 	/**
 	 * Setup the Table
 	 * 
-	 * @return BaseDBTable
+	 * @return \Base\DB\Table
 	 */
 	public function install()
 	{
@@ -72,8 +99,14 @@ class Table extends \Base\Object
 			if($this->_primaryKey) {
 				$queries[] = "PRIMARY KEY  (`{$this->_primaryKey}`)";
 			}
+			if($this->_foreignKeys){
+				foreach($this->_foreignKeys as $col => $rel){
+					$queries[] = "FOREIGN KEY ($col) REFERENCES {$rel['relation']['table']}({$rel['relation']['column']}) ".
+						"ON UPDATE {$rel['on']['update']} ON DELETE {$rel['on']['delete']}";
+				}
+			}
 			$query .= implode(',',$queries);
-			$query .= ") ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			$query .= ") ENGINE=".$this->_engineType." DEFAULT CHARSET=utf8;";
 			\Base\DB::query($query);
 		}
 		
@@ -82,9 +115,46 @@ class Table extends \Base\Object
 	}
 	
 	/**
+	 * Set the engine to use
+	 * 
+	 * @param string $engine
+	 * @return \Base\DB\Table
+	 */
+	public function setEngine($engine)
+	{
+		$this->_engineType = $engine;
+		return $this;
+	}
+	
+	/**
+	 * Add a foreign keys
+	 * 
+	 * @param string $column
+	 * @param string $table
+	 * @param string $tableColumn
+	 * @param string $update
+	 * @param string $delete
+	 * @return \Base\DB\Table
+	 */
+	public function addForeignKey($column, $table, $tableColumn = 'id', $update = 'CASCADE', $delete = 'CASCADE')
+	{
+		$this->_foreignKeys[$column] = array(
+			'relation'	=> array(
+				'table'		=> $table,
+				'column'	=> $tableColumn
+			),
+			'on'		=> array(
+				'update'	=> $update,
+				'delete'	=> $delete
+			)
+		);
+		return $this;
+	}
+	
+	/**
 	 * Function that's run post install - used for defining indexes etc
 	 * 
-	 * @return BaseDBTable
+	 * @return \Base\DB\Table
 	 */
 	protected function _postInstall()
 	{
@@ -96,7 +166,7 @@ class Table extends \Base\Object
 	 * 
 	 * @param array $defined
 	 * @param array $definitions
-	 " @return BaseDBTable
+	 " @return \Base\DB\Table
 	 */
 	protected function _updateRow($defined, $definitions)
 	{
