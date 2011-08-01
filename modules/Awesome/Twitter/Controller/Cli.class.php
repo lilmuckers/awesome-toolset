@@ -13,7 +13,7 @@ class Cli extends \Base\Cli\Controller
 	/**
 	 * Add a user to the DB
 	 * 
-	 * @return \Twitter\Cli
+	 * @return \Awesome\Twitter\Cli
 	 */
 	public function add()
 	{
@@ -44,7 +44,7 @@ class Cli extends \Base\Cli\Controller
 	 * 
 	 * @param string $account
 	 * @param string $tweet
-	 * @return \Twitter\Cli
+	 * @return \Awesome\Twitter\Cli
 	 */
 	public function tweet($account, $tweet)
 	{

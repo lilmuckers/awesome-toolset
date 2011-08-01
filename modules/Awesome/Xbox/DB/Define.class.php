@@ -32,6 +32,7 @@ class Define extends \Base\DB\Describe
 		$table->setEngine(\Base\DB\Table::ENGINE_INNODB);
 		$table->addColumn('id', 'int(11) NOT NULL auto_increment');
 		$table->addColumn('gamertag', 'varchar(255) NOT NULL');
+		$table->addColumn('activity', 'text NOT NULL');
 		$table->addColumn('avatar', 'varchar(255) NOT NULL');
 		$table->addColumn('picture', 'varchar(255) NOT NULL');
 		$table->addColumn('score', 'int(10) NOT NULL');

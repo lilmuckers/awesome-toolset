@@ -60,7 +60,11 @@ class Object
 	public function stdClassToArray(\stdClass $data){
 		$return = array();
 		foreach($data as $key=>$value){
-			if($value instanceof \stdClass){
+			if(is_array($value)){
+				foreach($value as $v){
+					$return[] = $this->stdClassToArray($v);
+				}
+			} elseif($value instanceof \stdClass){
 				$return[$key] = $this->stdClassToArray($value);
 			} else {
 				$return[$key] = $value;

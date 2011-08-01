@@ -28,6 +28,13 @@ abstract class Object extends \Base\Object
 	protected $_fields = array();
 	
 	/**
+	 * The original data to check if there's been an update
+	 * 
+	 * @var array
+	 */
+	protected $_oldData = array();
+	
+	/**
 	 * We want to use a non-standard exception
 	 * 
 	 * @var string
@@ -146,6 +153,20 @@ abstract class Object extends \Base\Object
 			}
 		}
 		
+		//check if the data has been updated before actually saving
+		$allowUpdate = false;
+		foreach($this->_oldData as $key=>$value){
+			//if there's any difference we're cool to save
+			if($writeData[$key] != $value){
+				$allowUpdate = true;
+			}
+		}
+		
+		//return an empty array if nothing has changed
+		if(!$allowUpdate){
+			return array();
+		}
+		
 		//run the autopopulation on row update - so everytime the row is saved in other words
 		foreach($this->_autoUpdateFields as $field=>$function){
 			if(in_array($field, $fields)){
@@ -214,6 +235,7 @@ abstract class Object extends \Base\Object
 			$this->_error(sprintf("Unable to load by '%s' = '%s'", $field, $id));
 		}
 		$this->setData($data);
+		$this->_oldData = $this->getData();
 		
 		$this->_afterLoad();
 		return $this;

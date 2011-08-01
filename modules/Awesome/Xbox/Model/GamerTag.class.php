@@ -4,6 +4,11 @@ namespace Awesome\Xbox\Model;
 class GamerTag extends \Base\DB\Object
 {
 	/**
+	 * The join constant
+	 */
+	const LOGIN_JOINER = ':-:';
+	
+	/**
 	 * setup the database shiznaz
 	 * 
 	 * @return void
@@ -43,7 +48,7 @@ class GamerTag extends \Base\DB\Object
 	 */
 	protected function _decryptLogin()
 	{
-		$loginData = Mcrypt::out($this->getData('login_data'));
+		$loginData = \Base\Mcrypt::out($this->getData('login_data'));
 		$this->setData('login_data', $loginData);
 		return $this;
 	}
@@ -55,7 +60,7 @@ class GamerTag extends \Base\DB\Object
 	 */
 	protected function _encryptLogin()
 	{
-		return Mcrypt::in($this->getData('login_data'));
+		return \Base\Mcrypt::in($this->getData('login_data'));
 	}
 	
 	/**
@@ -67,5 +72,42 @@ class GamerTag extends \Base\DB\Object
 	{
 		$this->_decryptLogin();
 		return parent::_afterLoad();
+	}
+	
+	/**
+	 * Update the data from the api feed
+	 * 
+	 * @return \Awesome\Xbox\Model\GamerTag
+	 */
+	public function update()
+	{
+		$api = new \Awesome\Xbox\Model\Api\GamerTag();
+		if($api->load($this->getGamertag())){
+			//picture to load
+			$picture = $api->getPicture();
+			$this->setPicture($picture['large']);
+			
+			//set the other data
+			$this->setAvatar($api->getAvatar());
+			$this->setActivity($api->getActivity());
+			$this->setLocation($api->getLocation());
+			$this->setMotto($api->getMotto());
+			$this->setBio($api->getBio());
+			
+			//Check to see if the user has new score or something.
+			if($this->getScore() && $this->getScore() < $api->getScore()) {
+				//there has been a change! Shit!
+				//Check the games downloaded in the gamertag feed first and see if that makes up the difference
+					//if it doesn't, then we need to check the games api
+				
+				//load up the achievement data for the updated games
+				
+				//save everything
+				
+				$this->setScore($api->getScore());
+			}
+			
+		}
+		return $this;
 	}
 }
